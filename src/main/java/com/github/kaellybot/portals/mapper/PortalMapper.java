@@ -8,7 +8,7 @@ import java.time.Instant;
 
 public class PortalMapper {
 
-    private final static long PORTAL_LIFETIME_IN_DAYS = 2;
+    final static long PORTAL_LIFETIME_IN_DAYS = 2;
 
     public static PortalDto map(Portal portal) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()

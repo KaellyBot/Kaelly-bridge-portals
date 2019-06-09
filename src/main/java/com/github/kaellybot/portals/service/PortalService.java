@@ -20,9 +20,10 @@ public class PortalService implements IPortalService {
 
     @Override
     public Mono<Portal> findById(Server server, Dimension dimension){
-        return portalRepository.findById(new PortalId()
-                .withServer(server.getName())
-                .withDimension(dimension.getName()));
+        return portalRepository.findById(PortalId.builder()
+                .server(server.getName())
+                .dimension(dimension.getName())
+                .build());
     }
 
     @Override
