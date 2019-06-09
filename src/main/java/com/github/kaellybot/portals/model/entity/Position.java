@@ -1,32 +1,15 @@
 package com.github.kaellybot.portals.model.entity;
+import lombok.*;
 
+@Data
+@Builder
 public class Position {
 
     private int x;
     private int y;
 
     public static Position of(int x, int y){
-        return new Position()
-                .withX(x)
-                .withY(y);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public Position withX(int x) {
-        this.x = x;
-        return this;
-    }
-
-    public Position withY(int y) {
-        this.y = y;
-        return this;
+        return Position.builder().x(x).y(y).build();
     }
 
     @Override

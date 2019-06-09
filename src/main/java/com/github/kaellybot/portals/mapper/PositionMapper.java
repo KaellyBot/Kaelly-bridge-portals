@@ -3,11 +3,12 @@ package com.github.kaellybot.portals.mapper;
 import com.github.kaellybot.portals.model.dto.PositionDto;
 import com.github.kaellybot.portals.model.entity.Position;
 
-public class PositionMapper {
+class PositionMapper {
 
-    public static PositionDto map(Position position){
-        return new PositionDto()
-                .withX(position.getX())
-                .withY(position.getY());
+    static PositionDto map(Position position){
+        return PositionDto.builder()
+                .x(position.getX())
+                .y(position.getY())
+                .build();
     }
 }

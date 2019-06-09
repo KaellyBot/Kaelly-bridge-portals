@@ -1,12 +1,13 @@
 package com.github.kaellybot.portals.model.entity;
 
 import com.github.kaellybot.portals.model.constants.Transport;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-
+@Data
 @Document(collection = "portals")
 public class Portal {
 
@@ -23,52 +24,4 @@ public class Portal {
     private boolean transportLimitedNearest;
     private boolean isAvailable;
     private boolean isUpdated;
-
-    public PortalId getPortalId() {
-        return portalId;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public Integer getUtilisation() {
-        return utilisation;
-    }
-
-    public Instant getCreationDate() {
-        return creationDate;
-    }
-
-    public Author getCreationAuthor() {
-        return creationAuthor;
-    }
-
-    public Instant getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public Author getLastAuthorUpdate() {
-        return lastAuthorUpdate;
-    }
-
-    public Transport getNearestZaap() {
-        return nearestZaap;
-    }
-
-    public Transport getNearestTransportLimited() {
-        return nearestTransportLimited;
-    }
-
-    public boolean isTransportLimitedNearest() {
-        return transportLimitedNearest;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public boolean isUpdated() {
-        return isUpdated;
-    }
 }

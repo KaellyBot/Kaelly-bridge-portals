@@ -11,26 +11,26 @@ public class PortalMapper {
     private final static long PORTAL_LIFETIME_IN_DAYS = 2;
 
     public static PortalDto map(Portal portal) {
-        PortalDto result = new PortalDto()
-                .withDimension(portal.getPortalId().getDimension())
-                .withAvailable(portal.isAvailable());
+        PortalDto.PortalDtoBuilder result = PortalDto.builder()
+                .dimension(portal.getPortalId().getDimension())
+                .isAvailable(portal.isAvailable());
 
         if (isPortalStillFresh(portal)) {
-            result.withPosition(PositionMapper.map(portal.getPosition()))
-                    .withUtilisation(portal.getUtilisation())
-                    .withCreationDate(portal.getCreationDate())
-                    .withCreationAuthor(AuthorMapper.map(portal.getCreationAuthor()))
-                    .withNearestZaap(TransportMapper.map(portal.getNearestZaap()));
+            result.position(PositionMapper.map(portal.getPosition()))
+                    .utilisation(portal.getUtilisation())
+                    .creationDate(portal.getCreationDate())
+                    .creationAuthor(AuthorMapper.map(portal.getCreationAuthor()))
+                    .nearestZaap(TransportMapper.map(portal.getNearestZaap()));
 
             if (portal.isUpdated())
-                result.withLastUpdateDate(portal.getLastUpdateDate())
-                        .withLastAuthorUpdate(AuthorMapper.map(portal.getLastAuthorUpdate()));
+                result.lastUpdateDate(portal.getLastUpdateDate())
+                        .lastAuthorUpdate(AuthorMapper.map(portal.getLastAuthorUpdate()));
 
             if (portal.isTransportLimitedNearest())
-                result.withNearestTransportLimited(TransportMapper.map(portal.getNearestTransportLimited()));
+                result.nearestTransportLimited(TransportMapper.map(portal.getNearestTransportLimited()));
         }
 
-        return result;
+        return result.build();
     }
 
     private static boolean isPortalStillFresh(Portal portal){

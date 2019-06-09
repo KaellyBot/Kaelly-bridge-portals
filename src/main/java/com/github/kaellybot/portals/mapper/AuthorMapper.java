@@ -3,11 +3,12 @@ package com.github.kaellybot.portals.mapper;
 import com.github.kaellybot.portals.model.entity.Author;
 import com.github.kaellybot.portals.model.dto.AuthorDto;
 
-public class AuthorMapper {
+class AuthorMapper {
 
-    public static AuthorDto map(Author author){
-        return new AuthorDto()
-                .withName(author.getName())
-                .withPlatform(author.getPlatform());
+    static AuthorDto map(Author author){
+        return AuthorDto.builder()
+                .name(author.getName())
+                .platform(author.getPlatform())
+                .build();
     }
 }

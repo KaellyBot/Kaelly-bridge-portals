@@ -1,25 +1,12 @@
 package com.github.kaellybot.portals.model.dto;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class AuthorDto {
 
     private String name;
     private String platform;
-
-    public String getName() {
-        return name;
-    }
-
-    public AuthorDto withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public AuthorDto withPlatform(String platform) {
-        this.platform = platform;
-        return this;
-    }
 }
