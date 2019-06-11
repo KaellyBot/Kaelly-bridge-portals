@@ -3,12 +3,14 @@ package com.github.kaellybot.portals.mapper;
 import com.github.kaellybot.portals.model.constants.Transport;
 import com.github.kaellybot.portals.model.dto.TransportDto;
 
-class TransportMapper {
+final class TransportMapper {
+
+    private TransportMapper(){}
 
     static TransportDto map(Transport transport){
         return TransportDto.builder()
-                .type(transport.getType())
-                .area(transport.getArea())
+                .type(transport.getType().getName())
+                .area(transport.getArea().getName())
                 .subArea(transport.getSubArea())
                 .position(PositionMapper.map(transport.getPosition()))
                 .isAvailableUnderConditions(transport.isAvailableUnderConditions())

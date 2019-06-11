@@ -6,9 +6,11 @@ import com.github.kaellybot.portals.model.entity.Portal;
 import java.time.Duration;
 import java.time.Instant;
 
-public class PortalMapper {
+public final class PortalMapper {
 
     final static long PORTAL_LIFETIME_IN_DAYS = 2;
+
+    private PortalMapper(){}
 
     public static PortalDto map(Portal portal) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()

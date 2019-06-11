@@ -1,11 +1,12 @@
 package com.github.kaellybot.portals.controller;
 
-public class PortalConstants {
+final class PortalConstants {
 
-    public final static String API = "/api";
-    public final static String PORTALS = "/portals";
-    public final static String TOKEN_VAR = "token";
-    public final static String DIMENSION_VAR = "dimension";
-    public final static String SERVER_VAR = "{server}";
+    private PortalConstants(){}
+
+    static final String API = "/api";
+    static final String PORTALS = "/portals";
+    static final String TOKEN_VAR = "token";
+    static final String DIMENSION_VAR = "dimension";
+    static final String SERVER_VAR = "{server}";
 }
-

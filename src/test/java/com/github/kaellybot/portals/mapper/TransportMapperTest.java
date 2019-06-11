@@ -19,8 +19,8 @@ class TransportMapperTest {
         assertNotNull(TransportMapper.map(transport).getSubArea());
         assertNotNull(TransportMapper.map(transport).getPosition());
 
-        assertEquals(transport.getType(), TransportMapper.map(transport).getType());
-        assertEquals(transport.getArea(), TransportMapper.map(transport).getArea());
+        assertEquals(transport.getType().getName(), TransportMapper.map(transport).getType());
+        assertEquals(transport.getArea().getName(), TransportMapper.map(transport).getArea());
         assertEquals(transport.getSubArea(), TransportMapper.map(transport).getSubArea());
         assertEquals(PositionMapper.map(transport.getPosition()), TransportMapper.map(transport).getPosition());
         assertEquals(transport.isAvailableUnderConditions(), TransportMapper.map(transport).isAvailableUnderConditions());
