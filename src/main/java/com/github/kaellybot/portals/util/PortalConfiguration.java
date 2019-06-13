@@ -31,6 +31,6 @@ public class PortalConfiguration extends AbstractReactiveMongoConfiguration {
 
     @Override
     public MongoClient reactiveMongoClient() {
-        return MongoClients.create("mongodb://" + host + ":" + port);
+        return MongoClients.create("mongodb://" + username + ":" + password + "@" + host + ":" + port + "/" + database);
     }
 }
