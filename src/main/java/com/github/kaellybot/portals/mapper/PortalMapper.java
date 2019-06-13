@@ -8,7 +8,7 @@ import java.time.Instant;
 
 public final class PortalMapper {
 
-    final static long PORTAL_LIFETIME_IN_DAYS = 2;
+    static final long PORTAL_LIFETIME_IN_DAYS = 2;
 
     private PortalMapper(){}
 
