@@ -7,9 +7,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ServerServiceTest {
@@ -20,11 +18,15 @@ class ServerServiceTest {
     @ParameterizedTest
     @EnumSource(Server.class)
     void findPassingCaseTest(Server server){
-        assertTrue(serverService.findByName(server.getName()).isPresent());
-        assertTrue(serverService.findByName(server.getName().toLowerCase()).isPresent());
-        assertTrue(serverService.findByName(server.getName().toUpperCase()).isPresent());
-        assertTrue(serverService.findByName(StringUtils.stripAccents(server.getName())).isPresent());
-        assertEquals(server, serverService.findByName(server.getName()).get());
+        assertAll(
+                () -> assertTrue(serverService.findByName(server.getName()).isPresent()),
+                () -> assertTrue(serverService.findByName(server.getName().toLowerCase()).isPresent()),
+                () -> assertTrue(serverService.findByName(server.getName().toUpperCase()).isPresent()),
+                () -> assertTrue(serverService.findByName(StringUtils.stripAccents(server.getName())).isPresent())
+        );
+
+        serverService.findByName(server.getName())
+                .ifPresent(potentialServer -> assertEquals(server, potentialServer));
     }
 
     @ParameterizedTest
