@@ -1,6 +1,5 @@
 package com.github.kaellybot.portals.repository;
 
-import com.github.kaellybot.portals.PortalApplication;
 import com.github.kaellybot.portals.model.constants.Dimension;
 import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.entity.Portal;
@@ -16,7 +15,7 @@ import reactor.test.StepVerifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = PortalApplication.class)
+@SpringBootTest
 class PortalRepositoryTest {
 
     @Autowired
