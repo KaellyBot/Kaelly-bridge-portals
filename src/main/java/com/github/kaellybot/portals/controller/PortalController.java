@@ -22,7 +22,7 @@ import static com.github.kaellybot.portals.controller.PortalConstants.*;
 @RequestMapping(API)
 public class PortalController {
 
-    static final Logger LOG = LoggerFactory.getLogger(PortalController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PortalController.class);
     private IPortalService portalService;
     private IServerService serverService;
     private IDimensionService dimensionService;
@@ -69,7 +69,7 @@ public class PortalController {
     public Mono<String> addPortal(@PathVariable(value="server") String serverName,
                                   @RequestParam String dimension,
                                   @RequestParam String token,
-                                  @RequestBody ExternalPortalDto coodinates){
+                                  @RequestBody ExternalPortalDto coordinates){
         try {
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             // TODO

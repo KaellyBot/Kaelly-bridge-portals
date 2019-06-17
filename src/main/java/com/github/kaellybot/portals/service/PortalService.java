@@ -21,13 +21,13 @@ public class PortalService implements IPortalService {
     @Override
     public Mono<Portal> findById(Server server, Dimension dimension){
         return portalRepository.findById(PortalId.builder()
-                .server(server.getName())
-                .dimension(dimension.getName())
+                .server(server)
+                .dimension(dimension)
                 .build());
     }
 
     @Override
     public Flux<Portal> findAllByPortalIdServer(Server server) {
-        return portalRepository.findAllByPortalIdServer(server.getName());
+        return portalRepository.findAllByPortalIdServer(server);
     }
 }

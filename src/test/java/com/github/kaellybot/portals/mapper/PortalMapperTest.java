@@ -12,6 +12,8 @@ import java.time.Instant;
 import java.util.stream.Stream;
 
 import static com.github.kaellybot.portals.mapper.PortalMapper.PORTAL_LIFETIME_IN_DAYS;
+import static com.github.kaellybot.portals.model.constants.Dimension.ENUTROSOR;
+import static com.github.kaellybot.portals.model.constants.Server.FURYE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -27,7 +29,7 @@ class PortalMapperTest {
     void mapPortalDtoTest(Portal portal)
     {
         assertNotNull(PortalMapper.map(portal));
-        assertEquals(portal.getPortalId().getDimension(), PortalMapper.map(portal).getDimension());
+        assertEquals(portal.getPortalId().getDimension().getName(), PortalMapper.map(portal).getDimension());
         assertEquals(portal.isAvailable(), PortalMapper.map(portal).getIsAvailable());
 
         if (isPortalStillFresh(portal)){
@@ -68,35 +70,35 @@ class PortalMapperTest {
         return Stream.of(
                 // No available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension("Enutrosor").server("Furye").build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
                         .isAvailable(true)
                         .creationDate(OLD)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension("Enutrosor").server("Furye").build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
                         .isAvailable(false)
                         .build(),
 
                 // Available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension("Enutrosor").server("Furye").build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
                         .isAvailable(true)
                         .creationDate(FRESH).creationAuthor(Author.builder().name("Kaysoro").platform("Discord").build())
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension("Enutrosor").server("Furye").build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
                         .isAvailable(true)
                         .creationDate(FRESH).creationAuthor(Author.builder().name("Songfu").platform("Discord").build())
                         .lastUpdateDate(FRESH).lastAuthorUpdate(Author.builder().name("Chiron").platform("Dofus-portals").build())
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension("Enutrosor").server("Furye").build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
                         .isAvailable(true)
                         .creationDate(FRESH).creationAuthor(Author.builder().name("Songfu").platform("Discord").build())
                         .nearestZaap(Transport.CITE_D_ASTRUB)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension("Enutrosor").server("Furye").build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
                         .isAvailable(true)
                         .creationDate(FRESH).creationAuthor(Author.builder().name("Songfu").platform("Discord").build())
                         .nearestZaap(Transport.CITE_D_ASTRUB)

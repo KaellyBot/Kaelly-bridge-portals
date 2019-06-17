@@ -26,14 +26,14 @@ class PortalRepositoryTest {
         repository.saveAll(Flux.just(
                 Portal.builder()
                         .portalId(PortalId.builder()
-                                .server(Server.AGRIDE.getName())
-                                .dimension(Dimension.ECAFLIPUS.getName())
+                                .server(Server.AGRIDE)
+                                .dimension(Dimension.ECAFLIPUS)
                                 .build())
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder()
-                                .server(Server.ATCHAM.getName())
-                                .dimension(Dimension.ECAFLIPUS.getName())
+                                .server(Server.ATCHAM)
+                                .dimension(Dimension.ECAFLIPUS)
                                 .build())
                         .build()))
                 .collectList()
@@ -42,11 +42,11 @@ class PortalRepositoryTest {
 
     @Test
     void findAllByPortalIdServerTest() {
-        Flux<Portal> portalFlux = repository.findAllByPortalIdServer(Server.AGRIDE.getName());
+        Flux<Portal> portalFlux = repository.findAllByPortalIdServer(Server.AGRIDE);
         StepVerifier.create(portalFlux)
                 .assertNext(portal -> {
                     assertNotNull(portal.getPortalId());
-                    assertEquals(Server.AGRIDE.getName(), portal.getPortalId().getServer());
+                    assertEquals(Server.AGRIDE, portal.getPortalId().getServer());
                 })
                 .expectComplete()
                 .verify();
@@ -55,15 +55,15 @@ class PortalRepositoryTest {
     @Test
     void findByIdTest() {
         Mono<Portal> portalMono = repository.findById(PortalId.builder()
-                .server(Server.AGRIDE.getName())
-                .dimension(Dimension.ECAFLIPUS.getName())
+                .server(Server.AGRIDE)
+                .dimension(Dimension.ECAFLIPUS)
                 .build());
 
         StepVerifier.create(portalMono)
                 .assertNext(portal -> {
                     assertNotNull(portal.getPortalId());
-                    assertEquals(Server.AGRIDE.getName(), portal.getPortalId().getServer());
-                    assertEquals(Dimension.ECAFLIPUS.getName() , portal.getPortalId().getDimension());
+                    assertEquals(Server.AGRIDE, portal.getPortalId().getServer());
+                    assertEquals(Dimension.ECAFLIPUS, portal.getPortalId().getDimension());
                 })
                 .expectComplete()
                 .verify();
