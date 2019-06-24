@@ -14,7 +14,7 @@ public class ServerService implements IServerService {
     public Optional<Server> findByName(String name) {
         final String NORMALIZED_NAME = StringUtils.stripAccents(name.toUpperCase().trim());
         return Stream.of(Server.values())
-                .filter(server -> StringUtils.stripAccents(server.getName().toUpperCase().trim())
+                .filter(server -> StringUtils.stripAccents(server.name().toUpperCase().trim())
                         .equals(NORMALIZED_NAME))
                 .findFirst();
     }

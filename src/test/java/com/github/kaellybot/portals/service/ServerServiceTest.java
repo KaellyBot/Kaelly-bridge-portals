@@ -19,19 +19,19 @@ class ServerServiceTest {
     @EnumSource(Server.class)
     void findPassingCaseTest(Server server){
         assertAll(
-                () -> assertTrue(serverService.findByName(server.getName()).isPresent()),
-                () -> assertTrue(serverService.findByName(server.getName().toLowerCase()).isPresent()),
-                () -> assertTrue(serverService.findByName(server.getName().toUpperCase()).isPresent()),
-                () -> assertTrue(serverService.findByName(StringUtils.stripAccents(server.getName())).isPresent())
+                () -> assertTrue(serverService.findByName(server.name()).isPresent()),
+                () -> assertTrue(serverService.findByName(server.name().toLowerCase()).isPresent()),
+                () -> assertTrue(serverService.findByName(server.name().toUpperCase()).isPresent()),
+                () -> assertTrue(serverService.findByName(StringUtils.stripAccents(server.name())).isPresent())
         );
 
-        serverService.findByName(server.getName())
+        serverService.findByName(server.name())
                 .ifPresent(potentialServer -> assertEquals(server, potentialServer));
     }
 
     @ParameterizedTest
     @EnumSource(Server.class)
     void findNoPassingCaseTest(Server server){
-        assertFalse(serverService.findByName(server.getName() + "_BAD_NAME").isPresent());
+        assertFalse(serverService.findByName(server.name() + "_BAD_NAME").isPresent());
     }
 }

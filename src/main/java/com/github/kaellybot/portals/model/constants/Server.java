@@ -2,30 +2,30 @@ package com.github.kaellybot.portals.model.constants;
 
 public enum Server {
 
-    AGRIDE("Agride"),
-    ATCHAM("Atcham"),
-    CROCABULIA("Crocabulia"),
-    ECHO("Echo"),
-    MERIANA("Meriana"),
-    OMBRE("Ombre"),
-    OTO_MUSTAM("Oto-Mustam"),
-    RUBILAX("Rubilax"),
-    PANDORE("Pandore"),
-    USH("Ush"),
-    JULITH("Julith"),
-    NIDAS("Nidas"),
-    MERKATOR("Merkator"),
-    FURYE("Furye"),
-    BRUMEN("Brumen"),
-    ILYZAELLE("Ilyzaelle");
+    AGRIDE("server.agride"),
+    ATCHAM("server.atcham"),
+    CROCABULIA("server.crocabulia"),
+    ECHO("server.echo"),
+    MERIANA("server.meriana"),
+    OMBRE("server.ombre"),
+    OTO_MUSTAM("server.oto_mustam"),
+    RUBILAX("server.rubilax"),
+    PANDORE("server.pandore"),
+    USH("server.ush"),
+    JULITH("server.julith"),
+    NIDAS("server.nidas"),
+    MERKATOR("server.merkator"),
+    FURYE("server.furye"),
+    BRUMEN("server.brumen"),
+    ILYZAELLE("server.ilyzaelle");
 
-    private String name;
+    private String key;
 
-    Server(String name){
-        this.name = name;
+    Server(String key){
+        this.key = key;
     }
 
-    public String getName() {
-        return name;
+    public String getKey() {
+        return key;
     }
 }
