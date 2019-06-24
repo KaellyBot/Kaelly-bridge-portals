@@ -33,6 +33,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @AutoConfigureWebTestClient
 class PortalControllerTest {
 
+    private final static Instant TIME = Instant.parse("2019-01-10T00:00:00.00Z");
+
     @Autowired
     private WebTestClient webTestClient;
 
@@ -56,7 +58,6 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(PortalDto.class)
-                .consumeWith(System.out::println)
                 .consumeWith(t -> assertEquals(PortalMapper.map(portal), t.getResponseBody()));
     }
 
@@ -75,7 +76,16 @@ class PortalControllerTest {
     @ParameterizedTest
     @MethodSource("getPortals")
     @Disabled
-    void addPortalTest(Portal portal){}
+    void addPortalTest(Portal portal){
+        webTestClient.get()
+                .uri(API + "/" + portal.getPortalId().getServer() + PORTALS + "?" + DIMENSION_VAR + "="
+                        + portal.getPortalId().getDimension() + "&token=token")
+                .exchange()
+                .expectStatus().isEqualTo(OK)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(PortalDto.class)
+                .consumeWith(t -> assertEquals(PortalMapper.map(portal), t.getResponseBody()));
+    }
 
     private static Stream<Portal> getPortals(){
         return Stream.of(
@@ -86,7 +96,7 @@ class PortalControllerTest {
                             .build())
                         .isAvailable(true)
                         .position(Position.builder().x(10).y(20).build())
-                        .creationDate(Instant.now())
+                        .creationDate(TIME)
                         .creationAuthor(Author.builder().build())
                         .nearestZaap(Transport.CITE_D_ASTRUB)
                         .build(),
@@ -97,7 +107,7 @@ class PortalControllerTest {
                             .build())
                         .isAvailable(true)
                         .position(Position.builder().x(0).y(0).build())
-                        .creationDate(Instant.now())
+                        .creationDate(TIME)
                         .creationAuthor(Author.builder().build())
                         .nearestZaap(Transport.CITE_D_ASTRUB)
                         .build(),
