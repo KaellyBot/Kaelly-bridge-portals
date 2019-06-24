@@ -14,7 +14,7 @@ public class DimensionService implements IDimensionService {
     public Optional<Dimension> findByName(String name){
         final String NORMALIZED_NAME = StringUtils.stripAccents(name.toUpperCase().trim());
         return Stream.of(Dimension.values())
-                .filter(dim -> StringUtils.stripAccents(dim.getName().toUpperCase().trim())
+                .filter(dim -> StringUtils.stripAccents(dim.name().toUpperCase().trim())
                         .equals(NORMALIZED_NAME))
                 .findFirst();
     }

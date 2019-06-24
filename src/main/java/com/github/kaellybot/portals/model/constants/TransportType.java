@@ -10,13 +10,13 @@ public enum TransportType {
     TRANSPORT_TYPE_SKI("transport.type.ski"),
     TRANSPORT_TYPE_SCAEROPLANE("transport.type.scaeroplane");
 
-    private String name;
+    private String key;
 
-    TransportType(String name){
-        this.name = name;
+    TransportType(String key){
+        this.key = key;
     }
 
-    public String getName(){
-        return name;
+    public String getKey(){
+        return key;
     }
 }

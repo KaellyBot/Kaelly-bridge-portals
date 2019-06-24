@@ -2,15 +2,18 @@ package com.github.kaellybot.portals.model.constants;
 
 public enum Dimension {
 
-    ENUTROSOR("Enutrosor"), SRAMBAD("Srambad"), XELORIUM("Xélorium"), ECAFLIPUS("Ecaflipus");
+    ENUTROSOR("dimension.enutrosor"),
+    SRAMBAD("dimension.srambad"),
+    XELORIUM("dimension.xelorium"),
+    ECAFLIPUS("dimension.ecaflipus");
 
-    private String name;
+    private String key;
 
-    Dimension(String name){
-        this.name = name;
+    Dimension(String key){
+        this.key = key;
     }
 
-    public String getName() {
-        return name;
+    public String getKey() {
+        return key;
     }
 }

@@ -14,7 +14,7 @@ public final class PortalMapper {
 
     public static PortalDto map(Portal portal) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
-                .dimension(portal.getPortalId().getDimension().getName())
+                .dimension(portal.getPortalId().getDimension().name())
                 .isAvailable(portal.isAvailable());
 
         if (isPortalStillFresh(portal)) {

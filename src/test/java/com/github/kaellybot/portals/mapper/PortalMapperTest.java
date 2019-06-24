@@ -29,7 +29,7 @@ class PortalMapperTest {
     void mapPortalDtoTest(Portal portal)
     {
         assertNotNull(PortalMapper.map(portal));
-        assertEquals(portal.getPortalId().getDimension().getName(), PortalMapper.map(portal).getDimension());
+        assertEquals(portal.getPortalId().getDimension().name(), PortalMapper.map(portal).getDimension());
         assertEquals(portal.isAvailable(), PortalMapper.map(portal).getIsAvailable());
 
         if (isPortalStillFresh(portal)){

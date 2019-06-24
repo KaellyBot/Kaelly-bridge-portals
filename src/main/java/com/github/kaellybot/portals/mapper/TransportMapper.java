@@ -9,7 +9,7 @@ final class TransportMapper {
 
     static TransportDto map(Transport transport){
         return TransportDto.builder()
-                .type(transport.getType().getName())
+                .type(transport.getType().getKey())
                 .area(transport.getArea().getName())
                 .subArea(transport.getSubArea())
                 .position(PositionMapper.map(transport.getPosition()))

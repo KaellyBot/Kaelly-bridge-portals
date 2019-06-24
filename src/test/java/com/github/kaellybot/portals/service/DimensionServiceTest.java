@@ -19,19 +19,19 @@ class DimensionServiceTest {
     @EnumSource(Dimension.class)
     void findPassingCaseTest(Dimension dimension){
         assertAll(
-                () -> assertTrue(dimensionService.findByName(dimension.getName()).isPresent()),
-                () -> assertTrue(dimensionService.findByName(dimension.getName().toLowerCase()).isPresent()),
-                () -> assertTrue(dimensionService.findByName(dimension.getName().toUpperCase()).isPresent()),
-                () -> assertTrue(dimensionService.findByName(StringUtils.stripAccents(dimension.getName())).isPresent())
+                () -> assertTrue(dimensionService.findByName(dimension.name()).isPresent()),
+                () -> assertTrue(dimensionService.findByName(dimension.name().toLowerCase()).isPresent()),
+                () -> assertTrue(dimensionService.findByName(dimension.name().toUpperCase()).isPresent()),
+                () -> assertTrue(dimensionService.findByName(StringUtils.stripAccents(dimension.name())).isPresent())
         );
 
-        dimensionService.findByName(dimension.getName())
+        dimensionService.findByName(dimension.name())
                 .ifPresent(dim -> assertEquals(dimension, dim));
     }
 
     @ParameterizedTest
     @EnumSource(Dimension.class)
     void findNoPassingCaseTest(Dimension dimension){
-        assertFalse(dimensionService.findByName(dimension.getName() + "_BAD_NAME").isPresent());
+        assertFalse(dimensionService.findByName(dimension.name() + "_BAD_NAME").isPresent());
     }
 }
