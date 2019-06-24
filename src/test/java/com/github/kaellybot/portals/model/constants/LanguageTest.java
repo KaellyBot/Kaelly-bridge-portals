@@ -1,6 +1,5 @@
 package com.github.kaellybot.portals.model.constants;
 
-import com.github.kaellybot.portals.controller.PortalController;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
