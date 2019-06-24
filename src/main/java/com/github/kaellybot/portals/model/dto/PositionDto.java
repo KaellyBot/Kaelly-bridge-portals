@@ -1,12 +1,18 @@
 package com.github.kaellybot.portals.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-@Builder
+@Value
+@JsonDeserialize(builder = PositionDto.PositionDtoBuilder.class)
+@Builder(builderClassName = "PortalDtoBuilder", toBuilder = true)
 public class PositionDto {
 
     private int x;
     private int y;
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class PositionDtoBuilder {}
 }

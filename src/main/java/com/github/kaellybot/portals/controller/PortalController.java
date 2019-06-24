@@ -33,7 +33,7 @@ public class PortalController {
         this.dimensionService = dimensionService;
     }
 
-    @GetMapping(path = SERVER_VAR + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR })
+    @GetMapping(path = SERVER_VAR + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR }, produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<PortalDto> findById(@PathVariable(value="server") String serverName,
                                     @RequestParam(value="dimension") String dimensionName,
                                     @RequestParam String token){
@@ -50,7 +50,7 @@ public class PortalController {
         }
     }
 
-    @GetMapping(path = SERVER_VAR + PORTALS, params = { TOKEN_VAR })
+    @GetMapping(path = SERVER_VAR + PORTALS, params = { TOKEN_VAR }, produces=MediaType.APPLICATION_JSON_VALUE)
     public Flux<PortalDto> findAllByPortalIdServer(@PathVariable(value="server") String serverName,
                                                    @RequestParam String token){
         try {
@@ -65,7 +65,8 @@ public class PortalController {
         }
     }
 
-    @PostMapping(path= SERVER_VAR + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR }, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path= SERVER_VAR + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR },
+            produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<String> addPortal(@PathVariable(value="server") String serverName,
                                   @RequestParam String dimension,
                                   @RequestParam String token,
