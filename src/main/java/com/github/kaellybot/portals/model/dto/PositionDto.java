@@ -7,7 +7,7 @@ import lombok.Value;
 
 @Value
 @JsonDeserialize(builder = PositionDto.PositionDtoBuilder.class)
-@Builder(builderClassName = "PortalDtoBuilder", toBuilder = true)
+@Builder(builderClassName = "PositionDtoBuilder", toBuilder = true)
 public class PositionDto {
 
     private int x;
