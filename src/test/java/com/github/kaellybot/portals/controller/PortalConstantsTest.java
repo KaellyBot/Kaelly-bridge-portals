@@ -10,6 +10,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PortalConstantsTest {
 
     @Test
+    void languageNotFoundExceptionTest(){
+        assertAll(
+                () -> assertEquals(HttpStatus.NOT_FOUND, LANGUAGE_NOT_FOUND.getStatus()),
+                () -> assertEquals(LANGUAGE_NOT_FOUND_MESSAGE, LANGUAGE_NOT_FOUND.getReason())
+        );
+    }
+
+    @Test
     void serverNotFoundExceptionTest(){
         assertAll(
                 () -> assertEquals(HttpStatus.NOT_FOUND, SERVER_NOT_FOUND.getStatus()),

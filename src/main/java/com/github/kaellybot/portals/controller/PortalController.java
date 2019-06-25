@@ -2,10 +2,12 @@ package com.github.kaellybot.portals.controller;
 
 import com.github.kaellybot.portals.mapper.PortalMapper;
 import com.github.kaellybot.portals.model.constants.Dimension;
+import com.github.kaellybot.portals.model.constants.Language;
 import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.service.IDimensionService;
+import com.github.kaellybot.portals.service.ILanguageService;
 import com.github.kaellybot.portals.service.IPortalService;
 import com.github.kaellybot.portals.service.IServerService;
 import org.slf4j.Logger;
@@ -26,18 +28,25 @@ public class PortalController {
     private IPortalService portalService;
     private IServerService serverService;
     private IDimensionService dimensionService;
+    private ILanguageService languageService;
 
-    public PortalController(IPortalService portalService, IServerService serverService, IDimensionService dimensionService){
+    public PortalController(IPortalService portalService, IServerService serverService,
+                            IDimensionService dimensionService, ILanguageService languageService){
         this.portalService = portalService;
         this.serverService = serverService;
         this.dimensionService = dimensionService;
+        this.languageService = languageService;
     }
 
-    @GetMapping(path = SERVER_VAR + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR }, produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = SERVER_VAR + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR },
+            produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<PortalDto> findById(@PathVariable(value="server") String serverName,
                                     @RequestParam(value="dimension") String dimensionName,
-                                    @RequestParam String token){
+                                    @RequestParam String token,
+                                    @RequestParam(name = LANGUAGE_VAR,
+                                            required = false) String languageName){
         try {
+            Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             Dimension dimension = dimensionService.findByName(dimensionName).orElseThrow(() -> DIMENSION_NOT_FOUND);
             return portalService.findById(server, dimension)
@@ -50,10 +59,14 @@ public class PortalController {
         }
     }
 
-    @GetMapping(path = SERVER_VAR + PORTALS, params = { TOKEN_VAR }, produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = SERVER_VAR + PORTALS, params = { TOKEN_VAR },
+            produces=MediaType.APPLICATION_JSON_VALUE)
     public Flux<PortalDto> findAllByPortalIdServer(@PathVariable(value="server") String serverName,
-                                                   @RequestParam String token){
+                                                   @RequestParam String token,
+                                                   @RequestParam(name = LANGUAGE_VAR,
+                                                           required = false) String languageName){
         try {
+            Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             return portalService.findAllByPortalIdServer(server)
                     .map(PortalMapper::map);
