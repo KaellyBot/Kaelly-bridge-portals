@@ -24,12 +24,11 @@ public final class Translator {
         if (labels == null){
             labels = new ConcurrentHashMap<>();
 
-            for(Language language : Language.values())
-                try(InputStream file = Translator.class.getResourceAsStream("/label_"
-                        + language.name() + ".properties")) {
+            for(Language lg : Language.values())
+                try(InputStream file = Translator.class.getResourceAsStream("/label_" + lg + ".properties")) {
                     Properties prop = new Properties();
                     prop.load(new BufferedReader(new InputStreamReader(file, StandardCharsets.UTF_8)));
-                    labels.put(language, prop);
+                    labels.put(lg, prop);
                 } catch (IOException e) {
                     LOG.error("Translator.getLabel", e);
                 }
@@ -37,7 +36,7 @@ public final class Translator {
 
         String value = labels.get(lang).getProperty(property);
         if (value == null || value.trim().isEmpty()) {
-            LOG.error("Missing label in {} : {}", lang.name(), property);
+            LOG.error("Missing label in {} : {}", lang, property);
             return property;
         }
 

@@ -1,10 +1,14 @@
 package com.github.kaellybot.portals.model.constants;
 
 import com.github.kaellybot.portals.model.entity.Position;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import static com.github.kaellybot.portals.model.constants.TransportArea.*;
 import static com.github.kaellybot.portals.model.constants.TransportType.*;
 
+@Getter
+@AllArgsConstructor
 public enum Transport {
 
     // Zaaps
@@ -115,32 +119,4 @@ public enum Transport {
     private String subArea;
     private Position position;
     private boolean isAvailableUnderConditions;
-
-    Transport(TransportType type, TransportArea area, String subArea, Position position, boolean isAvailableUnderConditions) {
-        this.type = type;
-        this.area = area;
-        this.subArea = subArea;
-        this.position = position;
-        this.isAvailableUnderConditions = isAvailableUnderConditions;
-    }
-
-    public TransportType getType() {
-        return type;
-    }
-
-    public TransportArea getArea() {
-        return area;
-    }
-
-    public String getSubArea() {
-        return subArea;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public boolean isAvailableUnderConditions() {
-        return isAvailableUnderConditions;
-    }
 }

@@ -1,7 +1,11 @@
 package com.github.kaellybot.portals.model.constants;
 
 import com.github.kaellybot.portals.util.Translator;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public enum TransportType {
 
     TRANSPORT_TYPE_ZAAP("transport.type.zaap"),
@@ -13,14 +17,6 @@ public enum TransportType {
     TRANSPORT_TYPE_SCAEROPLANE("transport.type.scaeroplane");
 
     private String key;
-
-    TransportType(String key){
-        this.key = key;
-    }
-
-    String getKey(){
-        return key;
-    }
 
     public String getLabel(Language lang){
         return Translator.getLabel(lang, getKey());

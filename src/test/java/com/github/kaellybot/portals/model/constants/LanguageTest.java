@@ -10,6 +10,6 @@ class LanguageTest {
     @ParameterizedTest
     @EnumSource(Language.class)
     void isFilePresentTest(Language language){
-       assertNotNull(LanguageTest.class.getResource("/label_" + language.name()));
+       assertNotNull(LanguageTest.class.getResource("/label_" + language + ".properties"));
     }
 }

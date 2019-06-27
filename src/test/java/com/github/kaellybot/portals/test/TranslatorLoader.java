@@ -19,8 +19,8 @@ public class TranslatorLoader {
 
     public static List<Properties> loadLabels(){
         List<Properties> result = new ArrayList<>();
-        for (Language LANG : Language.values())
-            try(InputStream file = TranslatorLoader.class.getResourceAsStream("/label_" + LANG.name())) {
+        for (Language lg : Language.values())
+            try(InputStream file = TranslatorLoader.class.getResourceAsStream("/label_" + lg + ".properties")) {
                 Properties prop = new Properties();
                 prop.load(new BufferedReader(new InputStreamReader(file, StandardCharsets.UTF_8)));
                 result.add(prop);

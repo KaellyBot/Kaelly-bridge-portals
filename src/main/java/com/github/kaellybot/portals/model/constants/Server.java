@@ -1,5 +1,10 @@
 package com.github.kaellybot.portals.model.constants;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Server {
 
     AGRIDE("server.agride"),
@@ -20,12 +25,4 @@ public enum Server {
     ILYZAELLE("server.ilyzaelle");
 
     private String key;
-
-    Server(String key){
-        this.key = key;
-    }
-
-    public String getKey() {
-        return key;
-    }
 }

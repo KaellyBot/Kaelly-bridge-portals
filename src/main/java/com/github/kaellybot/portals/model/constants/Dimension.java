@@ -1,7 +1,11 @@
 package com.github.kaellybot.portals.model.constants;
 
 import com.github.kaellybot.portals.util.Translator;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public enum Dimension {
 
     ENUTROSOR("dimension.enutrosor"),
@@ -10,14 +14,6 @@ public enum Dimension {
     ECAFLIPUS("dimension.ecaflipus");
 
     private String key;
-
-    Dimension(String key){
-        this.key = key;
-    }
-
-    String getKey() {
-        return key;
-    }
 
     public String getLabel(Language lang){
         return Translator.getLabel(lang, getKey());
