@@ -6,11 +6,23 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.github.kaellybot.portals.test.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AuthorMapperTest {
+
+    // Platform
+    private static final String DISCORD = "Discord";
+    private static final String DOFUS_PORTALS = "Dofus-portals";
+    private static final String DIMTOPIA = "Dimtopia";
+
+    // Persona
+    private static final String OSGL = "Osgl";
+    private static final String CHIRON = "Chiron";
+    private static final String BLANCIX = "Blancix";
+    private static final String KIZARD = "Kizard";
+    private static final String GRABUGE = "Grabuge";
+    private static final String SONGFU = "Songfu";
 
     @ParameterizedTest
     @MethodSource("getAuthors")

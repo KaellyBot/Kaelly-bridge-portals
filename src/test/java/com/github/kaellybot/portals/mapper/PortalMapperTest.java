@@ -16,7 +16,6 @@ import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LA
 import static com.github.kaellybot.portals.mapper.PortalMapper.PORTAL_LIFETIME_IN_DAYS;
 import static com.github.kaellybot.portals.model.constants.Dimension.*;
 import static com.github.kaellybot.portals.model.constants.Server.*;
-import static com.github.kaellybot.portals.test.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -25,6 +24,18 @@ class PortalMapperTest {
 
     private final static Instant FRESH = Instant.now();
     private final static Instant OLD = FRESH.minus(PORTAL_LIFETIME_IN_DAYS + 1, ChronoUnit.DAYS);
+    // Platform
+    private static final String DISCORD = "Discord";
+    private static final String DOFUS_PORTALS = "Dofus-portals";
+    private static final String DIMTOPIA = "Dimtopia";
+
+    // Persona
+    private static final String OSGL = "Osgl";
+    private static final String CHIRON = "Chiron";
+    private static final String BLANCIX = "Blancix";
+    private static final String KIZARD = "Kizard";
+    private static final String GRABUGE = "Grabuge";
+    private static final String SONGFU = "Songfu";
 
     @ParameterizedTest
     @MethodSource("getPortals")
@@ -103,7 +114,7 @@ class PortalMapperTest {
                         .portalId(PortalId.builder().dimension(ENUTROSOR).server(ATCHAM).build())
                         .isAvailable(true)
                         .position(Position.builder().x(5).y(7).build())
-                        .creationDate(FRESH).creationAuthor(Author.builder().name(SONGFU).platform(DISCORD).build())
+                        .creationDate(FRESH).creationAuthor(Author.builder().name(GRABUGE).platform(DISCORD).build())
                         .lastUpdateDate(FRESH).lastAuthorUpdate(Author.builder().name(CHIRON).platform(DOFUS_PORTALS).build())
                         .nearestZaap(Transport.TERRES_DESACREES).transportLimitedNearest(true)
                         .nearestTransportLimited(Transport.ROUTE_DES_ROULOTTES)
@@ -112,7 +123,7 @@ class PortalMapperTest {
                         .portalId(PortalId.builder().dimension(ECAFLIPUS).server(AGRIDE).build())
                         .isAvailable(true)
                         .position(Position.builder().x(-666).y(-666).build())
-                        .creationDate(FRESH).creationAuthor(Author.builder().name(OSGL).platform(DISCORD).build())
+                        .creationDate(FRESH).creationAuthor(Author.builder().name(SONGFU).platform(DISCORD).build())
                         .isUpdated(true).lastUpdateDate(FRESH)
                         .lastAuthorUpdate(Author.builder().name(OSGL).platform(DOFUS_PORTALS).build())
                         .nearestZaap(Transport.CITE_D_ASTRUB)
