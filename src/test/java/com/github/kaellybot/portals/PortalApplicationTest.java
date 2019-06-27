@@ -1,11 +1,11 @@
 package com.github.kaellybot.portals;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = PortalApplication.class)
 class PortalApplicationTest {
 
     @Test
-    void contextLoads() {}
+    void contextLoads() {
+        PortalApplication.main(new String[]{"--spring.main.web-environment=false"});
+    }
 }
