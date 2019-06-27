@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
@@ -29,6 +28,7 @@ import java.util.stream.Stream;
 import static com.github.kaellybot.portals.controller.PortalConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -52,22 +52,6 @@ class PortalControllerTest {
                 .block();
     }
 
-    @Test
-    void findByIdExceptionTest(){
-        webTestClient.get()
-                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD + "&token=token")
-                .exchange()
-                .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(ResponseStatusException.class)
-                .consumeWith(t -> assertEquals(SERVER_NOT_FOUND, t.getResponseBody()));
-        webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION&token=token")
-                .exchange()
-                .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(ResponseStatusException.class)
-                .consumeWith(t -> assertEquals(DIMENSION_NOT_FOUND, t.getResponseBody()));
-    }
-
     @ParameterizedTest
     @MethodSource("getPortals")
     void findByIdTest(Portal portal){
@@ -79,6 +63,29 @@ class PortalControllerTest {
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(PortalDto.class)
                 .consumeWith(t -> assertEquals(PortalMapper.map(portal, DEFAULT_LANGUAGE), t.getResponseBody()));
+    }
+
+    @Test
+    void findByIdExceptionTest(){
+        webTestClient.get()
+                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD + "&token=token")
+                .exchange()
+                .expectStatus().isEqualTo(NOT_FOUND)
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
+        webTestClient.get()
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION&token=token")
+                .exchange()
+                .expectStatus().isEqualTo(NOT_FOUND)
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(DIMENSION_NOT_FOUND_MESSAGE)));
+        webTestClient.get()
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD + "&token=token")
+                .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
+                .exchange()
+                .expectStatus().isEqualTo(NOT_FOUND)
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(LANGUAGE_NOT_FOUND_MESSAGE)));
     }
 
     @ParameterizedTest
@@ -99,8 +106,15 @@ class PortalControllerTest {
                 .uri(API + "/NO_SERVER" + PORTALS + "?token=token")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(ResponseStatusException.class)
-                .consumeWith(t -> assertEquals(SERVER_NOT_FOUND, t.getResponseBody()));
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
+        webTestClient.get()
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?token=token")
+                .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
+                .exchange()
+                .expectStatus().isEqualTo(NOT_FOUND)
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(LANGUAGE_NOT_FOUND_MESSAGE)));
     }
 
     @ParameterizedTest
@@ -122,14 +136,15 @@ class PortalControllerTest {
                 .syncBody(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(ResponseStatusException.class)
-                .consumeWith(t -> assertEquals(SERVER_NOT_FOUND, t.getResponseBody()));
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
         webTestClient.post()
                 .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION&token=token")
+                .syncBody(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(ResponseStatusException.class)
-                .consumeWith(t -> assertEquals(DIMENSION_NOT_FOUND, t.getResponseBody()));
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(DIMENSION_NOT_FOUND_MESSAGE)));
     }
 
     private static Stream<ExternalPortalDto> getExternalPortals(){
