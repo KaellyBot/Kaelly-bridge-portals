@@ -13,14 +13,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LANGUAGE;
+public final class Translator {
 
-public class Translator {
-
-    private final static Logger LOG = LoggerFactory.getLogger(Translator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Translator.class);
     private static Map<Language, Properties> labels;
 
-    public synchronized static String getLabel(Language lang, String property){
+    private Translator(){}
+
+    public static synchronized String getLabel(Language lang, String property){
         if (labels == null){
             labels = new ConcurrentHashMap<>();
 
@@ -35,13 +35,11 @@ public class Translator {
         }
 
         String value = labels.get(lang).getProperty(property);
-        if (value == null || value.trim().isEmpty())
-            if (DEFAULT_LANGUAGE != lang) {
-                LOG.error("Missing label in " + lang.name() + " : " + property);
-                return getLabel(DEFAULT_LANGUAGE, property);
-            }
-            else
-                return property;
+        if (value == null || value.trim().isEmpty()) {
+            LOG.error("Missing label in {} : {}", lang.name(), property);
+            return property;
+        }
+
         return value;
     }
 }

@@ -26,3 +26,4 @@ transport.type.transporteur_frigostien=Transporteur Frigostien
 transport.type.ski=Ski
 transport.type.scaeroplane=Scaéroplane
 translator.test=Test
+translator.test.empty=
