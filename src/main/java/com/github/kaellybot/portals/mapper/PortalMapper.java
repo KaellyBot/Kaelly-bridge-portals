@@ -1,5 +1,6 @@
 package com.github.kaellybot.portals.mapper;
 
+import com.github.kaellybot.portals.model.constants.Language;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.entity.Portal;
 
@@ -12,9 +13,9 @@ public final class PortalMapper {
 
     private PortalMapper(){}
 
-    public static PortalDto map(Portal portal) {
+    public static PortalDto map(Portal portal, Language language) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
-                .dimension(portal.getPortalId().getDimension().name())
+                .dimension(portal.getPortalId().getDimension().getLabel(language))
                 .isAvailable(portal.isAvailable());
 
         if (isPortalStillFresh(portal)) {
@@ -22,14 +23,14 @@ public final class PortalMapper {
                     .utilisation(portal.getUtilisation())
                     .creationDate(portal.getCreationDate())
                     .creationAuthor(AuthorMapper.map(portal.getCreationAuthor()))
-                    .nearestZaap(TransportMapper.map(portal.getNearestZaap()));
+                    .nearestZaap(TransportMapper.map(portal.getNearestZaap(), language));
 
             if (portal.isUpdated())
                 result.lastUpdateDate(portal.getLastUpdateDate())
                         .lastAuthorUpdate(AuthorMapper.map(portal.getLastAuthorUpdate()));
 
             if (portal.isTransportLimitedNearest())
-                result.nearestTransportLimited(TransportMapper.map(portal.getNearestTransportLimited()));
+                result.nearestTransportLimited(TransportMapper.map(portal.getNearestTransportLimited(), language));
         }
 
         return result.build();

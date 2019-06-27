@@ -19,6 +19,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.*;
+import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
 
 @RestController
 @RequestMapping(API)
@@ -43,14 +44,13 @@ public class PortalController {
     public Mono<PortalDto> findById(@PathVariable(value="server") String serverName,
                                     @RequestParam(value="dimension") String dimensionName,
                                     @RequestParam String token,
-                                    @RequestParam(name = LANGUAGE_VAR,
-                                            required = false) String languageName){
+                                    @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
         try {
             Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             Dimension dimension = dimensionService.findByName(dimensionName).orElseThrow(() -> DIMENSION_NOT_FOUND);
             return portalService.findById(server, dimension)
-                    .map(PortalMapper::map);
+                    .map(portal -> PortalMapper.map(portal, language));
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
@@ -63,13 +63,13 @@ public class PortalController {
             produces=MediaType.APPLICATION_JSON_VALUE)
     public Flux<PortalDto> findAllByPortalIdServer(@PathVariable(value="server") String serverName,
                                                    @RequestParam String token,
-                                                   @RequestParam(name = LANGUAGE_VAR,
-                                                           required = false) String languageName){
+                                                   @RequestHeader(name = ACCEPT_LANGUAGE, required = false)
+                                                               String languageName){
         try {
             Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             return portalService.findAllByPortalIdServer(server)
-                    .map(PortalMapper::map);
+                    .map(portal -> PortalMapper.map(portal, language));
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){

@@ -1,5 +1,7 @@
 package com.github.kaellybot.portals.model.constants;
 
+import com.github.kaellybot.portals.util.Translator;
+
 public enum TransportArea {
 
     TRANSPORT_PLAINES_CANIA("transport.plaines_cania"),
@@ -27,13 +29,17 @@ public enum TransportArea {
 
     TODO("todo");
 
-    private String name;
+    private String key;
 
-    TransportArea(String name){
-        this.name = name;
+    TransportArea(String key){
+        this.key = key;
     }
 
-    public String getName(){
-        return name;
+    private String getKey(){
+        return key;
+    }
+
+    public String getLabel(Language lang){
+        return Translator.getLabel(lang, getKey());
     }
 }

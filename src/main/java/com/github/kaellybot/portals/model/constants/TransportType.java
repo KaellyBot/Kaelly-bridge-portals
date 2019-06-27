@@ -1,5 +1,7 @@
 package com.github.kaellybot.portals.model.constants;
 
+import com.github.kaellybot.portals.util.Translator;
+
 public enum TransportType {
 
     TRANSPORT_TYPE_ZAAP("transport.type.zaap"),
@@ -16,7 +18,11 @@ public enum TransportType {
         this.key = key;
     }
 
-    public String getKey(){
+    String getKey(){
         return key;
+    }
+
+    public String getLabel(Language lang){
+        return Translator.getLabel(lang, getKey());
     }
 }

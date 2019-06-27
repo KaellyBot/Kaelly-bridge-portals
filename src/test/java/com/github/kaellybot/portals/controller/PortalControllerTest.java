@@ -58,7 +58,7 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(PortalDto.class)
-                .consumeWith(t -> assertEquals(PortalMapper.map(portal), t.getResponseBody()));
+                .consumeWith(t -> assertEquals(PortalMapper.map(portal, DEFAULT_LANGUAGE), t.getResponseBody()));
     }
 
     @ParameterizedTest
@@ -70,7 +70,7 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBodyList(PortalDto.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(PortalMapper.map(portal))));
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(PortalMapper.map(portal, DEFAULT_LANGUAGE))));
     }
 
     @ParameterizedTest
@@ -84,7 +84,7 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(PortalDto.class)
-                .consumeWith(t -> assertEquals(PortalMapper.map(portal), t.getResponseBody()));
+                .consumeWith(t -> assertEquals(PortalMapper.map(portal, DEFAULT_LANGUAGE), t.getResponseBody()));
     }
 
     private static Stream<Portal> getPortals(){
