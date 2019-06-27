@@ -25,7 +25,8 @@ public final class Translator {
             labels = new ConcurrentHashMap<>();
 
             for(Language language : Language.values())
-                try(InputStream file = Translator.class.getResourceAsStream("/label_" + language.name())) {
+                try(InputStream file = Translator.class.getResourceAsStream("/label_"
+                        + language.name() + ".properties")) {
                     Properties prop = new Properties();
                     prop.load(new BufferedReader(new InputStreamReader(file, StandardCharsets.UTF_8)));
                     labels.put(language, prop);
