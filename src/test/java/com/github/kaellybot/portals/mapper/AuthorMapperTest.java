@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static com.github.kaellybot.portals.test.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -21,11 +22,11 @@ class AuthorMapperTest {
     }
 
     private static Stream<Author> getAuthors() {
-        return Stream.of(Author.builder().name("").platform("Discord").build(),
-                Author.builder().name("Kaysoro").platform("Discord").build(),
-                Author.builder().name("Songfu").platform("Dofus-portals").build(),
-                Author.builder().name("Grabuge").platform("Dofus-portals").build(),
-                Author.builder().name("Chiron").platform("Dimtopia").build(),
-                Author.builder().name("Kizard").platform("Dimtopia").build());
+        return Stream.of(Author.builder().name(OSGL).platform(DISCORD).build(),
+                Author.builder().name(BLANCIX).platform(DISCORD).build(),
+                Author.builder().name(SONGFU).platform(DOFUS_PORTALS).build(),
+                Author.builder().name(GRABUGE).platform(DOFUS_PORTALS).build(),
+                Author.builder().name(CHIRON).platform(DIMTOPIA).build(),
+                Author.builder().name(KIZARD).platform(DIMTOPIA).build());
     }
 }

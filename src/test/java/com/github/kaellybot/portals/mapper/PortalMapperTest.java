@@ -4,26 +4,27 @@ import com.github.kaellybot.portals.model.constants.Transport;
 import com.github.kaellybot.portals.model.entity.Author;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
+import com.github.kaellybot.portals.model.entity.Position;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LANGUAGE;
 import static com.github.kaellybot.portals.mapper.PortalMapper.PORTAL_LIFETIME_IN_DAYS;
-import static com.github.kaellybot.portals.model.constants.Dimension.ENUTROSOR;
-import static com.github.kaellybot.portals.model.constants.Server.FURYE;
+import static com.github.kaellybot.portals.model.constants.Dimension.*;
+import static com.github.kaellybot.portals.model.constants.Server.*;
+import static com.github.kaellybot.portals.test.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class PortalMapperTest {
 
-    private final static Instant OLD = Instant.parse("2019-01-10T00:00:00.00Z");
-    private final static Instant FRESH = Instant.parse("2019-02-10T00:00:00.00Z");
-    private final static Instant NOW = Instant.parse("2019-03-10T00:00:00.00Z");
+    private final static Instant FRESH = Instant.now();
+    private final static Instant OLD = FRESH.minus(PORTAL_LIFETIME_IN_DAYS + 1, ChronoUnit.DAYS);
 
     @ParameterizedTest
     @MethodSource("getPortals")
@@ -34,7 +35,7 @@ class PortalMapperTest {
                 PortalMapper.map(portal, DEFAULT_LANGUAGE).getDimension());
         assertEquals(portal.isAvailable(), PortalMapper.map(portal, DEFAULT_LANGUAGE).getIsAvailable());
 
-        if (isPortalStillFresh(portal)){
+        if (PortalMapper.isPortalStillFresh(portal)){
             assertNotNull(PortalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
             assertEquals(PositionMapper.map(portal.getPosition()),
                     PortalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
@@ -75,45 +76,57 @@ class PortalMapperTest {
         return Stream.of(
                 // No available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
+                        .portalId(PortalId.builder().dimension(SRAMBAD).server(FURYE).build())
                         .isAvailable(true)
                         .creationDate(OLD)
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
-                        .isAvailable(false)
+                        .build(),
+                Portal.builder()
+                        .portalId(PortalId.builder().dimension(XELORIUM).server(CROCABULIA).build())
+                        .isAvailable(true)
+                        .creationDate(OLD).creationAuthor(Author.builder().name(OSGL).platform(DISCORD).build())
+                        .nearestZaap(Transport.BERCEAU)
+                        .nearestTransportLimited(Transport.FOREUSE_MINE_ISTAIRAMEUR)
                         .build(),
 
                 // Available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(JULITH).build())
                         .isAvailable(true)
-                        .creationDate(FRESH).creationAuthor(Author.builder().name("Kaysoro").platform("Discord").build())
+                        .position(Position.builder().x(2).y(0).build())
+                        .creationDate(FRESH).creationAuthor(Author.builder().name(BLANCIX).platform(DISCORD).build())
+                        .nearestZaap(Transport.CITE_D_ASTRUB)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
+                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(ATCHAM).build())
                         .isAvailable(true)
-                        .creationDate(FRESH).creationAuthor(Author.builder().name("Songfu").platform("Discord").build())
-                        .lastUpdateDate(FRESH).lastAuthorUpdate(Author.builder().name("Chiron").platform("Dofus-portals").build())
+                        .position(Position.builder().x(5).y(7).build())
+                        .creationDate(FRESH).creationAuthor(Author.builder().name(SONGFU).platform(DISCORD).build())
+                        .lastUpdateDate(FRESH).lastAuthorUpdate(Author.builder().name(CHIRON).platform(DOFUS_PORTALS).build())
+                        .nearestZaap(Transport.TERRES_DESACREES).transportLimitedNearest(true)
+                        .nearestTransportLimited(Transport.ROUTE_DES_ROULOTTES)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
+                        .portalId(PortalId.builder().dimension(ECAFLIPUS).server(AGRIDE).build())
                         .isAvailable(true)
-                        .creationDate(FRESH).creationAuthor(Author.builder().name("Songfu").platform("Discord").build())
+                        .position(Position.builder().x(-666).y(-666).build())
+                        .creationDate(FRESH).creationAuthor(Author.builder().name(OSGL).platform(DISCORD).build())
+                        .isUpdated(true).lastUpdateDate(FRESH)
+                        .lastAuthorUpdate(Author.builder().name(OSGL).platform(DOFUS_PORTALS).build())
                         .nearestZaap(Transport.CITE_D_ASTRUB)
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
                         .isAvailable(true)
-                        .creationDate(FRESH).creationAuthor(Author.builder().name("Songfu").platform("Discord").build())
-                        .nearestZaap(Transport.CITE_D_ASTRUB)
+                        .position(Position.builder().x(-1).y(1).build())
+                        .creationDate(FRESH).creationAuthor(Author.builder().name(KIZARD).platform(DISCORD).build())
+                        .isUpdated(true).lastUpdateDate(FRESH)
+                        .lastAuthorUpdate(Author.builder().name(CHIRON).platform(DIMTOPIA).build())
+                        .nearestZaap(Transport.CITE_D_ASTRUB).transportLimitedNearest(true)
                         .nearestTransportLimited(Transport.BRIGANDIN_ILE_MINOTOROR)
                         .build()
         );
-    }
-
-    private static boolean isPortalStillFresh(Portal portal){
-        return portal.isAvailable() &&
-                Math.abs(Duration.between(NOW, portal.getCreationDate()).toDays()) < PORTAL_LIFETIME_IN_DAYS;
     }
 }

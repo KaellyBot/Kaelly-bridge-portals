@@ -9,7 +9,7 @@ import java.time.Instant;
 
 public final class PortalMapper {
 
-    static final long PORTAL_LIFETIME_IN_DAYS = 2;
+   static final long PORTAL_LIFETIME_IN_DAYS = 2;
 
     private PortalMapper(){}
 
@@ -36,7 +36,7 @@ public final class PortalMapper {
         return result.build();
     }
 
-    private static boolean isPortalStillFresh(Portal portal){
+    static boolean isPortalStillFresh(Portal portal){
         return portal.isAvailable() &&
                 Math.abs(Duration.between(Instant.now(), portal.getCreationDate()).toDays()) < PORTAL_LIFETIME_IN_DAYS;
     }
