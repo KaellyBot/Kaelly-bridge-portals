@@ -14,9 +14,8 @@ public final class PortalConstants {
     static final String API = "/api";
     static final String PORTALS = "/portals";
     static final String TOKEN_VAR = "token";
-    static final String LANGUAGE_VAR = "lang";
+    static final String SERVER_VAR = "server";
     static final String DIMENSION_VAR = "dimension";
-    static final String SERVER_VAR = "{server}";
     static final String LANGUAGE_NOT_FOUND_MESSAGE = "The specified language is not managed.";
     static final String SERVER_NOT_FOUND_MESSAGE = "The specified server is not found.";
     static final String DIMENSION_NOT_FOUND_MESSAGE = "The specified dimension is not found.";
