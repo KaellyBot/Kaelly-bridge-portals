@@ -11,4 +11,6 @@ public interface IPortalService {
     Mono<Portal> findById(Server server, Dimension dimension);
 
     Flux<Portal> findAllByPortalIdServer(Server server);
+
+    Mono<Portal> save(Portal portal);
 }

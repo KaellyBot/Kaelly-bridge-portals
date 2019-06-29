@@ -6,6 +6,7 @@ import com.github.kaellybot.portals.model.constants.Language;
 import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
+import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.service.IDimensionService;
 import com.github.kaellybot.portals.service.ILanguageService;
 import com.github.kaellybot.portals.service.IPortalService;
@@ -87,7 +88,8 @@ public class PortalController {
         try {
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             Dimension dimension = dimensionService.findByName(dimensionName).orElseThrow(() -> DIMENSION_NOT_FOUND);
-            // TODO
+            Mono<Portal> portal = portalService.findById(server, dimension);
+            // TODO merge job
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){

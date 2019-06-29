@@ -78,4 +78,15 @@ class PortalServiceTest {
                 .expectComplete()
                 .verify();
     }
+
+    @Test
+    void saveTest() {
+        final Portal PORTAL = Portal.builder()
+                .portalId(PortalId.builder().server(Server.BRUMEN).dimension(Dimension.SRAMBAD).build())
+                .build();
+        StepVerifier.create(portalService.save(PORTAL))
+                .assertNext(portal -> assertEquals(PORTAL, portal))
+                .expectComplete()
+                .verify();
+    }
 }

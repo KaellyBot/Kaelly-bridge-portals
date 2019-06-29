@@ -30,4 +30,9 @@ public class PortalService implements IPortalService {
     public Flux<Portal> findAllByPortalIdServer(Server server) {
         return portalRepository.findAllByPortalIdServer(server);
     }
+
+    @Override
+    public Mono<Portal> save(Portal portal) {
+        return portalRepository.save(portal);
+    }
 }
