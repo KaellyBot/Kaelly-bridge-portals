@@ -11,6 +11,7 @@ import lombok.Value;
 public class ExternalPortalDto {
 
     private PositionDto position;
+    private String author;
     private int utilisation;
 
     @JsonPOJOBuilder(withPrefix = "")
