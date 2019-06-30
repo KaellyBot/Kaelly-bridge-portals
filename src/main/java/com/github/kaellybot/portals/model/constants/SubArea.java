@@ -10,7 +10,6 @@ import static com.github.kaellybot.portals.model.constants.Area.*;
 @AllArgsConstructor
 public enum SubArea {
 
-    PORTE_BONTA                (BONTA              , "sous_zone.porte_bonta"               ),
     CENTRE_BONTA               (BONTA              , "sous_zone.centre_bonta"              ),
     CIMETIERE_HEROS            (BONTA              , "sous_zone.cimetiere_heros"           ),
     PORTE_BRAKMAR              (BRAKMAR            , "sous_zone.porte_brakmar"             ),
@@ -50,8 +49,8 @@ public enum SubArea {
     DOMAINE_FUNGUS             (LANDES_SIDIMOTE    , "sous_zone.domaine_fungus"            ),
     ROUTE_ROULOTTES            (LANDES_SIDIMOTE    , "sous_zone.route_roulottes"           ),
     TERRES_DESACREES           (LANDES_SIDIMOTE    , "sous_zone.terres_desacrees"          ),
-    MINE_HIPOUCE               (LANDES_SIDIMOTE    , "sous_zone.mine_hipouce"              ),
-    VILLAGE_ELEVEURS_KOALAK    (MONTAGNE_KOALAKS   , "sous_zone.village_eleveurs"          ),
+    DESOLATION_SIDIMOTE        (LANDES_SIDIMOTE    , "sous_zone.desolation_sidimote"       ),
+    VILLAGE_ELEVEURS_KOALAK    (MONTAGNE_KOALAKS   , "sous_zone.village_eleveurs_koalak"   ),
     VALLEE_MORH_KITU           (MONTAGNE_KOALAKS   , "sous_zone.vallee_morh_kitu"          ),
     VILlAGE_AERDALA            (PANDALA_AIR        , "sous_zone.village_aerdala"           ),
     VILLAGE_AKWADALA           (PANDALA_EAU        , "sous_zone.village_akwadala"          ),
@@ -65,9 +64,8 @@ public enum SubArea {
     ILE_CAWOTTE                (ILE_WABBIT         , "sous_zone.ile_cawotte"               ),
     LABORATOIRES_ABANDONNES    (ILE_WABBIT         , "sous_zone.laboratoires_abandonnes"   ),
     PLAINES_HERBEUSES          (ILE_OTOMAI         , "sous_zone.plaines_herbeuses"         ),
-    VILLAGE_ELEVEURS_OTOMAI    (ILE_OTOMAI         , "sous_zone.village_eleveurs"          ),
+    VILLAGE_ELEVEURS_OTOMAI    (ILE_OTOMAI         , "sous_zone.village_eleveurs_otomai"   ),
     VILLAGE_COTIER             (ILE_OTOMAI         , "sous_zone.village_cotier"            ),
-    ARBRE_HAKAM                (ILE_OTOMAI         , "sous_zone.arbre_hakam"               ),
     FEUILLAGE_ARBRE_HAKAM      (ILE_OTOMAI         , "sous_zone.feuillage_arbre_hakam"     ),
     VILLAGE_ZOTHS              (ILE_OTOMAI         , "sous_zone.village_zoth"              ),
     VILLAGE_CANOPEE            (ILE_OTOMAI         , "sous_zone.village_canopee"           ),

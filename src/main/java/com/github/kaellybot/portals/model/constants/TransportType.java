@@ -13,7 +13,7 @@ public enum TransportType {
     DILIGENCE   ("transport_type.diligence"              ),
     BRIGANDIN   ("transport_type.brigandin"              ),
     FRIGOSTIEN  ("transport_type.transporteur_frigostien"),
-    SKIS        ("transport_type.ski"                    ),
+    SKIS        ("transport_type.skis"                   ),
     SCAEROPLANE ("transport_type.scaeroplane"            ),
     CHAR_A_VOILE("transport_type.char_a_voile"           );
 
