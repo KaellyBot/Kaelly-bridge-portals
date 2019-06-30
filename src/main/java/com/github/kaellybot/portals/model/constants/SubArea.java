@@ -52,7 +52,7 @@ public enum SubArea {
     DESOLATION_SIDIMOTE        (LANDES_SIDIMOTE    , "sous_zone.desolation_sidimote"       ),
     VILLAGE_ELEVEURS_KOALAK    (MONTAGNE_KOALAKS   , "sous_zone.village_eleveurs_koalak"   ),
     VALLEE_MORH_KITU           (MONTAGNE_KOALAKS   , "sous_zone.vallee_morh_kitu"          ),
-    VILlAGE_AERDALA            (PANDALA_AIR        , "sous_zone.village_aerdala"           ),
+    VILLAGE_AERDALA            (PANDALA_AIR        , "sous_zone.village_aerdala"           ),
     VILLAGE_AKWADALA           (PANDALA_EAU        , "sous_zone.village_akwadala"          ),
     VILLAGE_FEUDALA            (PANDALA_FEU        , "sous_zone.village_feudala"           ),
     FAUBOURGS_PANDALA          (Area.PANDALA_NEUTRE, "sous_zone.faubourgs_pandala"         ),

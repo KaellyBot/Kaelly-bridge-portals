@@ -36,7 +36,7 @@ public enum Transport {
     ZAAP_ROUTE_ROULOTTES          (ZAAP        , ROUTE_ROULOTTES            , Position.of(-25,12)  , true ),
     ZAAP_TERRES_DESACREES         (ZAAP        , TERRES_DESACREES           , Position.of(-15,25)  , true ),
     ZAAP_VILLAGE_ELEVEURS         (ZAAP        , VILLAGE_ELEVEURS_KOALAK    , Position.of(-16,1)   , true ),
-    ZAAP_VILLAGE_AERDALA          (ZAAP        , VILlAGE_AERDALA            , Position.of(17,-31)  , false),
+    ZAAP_VILLAGE_AERDALA          (ZAAP        , VILLAGE_AERDALA            , Position.of(17,-31)  , false),
     ZAAP_VILLAGE_AKWADALA         (ZAAP        , VILLAGE_AKWADALA           , Position.of(23,-22)  , false),
     ZAAP_VILLAGE_FEUDALA          (ZAAP        , VILLAGE_FEUDALA            , Position.of(29,-49)  , false),
     ZAAP_FAUBOURGS_PANDALA        (ZAAP        , FAUBOURGS_PANDALA          , Position.of(26,-37)  , true ),
