@@ -3,6 +3,7 @@ package com.github.kaellybot.portals.controller;
 import com.github.kaellybot.portals.model.constants.Dimension;
 import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
+import com.github.kaellybot.portals.model.dto.PositionDto;
 import com.github.kaellybot.portals.service.PortalService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -58,7 +59,9 @@ class PortalControllerInternalExceptionTest {
         webTestClient.post()
                 .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ECAFLIPUS
                         + "&token=token")
-                .syncBody(ExternalPortalDto.builder().build())
+                .syncBody(ExternalPortalDto.builder()
+                        .position(PositionDto.builder().x(0).y(0).build())
+                        .build())
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)

@@ -19,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 import static com.github.kaellybot.portals.controller.PortalConstants.*;
 import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
 
@@ -80,7 +82,7 @@ public class PortalController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addPortal(@PathVariable(SERVER_VAR) String serverName,
                                   @RequestParam(DIMENSION_VAR) String dimensionName,
-                                  @RequestBody ExternalPortalDto coordinates){
+                                  @RequestBody @Valid ExternalPortalDto coordinates){
         try {
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             Dimension dimension = dimensionService.findByName(dimensionName).orElseThrow(() -> DIMENSION_NOT_FOUND);

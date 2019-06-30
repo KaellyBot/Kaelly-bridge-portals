@@ -5,12 +5,14 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @Value
 @JsonDeserialize(builder = ExternalPortalDto.ExternalPortalDtoBuilder.class)
 @Builder(builderClassName = "ExternalPortalDtoBuilder", toBuilder = true)
 public class ExternalPortalDto {
-
-    private PositionDto position;
+    private @NotNull @Valid PositionDto position;
     private String author;
     private int utilisation;
 
