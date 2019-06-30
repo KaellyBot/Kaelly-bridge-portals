@@ -40,11 +40,10 @@ public class PortalController {
         this.languageService = languageService;
     }
 
-    @GetMapping(path = "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR },
+    @GetMapping(path = "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR },
             produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<PortalDto> findById(@PathVariable(SERVER_VAR) String serverName,
                                     @RequestParam(DIMENSION_VAR) String dimensionName,
-                                    @RequestParam String token,
                                     @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
         try {
             Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
@@ -60,10 +59,8 @@ public class PortalController {
         }
     }
 
-    @GetMapping(path = "{" + SERVER_VAR + "}" + PORTALS, params = { TOKEN_VAR },
-            produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "{" + SERVER_VAR + "}" + PORTALS, produces=MediaType.APPLICATION_JSON_VALUE)
     public Flux<PortalDto> findAllByPortalIdServer(@PathVariable(SERVER_VAR) String serverName,
-                                                   @RequestParam String token,
                                                    @RequestHeader(name = ACCEPT_LANGUAGE, required = false)
                                                                String languageName){
         try {
@@ -79,11 +76,10 @@ public class PortalController {
         }
     }
 
-    @PostMapping(path= "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR, TOKEN_VAR },
+    @PostMapping(path= "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR },
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addPortal(@PathVariable(SERVER_VAR) String serverName,
                                   @RequestParam(DIMENSION_VAR) String dimensionName,
-                                  @RequestParam String token,
                                   @RequestBody ExternalPortalDto coordinates){
         try {
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
