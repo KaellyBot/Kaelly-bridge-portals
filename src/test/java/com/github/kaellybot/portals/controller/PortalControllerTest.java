@@ -57,7 +57,7 @@ class PortalControllerTest {
     void findByIdTest(Portal portal){
         webTestClient.get()
                 .uri(API + "/" + portal.getPortalId().getServer() + PORTALS + "?" + DIMENSION_VAR + "="
-                        + portal.getPortalId().getDimension() + "&token=token")
+                        + portal.getPortalId().getDimension())
                 .exchange()
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -68,19 +68,19 @@ class PortalControllerTest {
     @Test
     void findByIdExceptionTest(){
         webTestClient.get()
-                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD + "&token=token")
+                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION&token=token")
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertTrue(t.getResponseBody().contains(DIMENSION_NOT_FOUND_MESSAGE)));
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD + "&token=token")
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
@@ -92,7 +92,7 @@ class PortalControllerTest {
     @MethodSource("getPortals")
     void findAllByPortalIdServerTest(Portal portal){
         webTestClient.get()
-                .uri(API + "/" + portal.getPortalId().getServer() + PORTALS + "?token=token")
+                .uri(API + "/" + portal.getPortalId().getServer() + PORTALS)
                 .exchange()
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -103,13 +103,13 @@ class PortalControllerTest {
     @Test
     void findAllByPortalIdExceptionTest(){
         webTestClient.get()
-                .uri(API + "/NO_SERVER" + PORTALS + "?token=token")
+                .uri(API + "/NO_SERVER" + PORTALS)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?token=token")
+                .uri(API + "/" + Server.MERIANA + PORTALS)
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
@@ -121,8 +121,7 @@ class PortalControllerTest {
     @MethodSource("getExternalPortals")
     void addPortalTest(ExternalPortalDto portal){
         webTestClient.post()
-                .uri(API + "/" + Server.BRUMEN + PORTALS + "?" + DIMENSION_VAR + "="
-                        + Dimension.XELORIUM + "&token=token")
+                .uri(API + "/" + Server.BRUMEN + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.XELORIUM)
                 .syncBody(portal)
                 .exchange()
                 .expectStatus().isEqualTo(OK);
@@ -132,14 +131,14 @@ class PortalControllerTest {
     @MethodSource("getExternalPortals")
     void addPortalExceptionTest(ExternalPortalDto portal){
         webTestClient.post()
-                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD + "&token=token")
+                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
                 .syncBody(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
         webTestClient.post()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION&token=token")
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION")
                 .syncBody(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)

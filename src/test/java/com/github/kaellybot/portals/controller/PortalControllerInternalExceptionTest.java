@@ -33,7 +33,7 @@ class PortalControllerInternalExceptionTest {
         Mockito.when(portalService.findById(Server.BRUMEN, Dimension.SRAMBAD))
                 .thenThrow(new NullPointerException());
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD + "&token=token")
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
@@ -45,7 +45,7 @@ class PortalControllerInternalExceptionTest {
         Mockito.when(portalService.findAllByPortalIdServer(Server.BRUMEN))
                 .thenThrow(new NullPointerException());
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?token=token")
+                .uri(API + "/" + Server.MERIANA + PORTALS)
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
@@ -57,8 +57,7 @@ class PortalControllerInternalExceptionTest {
         Mockito.when(portalService.findById(Server.MERIANA, Dimension.ECAFLIPUS))
                 .thenThrow(new NullPointerException());
         webTestClient.post()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ECAFLIPUS
-                        + "&token=token")
+                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ECAFLIPUS)
                 .syncBody(ExternalPortalDto.builder()
                         .position(PositionDto.builder().x(0).y(0).build())
                         .build())
