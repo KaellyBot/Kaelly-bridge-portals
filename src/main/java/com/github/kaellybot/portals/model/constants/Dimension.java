@@ -9,8 +9,8 @@ import lombok.Getter;
 public enum Dimension {
 
     ENUTROSOR("dimension.enutrosor"),
-    SRAMBAD("dimension.srambad"),
-    XELORIUM("dimension.xelorium"),
+    SRAMBAD  ("dimension.srambad"  ),
+    XELORIUM ("dimension.xelorium" ),
     ECAFLIPUS("dimension.ecaflipus");
 
     private String key;

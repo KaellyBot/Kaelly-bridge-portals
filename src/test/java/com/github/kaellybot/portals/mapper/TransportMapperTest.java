@@ -22,9 +22,9 @@ class TransportMapperTest {
 
         assertEquals(transport.getType().getLabel(DEFAULT_LANGUAGE),
                 TransportMapper.map(transport, DEFAULT_LANGUAGE).getType());
-        assertEquals(transport.getArea().getLabel(DEFAULT_LANGUAGE),
+        assertEquals(transport.getSubArea().getArea().getLabel(DEFAULT_LANGUAGE),
                 TransportMapper.map(transport, DEFAULT_LANGUAGE).getArea());
-        assertEquals(transport.getSubArea(), TransportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
+        assertEquals(transport.getSubArea().getLabel(DEFAULT_LANGUAGE), TransportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
         assertEquals(PositionMapper.map(transport.getPosition()),
                 TransportMapper.map(transport, DEFAULT_LANGUAGE).getPosition());
         assertEquals(transport.isAvailableUnderConditions(),

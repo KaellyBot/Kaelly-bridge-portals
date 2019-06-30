@@ -8,13 +8,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TransportType {
 
-    TRANSPORT_TYPE_ZAAP("transport.type.zaap"),
-    TRANSPORT_TYPE_FOREUSE("transport.type.foreuse"),
-    TRANSPORT_TYPE_DILIGENCE("transport.type.diligence"),
-    TRANSPORT_TYPE_BRIGANDIN("transport.type.brigandin"),
-    TRANSPORT_TYPE_TRANSPORTEUR_FRIGOSTIEN("transport.type.transporteur_frigostien"),
-    TRANSPORT_TYPE_SKI("transport.type.ski"),
-    TRANSPORT_TYPE_SCAEROPLANE("transport.type.scaeroplane");
+    ZAAP        ("transport_type.zaap"                   ),
+    FOREUSE     ("transport_type.foreuse"                ),
+    DILIGENCE   ("transport_type.diligence"              ),
+    BRIGANDIN   ("transport_type.brigandin"              ),
+    FRIGOSTIEN  ("transport_type.transporteur_frigostien"),
+    SKIS        ("transport_type.ski"                    ),
+    SCAEROPLANE ("transport_type.scaeroplane"            ),
+    CHAR_A_VOILE("transport_type.char_a_voile"           );
 
     private String key;
 

@@ -11,8 +11,8 @@ final class TransportMapper {
     static TransportDto map(Transport transport, Language language){
         return TransportDto.builder()
                 .type(transport.getType().getLabel(language))
-                .area(transport.getArea().getLabel(language))
-                .subArea(transport.getSubArea())
+                .area(transport.getSubArea().getArea().getLabel(language))
+                .subArea(transport.getSubArea().getLabel(language))
                 .position(PositionMapper.map(transport.getPosition()))
                 .isAvailableUnderConditions(transport.isAvailableUnderConditions())
                 .build();

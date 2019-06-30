@@ -174,7 +174,7 @@ class PortalControllerTest {
                         .position(Position.builder().x(10).y(20).build())
                         .creationDate(TIME)
                         .creationAuthor(Author.builder().build())
-                        .nearestZaap(Transport.CITE_D_ASTRUB)
+                        .nearestZaap(Transport.ZAAP_CITE_ASTRUB)
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder()
@@ -185,7 +185,7 @@ class PortalControllerTest {
                         .position(Position.builder().x(0).y(0).build())
                         .creationDate(TIME)
                         .creationAuthor(Author.builder().build())
-                        .nearestZaap(Transport.CITE_D_ASTRUB)
+                        .nearestZaap(Transport.ZAAP_BERCEAU)
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder()

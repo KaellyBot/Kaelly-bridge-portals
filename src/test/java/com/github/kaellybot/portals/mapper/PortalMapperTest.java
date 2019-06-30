@@ -98,7 +98,7 @@ class PortalMapperTest {
                         .portalId(PortalId.builder().dimension(XELORIUM).server(CROCABULIA).build())
                         .isAvailable(true)
                         .creationDate(OLD).creationAuthor(Author.builder().name(OSGL).platform(DISCORD).build())
-                        .nearestZaap(Transport.BERCEAU)
+                        .nearestZaap(Transport.ZAAP_PORT_MADRESTAM)
                         .nearestTransportLimited(Transport.FOREUSE_MINE_ISTAIRAMEUR)
                         .build(),
 
@@ -108,7 +108,7 @@ class PortalMapperTest {
                         .isAvailable(true)
                         .position(Position.builder().x(2).y(0).build())
                         .creationDate(FRESH).creationAuthor(Author.builder().name(BLANCIX).platform(DISCORD).build())
-                        .nearestZaap(Transport.CITE_D_ASTRUB)
+                        .nearestZaap(Transport.ZAAP_BERCEAU)
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder().dimension(ENUTROSOR).server(ATCHAM).build())
@@ -116,8 +116,8 @@ class PortalMapperTest {
                         .position(Position.builder().x(5).y(7).build())
                         .creationDate(FRESH).creationAuthor(Author.builder().name(GRABUGE).platform(DISCORD).build())
                         .lastUpdateDate(FRESH).lastAuthorUpdate(Author.builder().name(CHIRON).platform(DOFUS_PORTALS).build())
-                        .nearestZaap(Transport.TERRES_DESACREES).transportLimitedNearest(true)
-                        .nearestTransportLimited(Transport.ROUTE_DES_ROULOTTES)
+                        .nearestZaap(Transport.FOREUSE_KARTONPATH).transportLimitedNearest(true)
+                        .nearestTransportLimited(Transport.BRIGANDIN_RIVIERE_KAWAII)
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder().dimension(ECAFLIPUS).server(AGRIDE).build())
@@ -126,7 +126,7 @@ class PortalMapperTest {
                         .creationDate(FRESH).creationAuthor(Author.builder().name(SONGFU).platform(DISCORD).build())
                         .isUpdated(true).lastUpdateDate(FRESH)
                         .lastAuthorUpdate(Author.builder().name(OSGL).platform(DOFUS_PORTALS).build())
-                        .nearestZaap(Transport.CITE_D_ASTRUB)
+                        .nearestZaap(Transport.ZAAP_CITE_ASTRUB)
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder().dimension(ENUTROSOR).server(FURYE).build())
@@ -135,7 +135,7 @@ class PortalMapperTest {
                         .creationDate(FRESH).creationAuthor(Author.builder().name(KIZARD).platform(DISCORD).build())
                         .isUpdated(true).lastUpdateDate(FRESH)
                         .lastAuthorUpdate(Author.builder().name(CHIRON).platform(DIMTOPIA).build())
-                        .nearestZaap(Transport.CITE_D_ASTRUB).transportLimitedNearest(true)
+                        .nearestZaap(Transport.ZAAP_ILE_CAWOTTE).transportLimitedNearest(true)
                         .nearestTransportLimited(Transport.BRIGANDIN_ILE_MINOTOROR)
                         .build()
         );
