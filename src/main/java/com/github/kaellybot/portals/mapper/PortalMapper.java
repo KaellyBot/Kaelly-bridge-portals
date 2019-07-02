@@ -1,15 +1,17 @@
 package com.github.kaellybot.portals.mapper;
 
+import com.github.kaellybot.portals.model.constants.Dimension;
 import com.github.kaellybot.portals.model.constants.Language;
+import com.github.kaellybot.portals.model.constants.Server;
+import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
+import com.github.kaellybot.portals.model.entity.Author;
 import com.github.kaellybot.portals.model.entity.Portal;
+import com.github.kaellybot.portals.model.entity.PortalId;
 
-import java.time.Duration;
 import java.time.Instant;
 
 public final class PortalMapper {
-
-   static final long PORTAL_LIFETIME_IN_DAYS = 2;
 
     private PortalMapper(){}
 
@@ -18,7 +20,7 @@ public final class PortalMapper {
                 .dimension(portal.getPortalId().getDimension().getLabel(language))
                 .isAvailable(portal.isAvailable());
 
-        if (isPortalStillFresh(portal)) {
+        if (portal.isValid()) {
             result.position(PositionMapper.map(portal.getPosition()))
                     .utilisation(portal.getUtilisation())
                     .creationDate(portal.getCreationDate())
@@ -36,8 +38,15 @@ public final class PortalMapper {
         return result.build();
     }
 
-    static boolean isPortalStillFresh(Portal portal){
-        return portal.isAvailable() &&
-                Math.abs(Duration.between(Instant.now(), portal.getCreationDate()).toDays()) < PORTAL_LIFETIME_IN_DAYS;
+    public static Portal map(Server server, Dimension dimension, ExternalPortalDto externalPortalDto){
+        return Portal.builder()
+                .portalId(PortalId.builder().server(server).dimension(dimension).build())
+                .position(PositionMapper.map(externalPortalDto.getPosition()))
+                .utilisation(externalPortalDto.getUtilisation())
+                .creationDate(Instant.now())
+                .creationAuthor(Author.builder().name(externalPortalDto.getAuthor()).build())
+                .lastUpdateDate(Instant.now())
+                .lastAuthorUpdate(Author.builder().name(externalPortalDto.getAuthor()).build())
+                .build();
     }
 }

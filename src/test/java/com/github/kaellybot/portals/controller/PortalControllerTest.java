@@ -121,10 +121,12 @@ class PortalControllerTest {
     @MethodSource("getExternalPortals")
     void addPortalTest(ExternalPortalDto portal){
         webTestClient.post()
-                .uri(API + "/" + Server.BRUMEN + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.XELORIUM)
+                .uri(API + "/" + Server.ATCHAM + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ENUTROSOR)
                 .syncBody(portal)
                 .exchange()
-                .expectStatus().isEqualTo(OK);
+                .expectStatus().isEqualTo(OK)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(PortalDto.class);
     }
 
     @ParameterizedTest
@@ -144,6 +146,14 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertTrue(t.getResponseBody().contains(DIMENSION_NOT_FOUND_MESSAGE)));
+        webTestClient.post()
+                .uri(API + "/" + Server.MERIANA + PORTALS+ "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
+                .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
+                .syncBody(portal)
+                .exchange()
+                .expectStatus().isEqualTo(NOT_FOUND)
+                .expectBody(String.class)
+                .consumeWith(t -> assertTrue(t.getResponseBody().contains(LANGUAGE_NOT_FOUND_MESSAGE)));
     }
 
     private static Stream<ExternalPortalDto> getExternalPortals(){

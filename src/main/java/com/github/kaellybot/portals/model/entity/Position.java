@@ -12,6 +12,10 @@ public class Position {
         return Position.builder().x(x).y(y).build();
     }
 
+    public double getDistance(Position position){
+        return Math.hypot(getX() - position.getX(), getY() - position.getY());
+    }
+
     @Override
     public String toString(){
         return "[" + x + ", " + y + "]";

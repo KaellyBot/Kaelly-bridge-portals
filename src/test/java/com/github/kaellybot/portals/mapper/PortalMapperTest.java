@@ -13,9 +13,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LANGUAGE;
-import static com.github.kaellybot.portals.mapper.PortalMapper.PORTAL_LIFETIME_IN_DAYS;
 import static com.github.kaellybot.portals.model.constants.Dimension.*;
 import static com.github.kaellybot.portals.model.constants.Server.*;
+import static com.github.kaellybot.portals.model.entity.Portal.PORTAL_LIFETIME_IN_DAYS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -46,7 +46,7 @@ class PortalMapperTest {
                 PortalMapper.map(portal, DEFAULT_LANGUAGE).getDimension());
         assertEquals(portal.isAvailable(), PortalMapper.map(portal, DEFAULT_LANGUAGE).getIsAvailable());
 
-        if (PortalMapper.isPortalStillFresh(portal)){
+        if (portal.isValid()){
             assertNotNull(PortalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
             assertEquals(PositionMapper.map(portal.getPosition()),
                     PortalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());

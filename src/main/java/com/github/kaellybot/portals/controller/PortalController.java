@@ -79,15 +79,21 @@ public class PortalController {
     }
 
     @PostMapping(path= "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR },
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addPortal(@PathVariable(SERVER_VAR) String serverName,
-                                  @RequestParam(DIMENSION_VAR) String dimensionName,
-                                  @RequestBody @Valid ExternalPortalDto coordinates){
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    public Mono<PortalDto> addPortal(@PathVariable(SERVER_VAR) String serverName,
+                                    @RequestParam(DIMENSION_VAR) String dimensionName,
+                                    @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName,
+                                    @RequestBody @Valid ExternalPortalDto coordinates){
         try {
+            Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             Dimension dimension = dimensionService.findByName(dimensionName).orElseThrow(() -> DIMENSION_NOT_FOUND);
-            Mono<Portal> portal = portalService.findById(server, dimension);
-            // TODO merge job
+            Portal externalPortal = PortalMapper.map(server, dimension, coordinates);
+
+            return portalService.findById(server, dimension)
+                    .doOnSuccess(portal -> portal.merge(externalPortal))
+                    .flatMap(portalService::save)
+                    .map(portal -> PortalMapper.map(portal, language));
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
@@ -95,4 +101,6 @@ public class PortalController {
             throw INTERNAL_SERVER_ERROR;
         }
     }
+
+
 }
