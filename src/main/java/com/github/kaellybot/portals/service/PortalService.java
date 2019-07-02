@@ -2,7 +2,6 @@ package com.github.kaellybot.portals.service;
 
 import com.github.kaellybot.portals.model.constants.Dimension;
 import com.github.kaellybot.portals.model.constants.Server;
-import com.github.kaellybot.portals.model.constants.Transport;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
 import com.github.kaellybot.portals.repository.PortalRepository;
