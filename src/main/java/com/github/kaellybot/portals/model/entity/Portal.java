@@ -37,7 +37,8 @@ public class Portal {
 
     public void merge(Portal portal){
         if (getPortalId().equals(portal.getPortalId()) && portal.getPosition() != null)
-            if (portal.getPosition().equals(getPosition()) && getUtilisation() > portal.getUtilisation()) {
+            if (portal.getPosition().equals(getPosition()) &&
+                    (getUtilisation() == null || getUtilisation() > portal.getUtilisation())) {
                 setUpdated(true);
                 setUtilisation(portal.getUtilisation());
                 setLastUpdateDate(portal.getLastUpdateDate());
@@ -46,29 +47,32 @@ public class Portal {
             else if (getPosition() == null || getPosition() != null && ! getPosition().equals(portal.getPosition())
                     && getCreationDate().toEpochMilli() < portal.getCreationDate().toEpochMilli()) {
                 setAvailable(true);
-                setUpdated(false);
                 setPosition(portal.getPosition());
                 setCreationDate(portal.getCreationDate());
                 setCreationAuthor(portal.getCreationAuthor());
                 setUtilisation(portal.getUtilisation());
+                setUpdated(false);
+                setLastUpdateDate(null);
+                setLastAuthorUpdate(null);
                 determineTransports();
             }
         }
 
-    private void determineTransports() {
+    void determineTransports() {
         double minDist = Double.MAX_VALUE;
         double minDistLimited = Double.MAX_VALUE;
         for (Transport transport : Transport.values()) {
-            double tmp = transport.getPosition().getDistance(getPosition());
-            if (transport.isAvailableUnderConditions() && (getNearestZaap() == null || minDist > tmp)){
+            double distance = transport.getPosition().getDistance(getPosition());
+            if (transport.isAvailableUnderConditions() &&
+                    (getNearestZaap() == null || minDist > distance)){
                 setNearestZaap(transport);
-                minDist = tmp;
+                minDist = distance;
             }
             if (! transport.isAvailableUnderConditions() && (getNearestTransportLimited() == null
-                    || minDistLimited > tmp)){
+                    || minDistLimited > distance)){
                 setNearestTransportLimited(transport);
                 setTransportLimitedNearest(true);
-                minDistLimited = tmp;
+                minDistLimited = distance;
             }
         }
 
