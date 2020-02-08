@@ -44,17 +44,19 @@ public class Portal {
                 setLastUpdateDate(portal.getLastUpdateDate());
                 setLastAuthorUpdate(portal.getLastAuthorUpdate());
             }
-            else if (getPosition() == null || getPosition() != null && ! getPosition().equals(portal.getPosition())
-                    && getCreationDate().toEpochMilli() < portal.getCreationDate().toEpochMilli()) {
-                setAvailable(true);
-                setPosition(portal.getPosition());
-                setCreationDate(portal.getCreationDate());
-                setCreationAuthor(portal.getCreationAuthor());
-                setUtilisation(portal.getUtilisation());
-                setUpdated(false);
-                setLastUpdateDate(null);
-                setLastAuthorUpdate(null);
-                determineTransports();
+            else {
+                if (getPosition() == null || getPosition() != null && ! getPosition().equals(portal.getPosition())
+                        && getCreationDate().toEpochMilli() < portal.getCreationDate().toEpochMilli()) {
+                    setAvailable(true);
+                    setPosition(portal.getPosition());
+                    setCreationDate(portal.getCreationDate());
+                    setCreationAuthor(portal.getCreationAuthor());
+                    setUtilisation(portal.getUtilisation());
+                    setUpdated(false);
+                    setLastUpdateDate(null);
+                    setLastAuthorUpdate(null);
+                    determineTransports();
+                }
             }
         }
 
