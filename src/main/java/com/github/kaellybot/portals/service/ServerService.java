@@ -12,10 +12,13 @@ public class ServerService implements IServerService {
 
     @Override
     public Optional<Server> findByName(String name) {
-        final String NORMALIZED_NAME = StringUtils.stripAccents(name.toUpperCase().trim());
+        final String NORMALIZED_NAME = normalizeServerName(name);
         return Stream.of(Server.values())
-                .filter(server -> StringUtils.stripAccents(server.name().toUpperCase().trim())
-                        .equals(NORMALIZED_NAME))
+                .filter(server -> normalizeServerName(server.name()).equals(NORMALIZED_NAME))
                 .findFirst();
+    }
+
+    private String normalizeServerName(String input){
+        return StringUtils.stripAccents(input.toUpperCase().replaceAll("\\s|-", "_").trim());
     }
 }
