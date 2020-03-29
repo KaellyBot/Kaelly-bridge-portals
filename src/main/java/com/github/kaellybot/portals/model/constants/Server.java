@@ -22,7 +22,9 @@ public enum Server {
     MERKATOR  ("server.merkator"  ),
     FURYE     ("server.furye"     ),
     BRUMEN    ("server.brumen"    ),
-    ILYZAELLE ("server.ilyzaelle" );
+    ILYZAELLE ("server.ilyzaelle" ),
+    JAHASH    ("server.jahash"    ),
+    THANATENA ("server.thanatena" );
 
     private String key;
 }
