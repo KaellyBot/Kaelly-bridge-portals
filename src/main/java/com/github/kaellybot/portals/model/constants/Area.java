@@ -1,6 +1,5 @@
 package com.github.kaellybot.portals.model.constants;
 
-import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

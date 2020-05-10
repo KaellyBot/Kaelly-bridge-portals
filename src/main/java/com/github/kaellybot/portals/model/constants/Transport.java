@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import static com.github.kaellybot.portals.model.constants.SubArea.*;
-import static com.github.kaellybot.portals.model.constants.SubArea.ILE_MINOTOROR;
-import static com.github.kaellybot.portals.model.constants.SubArea.PANDALA_NEUTRE;
 import static com.github.kaellybot.portals.model.constants.TransportType.*;
 import static com.github.kaellybot.portals.model.constants.TransportType.FRIGOSTIEN;
 
