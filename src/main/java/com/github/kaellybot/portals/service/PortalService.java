@@ -5,20 +5,17 @@ import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
 import com.github.kaellybot.portals.repository.PortalRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class PortalService implements IPortalService {
+@AllArgsConstructor
+public class PortalService {
 
     private PortalRepository portalRepository;
 
-    public PortalService(PortalRepository portalRepository){
-        this.portalRepository = portalRepository;
-    }
-
-    @Override
     public Mono<Portal> findById(Server server, Dimension dimension){
         return portalRepository.findById(PortalId.builder()
                 .server(server)
@@ -26,12 +23,10 @@ public class PortalService implements IPortalService {
                 .build());
     }
 
-    @Override
     public Flux<Portal> findAllByPortalIdServer(Server server) {
         return portalRepository.findAllByPortalIdServer(server);
     }
 
-    @Override
     public Mono<Portal> save(Portal portal) {
         return portalRepository.save(portal);
     }

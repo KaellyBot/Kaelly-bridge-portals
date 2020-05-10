@@ -8,9 +8,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
-public class DimensionService implements IDimensionService {
+public class DimensionService {
 
-    @Override
     public Optional<Dimension> findByName(String name){
         final String NORMALIZED_NAME = StringUtils.stripAccents(name.toUpperCase().trim());
         return Stream.of(Dimension.values())

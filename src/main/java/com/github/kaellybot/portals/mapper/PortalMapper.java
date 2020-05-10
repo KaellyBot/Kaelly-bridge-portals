@@ -8,40 +8,51 @@ import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.entity.Author;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
+import com.github.kaellybot.portals.util.Translator;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
-public final class PortalMapper {
+@Component
+@AllArgsConstructor
+public class PortalMapper {
 
-    private PortalMapper(){}
+    private Translator translator;
 
-    public static PortalDto map(Portal portal, Language language) {
+    private PositionMapper positionMapper;
+
+    private AuthorMapper authorMapper;
+
+    private TransportMapper transportMapper;
+
+    public PortalDto map(Portal portal, Language language) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
-                .dimension(portal.getPortalId().getDimension().getLabel(language))
+                .dimension(translator.getLabel(language, portal.getPortalId().getDimension()))
                 .isAvailable(portal.isAvailable());
 
         if (portal.isValid()) {
-            result.position(PositionMapper.map(portal.getPosition()))
+            result.position(positionMapper.map(portal.getPosition()))
                     .utilisation(portal.getUtilisation())
                     .creationDate(portal.getCreationDate())
-                    .creationAuthor(AuthorMapper.map(portal.getCreationAuthor()))
-                    .nearestZaap(TransportMapper.map(portal.getNearestZaap(), language));
+                    .creationAuthor(authorMapper.map(portal.getCreationAuthor()))
+                    .nearestZaap(transportMapper.map(portal.getNearestZaap(), language));
 
             if (portal.isUpdated())
                 result.lastUpdateDate(portal.getLastUpdateDate())
-                        .lastAuthorUpdate(AuthorMapper.map(portal.getLastAuthorUpdate()));
+                        .lastAuthorUpdate(authorMapper.map(portal.getLastAuthorUpdate()));
 
             if (portal.isTransportLimitedNearest())
-                result.nearestTransportLimited(TransportMapper.map(portal.getNearestTransportLimited(), language));
+                result.nearestTransportLimited(transportMapper.map(portal.getNearestTransportLimited(), language));
         }
 
         return result.build();
     }
 
-    public static Portal map(Server server, Dimension dimension, ExternalPortalDto externalPortalDto){
+    public Portal map(Server server, Dimension dimension, ExternalPortalDto externalPortalDto){
         return Portal.builder()
                 .portalId(PortalId.builder().server(server).dimension(dimension).build())
-                .position(PositionMapper.map(externalPortalDto.getPosition()))
+                .position(positionMapper.map(externalPortalDto.getPosition()))
                 .utilisation(externalPortalDto.getUtilisation())
                 .creationDate(Instant.now())
                 .creationAuthor(Author.builder().name(externalPortalDto.getAuthor()).build())

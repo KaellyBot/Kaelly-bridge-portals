@@ -1,12 +1,11 @@
 package com.github.kaellybot.portals.model.constants;
 
-import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TransportType {
+public enum TransportType implements MultilingualEnum {
 
     ZAAP        ("transport_type.zaap"                   ),
     FOREUSE     ("transport_type.foreuse"                ),
@@ -18,8 +17,4 @@ public enum TransportType {
     CHAR_A_VOILE("transport_type.char_a_voile"           );
 
     private String key;
-
-    public String getLabel(Language lang){
-        return Translator.getLabel(lang, getKey());
-    }
 }

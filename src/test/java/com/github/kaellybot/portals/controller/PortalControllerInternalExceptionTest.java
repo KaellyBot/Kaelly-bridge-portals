@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -37,7 +37,7 @@ class PortalControllerInternalExceptionTest {
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(INTERNAL_SERVER_ERROR_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(INTERNAL_SERVER_ERROR_MESSAGE));
     }
 
     @Test
@@ -49,7 +49,7 @@ class PortalControllerInternalExceptionTest {
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(INTERNAL_SERVER_ERROR_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(INTERNAL_SERVER_ERROR_MESSAGE));
     }
 
     @Test
@@ -58,12 +58,12 @@ class PortalControllerInternalExceptionTest {
                 .thenThrow(new NullPointerException());
         webTestClient.post()
                 .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ECAFLIPUS)
-                .syncBody(ExternalPortalDto.builder()
+                .bodyValue(ExternalPortalDto.builder()
                         .position(PositionDto.builder().x(0).y(0).build())
                         .build())
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(INTERNAL_SERVER_ERROR_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(INTERNAL_SERVER_ERROR_MESSAGE));
     }
 }

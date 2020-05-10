@@ -8,9 +8,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
-public class ServerService implements IServerService {
+public class ServerService {
 
-    @Override
     public Optional<Server> findByName(String name) {
         final String NORMALIZED_NAME = normalizeServerName(name);
         return Stream.of(Server.values())

@@ -13,7 +13,6 @@ public final class PortalConstants {
     public static final Language DEFAULT_LANGUAGE = FR;
     static final String API = "/api";
     static final String PORTALS = "/portals";
-    static final String TOKEN_VAR = "token";
     static final String SERVER_VAR = "server";
     static final String DIMENSION_VAR = "dimension";
     static final String LANGUAGE_NOT_FOUND_MESSAGE = "The specified language is not managed.";

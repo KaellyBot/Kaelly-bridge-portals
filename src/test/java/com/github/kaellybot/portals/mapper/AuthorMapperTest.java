@@ -3,12 +3,15 @@ package com.github.kaellybot.portals.mapper;
 import com.github.kaellybot.portals.model.entity.Author;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@SpringBootTest
 class AuthorMapperTest {
 
     // Platform
@@ -24,13 +27,16 @@ class AuthorMapperTest {
     private static final String GRABUGE = "Grabuge";
     private static final String SONGFU = "Songfu";
 
+    @Autowired
+    private AuthorMapper authorMapper;
+
     @ParameterizedTest
     @MethodSource("getAuthors")
     void mapPositionDtoTest(Author author)
     {
-        assertNotNull(AuthorMapper.map(author));
-        assertEquals(author.getName(), AuthorMapper.map(author).getName());
-        assertEquals(author.getPlatform(), AuthorMapper.map(author).getPlatform());
+        assertNotNull(authorMapper.map(author));
+        assertEquals(author.getName(), authorMapper.map(author).getName());
+        assertEquals(author.getPlatform(), authorMapper.map(author).getPlatform());
     }
 
     private static Stream<Author> getAuthors() {

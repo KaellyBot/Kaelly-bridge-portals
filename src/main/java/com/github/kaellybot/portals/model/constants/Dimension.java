@@ -1,12 +1,11 @@
 package com.github.kaellybot.portals.model.constants;
 
-import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Dimension {
+public enum Dimension implements MultilingualEnum {
 
     ENUTROSOR("dimension.enutrosor"),
     SRAMBAD  ("dimension.srambad"  ),
@@ -14,8 +13,4 @@ public enum Dimension {
     ECAFLIPUS("dimension.ecaflipus");
 
     private String key;
-
-    public String getLabel(Language lang){
-        return Translator.getLabel(lang, getKey());
-    }
 }

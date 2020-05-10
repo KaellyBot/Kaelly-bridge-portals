@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -44,6 +44,9 @@ class PortalControllerTest {
 
     @Autowired
     private PortalRepository portalRepository;
+
+    @Autowired
+    private PortalMapper portalMapper;
 
     @BeforeEach
     void provideData(){
@@ -62,7 +65,7 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(PortalDto.class)
-                .consumeWith(t -> assertEquals(PortalMapper.map(portal, DEFAULT_LANGUAGE), t.getResponseBody()));
+                .consumeWith(t -> assertEquals(portalMapper.map(portal, DEFAULT_LANGUAGE), t.getResponseBody()));
     }
 
     @Test
@@ -72,20 +75,20 @@ class PortalControllerTest {
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
                 .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(DIMENSION_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
         webTestClient.get()
                 .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(LANGUAGE_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(LANGUAGE_NOT_FOUND_MESSAGE));
     }
 
     @ParameterizedTest
@@ -97,7 +100,7 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBodyList(PortalDto.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(PortalMapper.map(portal, DEFAULT_LANGUAGE))));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(portalMapper.map(portal, DEFAULT_LANGUAGE)));
     }
 
     @Test
@@ -107,14 +110,14 @@ class PortalControllerTest {
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
                 .uri(API + "/" + Server.MERIANA + PORTALS)
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(LANGUAGE_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(LANGUAGE_NOT_FOUND_MESSAGE));
     }
 
     @ParameterizedTest
@@ -122,7 +125,7 @@ class PortalControllerTest {
     void addPortalTest(ExternalPortalDto portal){
         webTestClient.post()
                 .uri(API + "/" + Server.ATCHAM + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ENUTROSOR)
-                .syncBody(portal)
+                .bodyValue(portal)
                 .exchange()
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -134,26 +137,26 @@ class PortalControllerTest {
     void addPortalExceptionTest(ExternalPortalDto portal){
         webTestClient.post()
                 .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
-                .syncBody(portal)
+                .bodyValue(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(SERVER_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.post()
                 .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION")
-                .syncBody(portal)
+                .bodyValue(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(DIMENSION_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
         webTestClient.post()
                 .uri(API + "/" + Server.MERIANA + PORTALS+ "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
-                .syncBody(portal)
+                .bodyValue(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
-                .consumeWith(t -> assertTrue(t.getResponseBody().contains(LANGUAGE_NOT_FOUND_MESSAGE)));
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(LANGUAGE_NOT_FOUND_MESSAGE));
     }
 
     private static Stream<ExternalPortalDto> getExternalPortals(){

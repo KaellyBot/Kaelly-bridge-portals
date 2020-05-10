@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LanguageServiceTest {
 
     @Autowired
-    private ILanguageService languageService;
+    private LanguageService languageService;
 
     @ParameterizedTest
     @EnumSource(Language.class)

@@ -1,6 +1,5 @@
 package com.github.kaellybot.portals.model.constants;
 
-import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +7,7 @@ import static com.github.kaellybot.portals.model.constants.Area.*;
 
 @Getter
 @AllArgsConstructor
-public enum SubArea {
+public enum SubArea implements MultilingualEnum {
 
     CENTRE_BONTA               (BONTA              , "sous_zone.centre_bonta"              ),
     CIMETIERE_HEROS            (BONTA              , "sous_zone.cimetiere_heros"           ),
@@ -90,8 +89,4 @@ public enum SubArea {
 
     private Area area;
     private String key;
-
-    public String getLabel(Language lang){
-        return Translator.getLabel(lang, getKey());
-    }
 }

@@ -3,17 +3,24 @@ package com.github.kaellybot.portals.mapper;
 import com.github.kaellybot.portals.model.constants.Language;
 import com.github.kaellybot.portals.model.constants.Transport;
 import com.github.kaellybot.portals.model.dto.TransportDto;
+import com.github.kaellybot.portals.util.Translator;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
-final class TransportMapper {
+@Component
+@AllArgsConstructor
+public class TransportMapper {
 
-    private TransportMapper(){}
+    private Translator translator;
 
-    static TransportDto map(Transport transport, Language language){
+    private PositionMapper positionMapper;
+
+    public TransportDto map(Transport transport, Language language){
         return TransportDto.builder()
-                .type(transport.getType().getLabel(language))
-                .area(transport.getSubArea().getArea().getLabel(language))
-                .subArea(transport.getSubArea().getLabel(language))
-                .position(PositionMapper.map(transport.getPosition()))
+                .type(translator.getLabel(language, transport.getType()))
+                .area(translator.getLabel(language, transport.getSubArea().getArea()))
+                .subArea(translator.getLabel(language, transport.getSubArea()))
+                .position(positionMapper.map(transport.getPosition()))
                 .isAvailableUnderConditions(transport.isAvailableUnderConditions())
                 .build();
     }

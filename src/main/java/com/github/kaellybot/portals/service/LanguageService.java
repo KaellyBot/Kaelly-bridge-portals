@@ -9,9 +9,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
-public class LanguageService implements ILanguageService {
+public class LanguageService {
 
-    @Override
     public Optional<Language> findByName(String name) {
         if (name == null || name.trim().isEmpty())
             return Optional.of(PortalConstants.DEFAULT_LANGUAGE);

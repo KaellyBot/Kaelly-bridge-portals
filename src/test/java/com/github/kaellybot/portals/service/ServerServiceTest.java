@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ServerServiceTest {
 
     @Autowired
-    private IServerService serverService;
+    private ServerService serverService;
 
     @ParameterizedTest
     @EnumSource(Server.class)

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Area {
+public enum Area implements MultilingualEnum {
 
     PLAINES_CANIA     ("area.plaines_cania"   ),
     AMAKNA            ("area.amakna"          ),
@@ -30,8 +30,4 @@ public enum Area {
     MONTAGNE_KOALAKS  ("area.montagne_koalaks");
 
     private String key;
-
-    public String getLabel(Language lang){
-        return Translator.getLabel(lang, getKey());
-    }
 }

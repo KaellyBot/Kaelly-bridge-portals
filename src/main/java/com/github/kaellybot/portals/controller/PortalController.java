@@ -7,10 +7,11 @@ import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.entity.Portal;
-import com.github.kaellybot.portals.service.IDimensionService;
-import com.github.kaellybot.portals.service.ILanguageService;
-import com.github.kaellybot.portals.service.IPortalService;
-import com.github.kaellybot.portals.service.IServerService;
+import com.github.kaellybot.portals.service.DimensionService;
+import com.github.kaellybot.portals.service.LanguageService;
+import com.github.kaellybot.portals.service.PortalService;
+import com.github.kaellybot.portals.service.ServerService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -26,21 +27,15 @@ import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
 
 @RestController
 @RequestMapping(API)
+@AllArgsConstructor
 public class PortalController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PortalController.class);
-    private IPortalService portalService;
-    private IServerService serverService;
-    private IDimensionService dimensionService;
-    private ILanguageService languageService;
-
-    public PortalController(IPortalService portalService, IServerService serverService,
-                            IDimensionService dimensionService, ILanguageService languageService){
-        this.portalService = portalService;
-        this.serverService = serverService;
-        this.dimensionService = dimensionService;
-        this.languageService = languageService;
-    }
+    private PortalService portalService;
+    private ServerService serverService;
+    private DimensionService dimensionService;
+    private LanguageService languageService;
+    private PortalMapper portalMapper;
 
     @GetMapping(path = "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR },
             produces=MediaType.APPLICATION_JSON_VALUE)
@@ -52,7 +47,7 @@ public class PortalController {
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             Dimension dimension = dimensionService.findByName(dimensionName).orElseThrow(() -> DIMENSION_NOT_FOUND);
             return portalService.findById(server, dimension)
-                    .map(portal -> PortalMapper.map(portal, language));
+                    .map(portal -> portalMapper.map(portal, language));
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
@@ -69,7 +64,7 @@ public class PortalController {
             Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             return portalService.findAllByPortalIdServer(server)
-                    .map(portal -> PortalMapper.map(portal, language));
+                    .map(portal -> portalMapper.map(portal, language));
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
@@ -88,12 +83,12 @@ public class PortalController {
             Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
             Server server = serverService.findByName(serverName).orElseThrow(() -> SERVER_NOT_FOUND);
             Dimension dimension = dimensionService.findByName(dimensionName).orElseThrow(() -> DIMENSION_NOT_FOUND);
-            Portal externalPortal = PortalMapper.map(server, dimension, coordinates);
+            Portal externalPortal = portalMapper.map(server, dimension, coordinates);
 
             return portalService.findById(server, dimension)
                     .doOnSuccess(portal -> portal.merge(externalPortal))
                     .flatMap(portalService::save)
-                    .map(portal -> PortalMapper.map(portal, language));
+                    .map(portal -> portalMapper.map(portal, language));
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
@@ -101,6 +96,4 @@ public class PortalController {
             throw INTERNAL_SERVER_ERROR;
         }
     }
-
-
 }

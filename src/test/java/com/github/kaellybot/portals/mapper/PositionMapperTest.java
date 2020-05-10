@@ -4,38 +4,44 @@ import com.github.kaellybot.portals.model.dto.PositionDto;
 import com.github.kaellybot.portals.model.entity.Position;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@SpringBootTest
 class PositionMapperTest {
+
+    @Autowired
+    private PositionMapper positionMapper;
 
     @ParameterizedTest
     @MethodSource("getPositions")
     void mapPositionDtoTest(Position position)
     {
-        assertNotNull(PositionMapper.map(position));
-        assertEquals(position.getX(), PositionMapper.map(position).getX());
-        assertEquals(position.getY(), PositionMapper.map(position).getY());
+        assertNotNull(positionMapper.map(position));
+        assertEquals(position.getX(), positionMapper.map(position).getX());
+        assertEquals(position.getY(), positionMapper.map(position).getY());
     }
 
     @ParameterizedTest
     @MethodSource("getPositionDtos")
     void mapPositionDtoTest(PositionDto position)
     {
-        assertNotNull(PositionMapper.map(position));
-        assertEquals(position.getX(), PositionMapper.map(position).getX());
-        assertEquals(position.getY(), PositionMapper.map(position).getY());
+        assertNotNull(positionMapper.map(position));
+        assertEquals(position.getX(), positionMapper.map(position).getX());
+        assertEquals(position.getY(), positionMapper.map(position).getY());
     }
 
     @ParameterizedTest
     @MethodSource("getPositions")
     void endToEndMapTest(Position position)
     {
-        assertNotNull(PositionMapper.map(PositionMapper.map(position)));
-        assertEquals(position, PositionMapper.map(PositionMapper.map(position)));
+        assertNotNull(positionMapper.map(positionMapper.map(position)));
+        assertEquals(position, positionMapper.map(positionMapper.map(position)));
     }
 
     private static Stream<Position> getPositions() {

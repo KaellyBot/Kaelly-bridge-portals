@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DimensionServiceTest {
 
     @Autowired
-    private IDimensionService dimensionService;
+    private DimensionService dimensionService;
 
     @ParameterizedTest
     @EnumSource(Dimension.class)

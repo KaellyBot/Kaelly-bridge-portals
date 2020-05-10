@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PortalServiceTest {
 
     @Autowired
-    private IPortalService portalService;
+    private PortalService portalService;
 
     @Autowired
     private PortalRepository portalRepository;
