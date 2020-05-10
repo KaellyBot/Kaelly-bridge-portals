@@ -136,7 +136,8 @@
 					<excludes>
 						<exclude>com/github/kaellybot/portals/controller/PortalConstants.java</exclude>
 						<exclude>om/github/kaellybot/portals/repository/**</exclude>
-						<exclude>com/github/kaellybot/portals/model/**</exclude>
+						<exclude>com/github/kaellybot/portals/model/constants/**</exclude>
+						<exclude>com/github/kaellybot/portals/model/dto/**</exclude>
 					</excludes>
 				</configuration>
                 <executions>

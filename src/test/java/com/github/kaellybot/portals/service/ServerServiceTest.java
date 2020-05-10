@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -22,26 +23,26 @@ class ServerServiceTest {
     @EnumSource(Server.class)
     void findPassingCaseTest(Server server){
         assertAll(
-                () -> assertTrue(serverService.findByName(server.name()).isPresent()),
-                () -> assertTrue(serverService.findByName(server.name().toLowerCase()).isPresent()),
-                () -> assertTrue(serverService.findByName(server.name().toUpperCase()).isPresent()),
-                () -> assertTrue(serverService.findByName(StringUtils.stripAccents(server.name())).isPresent())
+                () -> assertThat(serverService.findByName(server.name())).isPresent(),
+                () -> assertThat(serverService.findByName(server.name().toLowerCase())).isPresent(),
+                () -> assertThat(serverService.findByName(server.name().toUpperCase())).isPresent(),
+                () -> assertThat(serverService.findByName(StringUtils.stripAccents(server.name()))).isPresent()
         );
 
         serverService.findByName(server.name())
-                .ifPresent(potentialServer -> assertEquals(server, potentialServer));
+                .ifPresent(potentialServer -> assertThat(server).isNotNull().isEqualTo(potentialServer));
     }
 
     @ParameterizedTest
     @EnumSource(Server.class)
     void findNoPassingCaseTest(Server server){
-        assertFalse(serverService.findByName(server.name() + "_BAD_NAME").isPresent());
+        assertThat(serverService.findByName(server.name() + "_BAD_NAME")).isEmpty();
     }
 
     @ParameterizedTest
     @MethodSource("getPassingOtoMustamCase")
     void findPassingOtoMustamCaseTest(String serverName){
-        assertTrue(serverService.findByName(serverName).map(server -> server.equals(Server.OTO_MUSTAM)).orElse(false));
+        assertThat(serverService.findByName(serverName)).isNotNull().isNotEmpty().contains(Server.OTO_MUSTAM);
     }
 
     private static Stream<String> getPassingOtoMustamCase(){

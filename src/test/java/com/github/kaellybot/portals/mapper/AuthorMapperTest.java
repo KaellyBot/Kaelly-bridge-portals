@@ -8,8 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class AuthorMapperTest {
@@ -34,9 +33,9 @@ class AuthorMapperTest {
     @MethodSource("getAuthors")
     void mapPositionDtoTest(Author author)
     {
-        assertNotNull(authorMapper.map(author));
-        assertEquals(author.getName(), authorMapper.map(author).getName());
-        assertEquals(author.getPlatform(), authorMapper.map(author).getPlatform());
+        assertThat(authorMapper.map(author)).isNotNull();
+        assertThat(author.getName()).isNotNull().isEqualTo(authorMapper.map(author).getName());
+        assertThat(author.getPlatform()).isNotNull().isEqualTo(authorMapper.map(author).getPlatform());
     }
 
     private static Stream<Author> getAuthors() {

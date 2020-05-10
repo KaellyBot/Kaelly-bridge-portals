@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -19,19 +20,19 @@ class DimensionServiceTest {
     @EnumSource(Dimension.class)
     void findPassingCaseTest(Dimension dimension){
         assertAll(
-                () -> assertTrue(dimensionService.findByName(dimension.name()).isPresent()),
-                () -> assertTrue(dimensionService.findByName(dimension.name().toLowerCase()).isPresent()),
-                () -> assertTrue(dimensionService.findByName(dimension.name().toUpperCase()).isPresent()),
-                () -> assertTrue(dimensionService.findByName(StringUtils.stripAccents(dimension.name())).isPresent())
+                () -> assertThat(dimensionService.findByName(dimension.name())).isPresent(),
+                () -> assertThat(dimensionService.findByName(dimension.name().toLowerCase())).isPresent(),
+                () -> assertThat(dimensionService.findByName(dimension.name().toUpperCase())).isPresent(),
+                () -> assertThat(dimensionService.findByName(StringUtils.stripAccents(dimension.name()))).isPresent()
         );
 
         dimensionService.findByName(dimension.name())
-                .ifPresent(dim -> assertEquals(dimension, dim));
+                .ifPresent(dim -> assertThat(dimension).isNotNull().isEqualTo(dim));
     }
 
     @ParameterizedTest
     @EnumSource(Dimension.class)
     void findNoPassingCaseTest(Dimension dimension){
-        assertFalse(dimensionService.findByName(dimension.name() + "_BAD_NAME").isPresent());
+        assertThat(dimensionService.findByName(dimension.name() + "_BAD_NAME")).isEmpty();
     }
 }

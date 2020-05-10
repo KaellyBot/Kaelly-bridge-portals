@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LANGUAGE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class transportMapperTest {
@@ -22,20 +21,21 @@ class transportMapperTest {
     @EnumSource(Transport.class)
     void mapTransportDtoTest(Transport transport)
     {
-        assertNotNull(transportMapper.map(transport, DEFAULT_LANGUAGE));
-        assertNotNull(transportMapper.map(transport, DEFAULT_LANGUAGE).getType());
-        assertNotNull(transportMapper.map(transport, DEFAULT_LANGUAGE).getArea());
-        assertNotNull(transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
-        assertNotNull(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition());
+        assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE)).isNotNull();
+        assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getType()).isNotNull();
+        assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getArea()).isNotNull();
+        assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea()).isNotNull();
+        assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition()).isNotNull();
 
-        assertEquals(translator.getLabel(DEFAULT_LANGUAGE, transport.getType()),
-                transportMapper.map(transport, DEFAULT_LANGUAGE).getType());
-        assertEquals(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getArea()),
-                transportMapper.map(transport, DEFAULT_LANGUAGE).getArea());
-        assertEquals(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea()), transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
-        assertEquals(positionMapper.map(transport.getPosition()),
-                transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition());
-        assertEquals(transport.isAvailableUnderConditions(),
-                transportMapper.map(transport, DEFAULT_LANGUAGE).isAvailableUnderConditions());
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getType())).isNotNull()
+                .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getType());
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getArea())).isNotNull()
+                .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getArea());
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea())).isNotNull()
+                .isEqualTo( transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
+        assertThat(positionMapper.map(transport.getPosition())).isNotNull()
+                .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition());
+        assertThat(transport.isAvailableUnderConditions()).isNotNull()
+                .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).isAvailableUnderConditions());
     }
 }

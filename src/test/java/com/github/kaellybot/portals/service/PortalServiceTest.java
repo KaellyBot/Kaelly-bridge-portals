@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PortalServiceTest {
@@ -45,10 +45,8 @@ class PortalServiceTest {
     @Test
     void findAllByPortalIdServerTest() {
         StepVerifier.create(portalService.findAllByPortalIdServer(Server.AGRIDE))
-                .assertNext(portal -> {
-                    assertNotNull(portal.getPortalId());
-                    assertEquals(Server.AGRIDE, portal.getPortalId().getServer());
-                })
+                .assertNext(portal -> assertThat(portal.getPortalId()).isNotNull()
+                        .extracting(PortalId::getServer).isNotNull().isEqualTo(Server.AGRIDE))
                 .expectComplete()
                 .verify();
     }
@@ -64,9 +62,9 @@ class PortalServiceTest {
     void findByIdTest() {
         StepVerifier.create(portalService.findById(Server.AGRIDE, Dimension.ECAFLIPUS))
                 .assertNext(portal -> {
-                    assertNotNull(portal.getPortalId());
-                    assertEquals(Server.AGRIDE, portal.getPortalId().getServer());
-                    assertEquals(Dimension.ECAFLIPUS, portal.getPortalId().getDimension());
+                    assertThat(portal.getPortalId()).isNotNull();
+                    assertThat(portal.getPortalId().getServer()).isNotNull().isEqualTo(Server.AGRIDE);
+                    assertThat(portal.getPortalId().getDimension()).isNotNull().isEqualTo(Dimension.ECAFLIPUS);
                 })
                 .expectComplete()
                 .verify();
@@ -85,7 +83,7 @@ class PortalServiceTest {
                 .portalId(PortalId.builder().server(Server.BRUMEN).dimension(Dimension.SRAMBAD).build())
                 .build();
         StepVerifier.create(portalService.save(PORTAL))
-                .assertNext(portal -> assertEquals(PORTAL, portal))
+                .assertNext(portal -> assertThat(portal).isNotNull().isEqualTo(PORTAL))
                 .expectComplete()
                 .verify();
     }

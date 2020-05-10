@@ -19,9 +19,8 @@ import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LA
 import static com.github.kaellybot.portals.model.constants.Dimension.*;
 import static com.github.kaellybot.portals.model.constants.Server.*;
 import static com.github.kaellybot.portals.model.entity.Portal.PORTAL_LIFETIME_IN_DAYS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PortalMapperTest {
@@ -51,45 +50,49 @@ class PortalMapperTest {
     @MethodSource("getPortals")
     void mapPortalDtoTest(Portal portal)
     {
-        assertNotNull(portalMapper.map(portal, DEFAULT_LANGUAGE));
-        assertEquals(translator.getLabel(DEFAULT_LANGUAGE, portal.getPortalId().getDimension()),
-                portalMapper.map(portal, DEFAULT_LANGUAGE).getDimension());
-        assertEquals(portal.isAvailable(), portalMapper.map(portal, DEFAULT_LANGUAGE).getIsAvailable());
+        assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE)).isNotNull();
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, portal.getPortalId().getDimension())).isNotNull()
+                .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getDimension());
+        assertThat(portal.isAvailable()).isNotNull()
+                .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getIsAvailable());
 
         if (portal.isValid()){
-            assertNotNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
-            assertEquals(positionMapper.map(portal.getPosition()),
-                    portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
-            assertEquals(portal.getUtilisation(), portalMapper.map(portal, DEFAULT_LANGUAGE).getUtilisation());
-            assertEquals(portal.getCreationDate(), portalMapper.map(portal, DEFAULT_LANGUAGE).getCreationDate());
-            assertEquals(transportMapper.map(portal.getNearestZaap(), DEFAULT_LANGUAGE),
-                    portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestZaap());
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition()).isNotNull();
+            assertThat(positionMapper.map(portal.getPosition())).isNotNull()
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
+            assertThat(portal.getUtilisation())
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getUtilisation());
+            assertThat(portal.getCreationDate()).isNotNull()
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getCreationDate());
+            assertThat(transportMapper.map(portal.getNearestZaap(), DEFAULT_LANGUAGE)).isNotNull()
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestZaap());
 
             if (portal.isUpdated()){
-                assertEquals(portal.getLastUpdateDate(), portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate());
-                assertEquals(authorMapper.map(portal.getLastAuthorUpdate()),
-                        portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate());
+                assertThat(portal.getLastUpdateDate()).isNotNull()
+                        .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate());
+                assertThat(authorMapper.map(portal.getLastAuthorUpdate())).isNotNull()
+                        .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate());
             }
             else {
-                assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate());
-                assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate());
+                assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
+                assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
             }
 
             if (portal.isTransportLimitedNearest())
-                assertEquals(transportMapper.map(portal.getNearestTransportLimited(), DEFAULT_LANGUAGE),
-                        portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited());
+                assertThat(transportMapper.map(portal.getNearestTransportLimited(), DEFAULT_LANGUAGE)).isNotNull()
+                        .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited());
             else
-                assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited());
+                assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited()).isNull();
         }
         else {
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getUtilisation());
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getCreationDate());
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate());
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate());
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestZaap());
-            assertNull(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited());
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getUtilisation()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getCreationDate()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestZaap()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited()).isNull();
         }
     }
 

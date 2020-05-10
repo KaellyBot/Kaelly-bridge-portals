@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PositionMapperTest {
@@ -22,26 +21,26 @@ class PositionMapperTest {
     @MethodSource("getPositions")
     void mapPositionDtoTest(Position position)
     {
-        assertNotNull(positionMapper.map(position));
-        assertEquals(position.getX(), positionMapper.map(position).getX());
-        assertEquals(position.getY(), positionMapper.map(position).getY());
+        assertThat(positionMapper.map(position)).isNotNull();
+        assertThat(position.getX()).isNotNull().isEqualTo(positionMapper.map(position).getX());
+        assertThat(position.getY()).isNotNull().isEqualTo(positionMapper.map(position).getY());
     }
 
     @ParameterizedTest
     @MethodSource("getPositionDtos")
     void mapPositionDtoTest(PositionDto position)
     {
-        assertNotNull(positionMapper.map(position));
-        assertEquals(position.getX(), positionMapper.map(position).getX());
-        assertEquals(position.getY(), positionMapper.map(position).getY());
+        assertThat(positionMapper.map(position)).isNotNull();
+        assertThat(position.getX()).isNotNull().isEqualTo(positionMapper.map(position).getX());
+        assertThat(position.getY()).isNotNull().isEqualTo(positionMapper.map(position).getY());
     }
 
     @ParameterizedTest
     @MethodSource("getPositions")
     void endToEndMapTest(Position position)
     {
-        assertNotNull(positionMapper.map(positionMapper.map(position)));
-        assertEquals(position, positionMapper.map(positionMapper.map(position)));
+        assertThat(positionMapper.map(positionMapper.map(position))).isNotNull();
+        assertThat(position).isNotNull().isEqualTo(positionMapper.map(positionMapper.map(position)));
     }
 
     private static Stream<Position> getPositions() {

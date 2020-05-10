@@ -36,16 +36,15 @@ public class Portal {
     }
 
     public void merge(Portal portal){
-        if (getPortalId().equals(portal.getPortalId()) && portal.getPosition() != null)
+        if (getPortalId().equals(portal.getPortalId()) && portal.getPosition() != null) {
             if (portal.getPosition().equals(getPosition()) &&
                     (getUtilisation() == null || getUtilisation() > portal.getUtilisation())) {
                 setUpdated(true);
                 setUtilisation(portal.getUtilisation());
                 setLastUpdateDate(portal.getLastUpdateDate());
                 setLastAuthorUpdate(portal.getLastAuthorUpdate());
-            }
-            else {
-                if (getPosition() == null || getPosition() != null && ! getPosition().equals(portal.getPosition())
+            } else {
+                if (getPosition() == null || getPosition() != null && !getPosition().equals(portal.getPosition())
                         && getCreationDate().toEpochMilli() < portal.getCreationDate().toEpochMilli()) {
                     setAvailable(true);
                     setPosition(portal.getPosition());
@@ -59,6 +58,7 @@ public class Portal {
                 }
             }
         }
+    }
 
     void determineTransports() {
         double minDist = Double.MAX_VALUE;
