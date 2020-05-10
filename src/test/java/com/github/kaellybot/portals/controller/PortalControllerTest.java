@@ -59,8 +59,8 @@ class PortalControllerTest {
     @MethodSource("getPortals")
     void findByIdTest(Portal portal){
         webTestClient.get()
-                .uri(API + "/" + portal.getPortalId().getServer() + PORTALS + "?" + DIMENSION_VAR + "="
-                        + portal.getPortalId().getDimension())
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServer().name())
+                                .replace("{" + DIMENSION_VAR + "}", portal.getPortalId().getDimension().name()))
                 .exchange()
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -71,19 +71,22 @@ class PortalControllerTest {
     @Test
     void findByIdExceptionTest(){
         webTestClient.get()
-                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", "NO_SERVER")
+                        .replace("{" + DIMENSION_VAR + "}", Dimension.SRAMBAD.name()))
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION")
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                        .replace("{" + DIMENSION_VAR + "}", "NO_DIMENSION"))
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                        .replace("{" + DIMENSION_VAR + "}", Dimension.SRAMBAD.name()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
@@ -93,9 +96,9 @@ class PortalControllerTest {
 
     @ParameterizedTest
     @MethodSource("getPortals")
-    void findAllByPortalIdServerTest(Portal portal){
+    void findAllTest(Portal portal){
         webTestClient.get()
-                .uri(API + "/" + portal.getPortalId().getServer() + PORTALS)
+                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServer().name()))
                 .exchange()
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -104,15 +107,15 @@ class PortalControllerTest {
     }
 
     @Test
-    void findAllByPortalIdExceptionTest(){
+    void findAllExceptionTest(){
         webTestClient.get()
-                .uri(API + "/NO_SERVER" + PORTALS)
+                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", "NO_SERVER"))
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS)
+                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", Server.MERIANA.name()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
@@ -122,9 +125,10 @@ class PortalControllerTest {
 
     @ParameterizedTest
     @MethodSource("getExternalPortals")
-    void addPortalTest(ExternalPortalDto portal){
-        webTestClient.post()
-                .uri(API + "/" + Server.ATCHAM + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ENUTROSOR)
+    void mergeTest(ExternalPortalDto portal){
+        webTestClient.patch()
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", Server.ATCHAM.name())
+                        .replace("{" + DIMENSION_VAR + "}", Dimension.ENUTROSOR.name()))
                 .bodyValue(portal)
                 .exchange()
                 .expectStatus().isEqualTo(OK)
@@ -134,23 +138,26 @@ class PortalControllerTest {
 
     @ParameterizedTest
     @MethodSource("getExternalPortals")
-    void addPortalExceptionTest(ExternalPortalDto portal){
-        webTestClient.post()
-                .uri(API + "/NO_SERVER" + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
+    void mergeExceptionTest(ExternalPortalDto portal){
+        webTestClient.patch()
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", "NO_SERVER")
+                        .replace("{" + DIMENSION_VAR + "}", Dimension.SRAMBAD.name()))
                 .bodyValue(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
-        webTestClient.post()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=NO_DIMENSION")
+        webTestClient.patch()
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                        .replace("{" + DIMENSION_VAR + "}", "NO_DIMENSION"))
                 .bodyValue(portal)
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
-        webTestClient.post()
-                .uri(API + "/" + Server.MERIANA + PORTALS+ "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
+        webTestClient.patch()
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                        .replace("{" + DIMENSION_VAR + "}", Dimension.SRAMBAD.name()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .bodyValue(portal)
                 .exchange()

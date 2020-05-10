@@ -37,10 +37,9 @@ public class PortalController {
     private LanguageService languageService;
     private PortalMapper portalMapper;
 
-    @GetMapping(path = "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR },
-            produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = FIND_BY_ID, produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<PortalDto> findById(@PathVariable(SERVER_VAR) String serverName,
-                                    @RequestParam(DIMENSION_VAR) String dimensionName,
+                                    @PathVariable(DIMENSION_VAR) String dimensionName,
                                     @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
         try {
             Language language = languageService.findByName(languageName).orElseThrow(() -> LANGUAGE_NOT_FOUND);
@@ -56,8 +55,8 @@ public class PortalController {
         }
     }
 
-    @GetMapping(path = "{" + SERVER_VAR + "}" + PORTALS, produces=MediaType.APPLICATION_JSON_VALUE)
-    public Flux<PortalDto> findAllByPortalIdServer(@PathVariable(SERVER_VAR) String serverName,
+    @GetMapping(path = FIND_ALL, produces=MediaType.APPLICATION_JSON_VALUE)
+    public Flux<PortalDto> findAll(@PathVariable(SERVER_VAR) String serverName,
                                                    @RequestHeader(name = ACCEPT_LANGUAGE, required = false)
                                                                String languageName){
         try {
@@ -68,15 +67,14 @@ public class PortalController {
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
-            LOG.error("findAllByPortalIdServer", e);
+            LOG.error("findAll", e);
             throw INTERNAL_SERVER_ERROR;
         }
     }
 
-    @PostMapping(path= "{" + SERVER_VAR + "}" + PORTALS, params = { DIMENSION_VAR },
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<PortalDto> addPortal(@PathVariable(SERVER_VAR) String serverName,
-                                    @RequestParam(DIMENSION_VAR) String dimensionName,
+    @PatchMapping(path= MERGE, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    public Mono<PortalDto> merge(@PathVariable(SERVER_VAR) String serverName,
+                                    @PathVariable(DIMENSION_VAR) String dimensionName,
                                     @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName,
                                     @RequestBody @Valid ExternalPortalDto coordinates){
         try {
@@ -92,7 +90,7 @@ public class PortalController {
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
-            LOG.error("addPortal", e);
+            LOG.error("merge", e);
             throw INTERNAL_SERVER_ERROR;
         }
     }

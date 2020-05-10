@@ -33,7 +33,8 @@ class PortalControllerInternalExceptionTest {
         Mockito.when(portalService.findById(Server.BRUMEN, Dimension.SRAMBAD))
                 .thenThrow(new NullPointerException());
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.SRAMBAD)
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                        .replace("{" + DIMENSION_VAR + "}", Dimension.SRAMBAD.name()))
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
@@ -41,11 +42,11 @@ class PortalControllerInternalExceptionTest {
     }
 
     @Test
-    void findAllByPortalIdServerInternalExceptionTest(){
+    void findAllInternalExceptionTest(){
         Mockito.when(portalService.findAllByPortalIdServer(Server.BRUMEN))
                 .thenThrow(new NullPointerException());
         webTestClient.get()
-                .uri(API + "/" + Server.MERIANA + PORTALS)
+                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", Server.MERIANA.name()))
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
@@ -53,11 +54,12 @@ class PortalControllerInternalExceptionTest {
     }
 
     @Test
-    void addPortalInternalExceptionTest(){
+    void mergeInternalExceptionTest(){
         Mockito.when(portalService.findById(Server.MERIANA, Dimension.ECAFLIPUS))
                 .thenThrow(new NullPointerException());
-        webTestClient.post()
-                .uri(API + "/" + Server.MERIANA + PORTALS + "?" + DIMENSION_VAR + "=" + Dimension.ECAFLIPUS)
+        webTestClient.patch()
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                        .replace("{" + DIMENSION_VAR + "}", Dimension.ECAFLIPUS.name()))
                 .bodyValue(ExternalPortalDto.builder()
                         .position(PositionDto.builder().x(0).y(0).build())
                         .build())

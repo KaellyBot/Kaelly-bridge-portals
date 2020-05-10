@@ -12,9 +12,12 @@ public final class PortalConstants {
 
     public static final Language DEFAULT_LANGUAGE = FR;
     static final String API = "/api";
-    static final String PORTALS = "/portals";
     static final String SERVER_VAR = "server";
     static final String DIMENSION_VAR = "dimension";
+    static final String FIND_BY_ID = "/servers/{" + SERVER_VAR + "}/portals/{" + DIMENSION_VAR + "}";
+    static final String FIND_ALL = "/servers/{" + SERVER_VAR + "}/portals/";
+    static final String MERGE = "/servers/{" + SERVER_VAR + "}/portals/{" + DIMENSION_VAR + "}";
+
     static final String LANGUAGE_NOT_FOUND_MESSAGE = "The specified language is not managed.";
     static final String SERVER_NOT_FOUND_MESSAGE = "The specified server is not found.";
     static final String DIMENSION_NOT_FOUND_MESSAGE = "The specified dimension is not found.";
