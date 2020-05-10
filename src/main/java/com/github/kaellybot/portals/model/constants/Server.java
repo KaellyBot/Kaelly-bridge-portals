@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Server {
+public enum Server implements MultilingualEnum {
 
     AGRIDE        ("server.agride"       ),
     ATCHAM        ("server.atcham"       ),
