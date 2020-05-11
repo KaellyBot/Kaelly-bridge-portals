@@ -32,10 +32,6 @@ class TranslatorTest {
     @EnumSource(Language.class)
     void getLabelEnumerationTest(Language language)
     {
-        assertThat(Server.values()).allSatisfy(enumeration -> assertThat(translator.getLabel(language, enumeration))
-                .isNotNull().isNotEmpty().isNotEqualTo(enumeration.getKey()));
-        assertThat(Dimension.values()).allSatisfy(enumeration -> assertThat(translator.getLabel(language, enumeration))
-                .isNotNull().isNotEmpty().isNotEqualTo(enumeration.getKey()));
         assertThat(Area.values()).allSatisfy(enumeration -> assertThat(translator.getLabel(language, enumeration))
                 .isNotNull().isNotEmpty().isNotEqualTo(enumeration.getKey()));
         assertThat(SubArea.values()).allSatisfy(enumeration -> assertThat(translator.getLabel(language, enumeration))

@@ -2,16 +2,13 @@ package com.github.kaellybot.portals.controller;
 
 import com.github.kaellybot.portals.mapper.PortalMapper;
 import com.github.kaellybot.portals.model.constants.Dimension;
-import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.constants.Transport;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.dto.PositionDto;
-import com.github.kaellybot.portals.model.entity.Author;
-import com.github.kaellybot.portals.model.entity.Portal;
-import com.github.kaellybot.portals.model.entity.PortalId;
-import com.github.kaellybot.portals.model.entity.Position;
+import com.github.kaellybot.portals.model.entity.*;
 import com.github.kaellybot.portals.repository.PortalRepository;
+import com.github.kaellybot.portals.repository.ServerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,6 +34,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @AutoConfigureWebTestClient
 class PortalControllerTest {
 
+    private static final Server DEFAULT_SERVER = Server.builder().id("DEFAULT_SERVER").build();
+
     private final static Instant TIME = Instant.parse("2019-01-10T00:00:00.00Z");
 
     @Autowired
@@ -46,11 +45,15 @@ class PortalControllerTest {
     private PortalRepository portalRepository;
 
     @Autowired
+    private ServerRepository serverRepository;
+
+    @Autowired
     private PortalMapper portalMapper;
 
     @BeforeEach
     void provideData(){
-        portalRepository.saveAll(getPortals().collect(Collectors.toList()))
+        serverRepository.save(DEFAULT_SERVER)
+                .flatMapMany(server -> portalRepository.saveAll(getPortals().collect(Collectors.toList())))
                 .collectList()
                 .block();
     }
@@ -59,7 +62,7 @@ class PortalControllerTest {
     @MethodSource("getPortals")
     void findByIdTest(Portal portal){
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServer().name())
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServerId())
                                 .replace("{" + DIMENSION_VAR + "}", portal.getPortalId().getDimension().name()))
                 .exchange()
                 .expectStatus().isEqualTo(OK)
@@ -78,14 +81,14 @@ class PortalControllerTest {
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", "NO_DIMENSION"))
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", Dimension.SRAMBAD.name()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
@@ -98,7 +101,7 @@ class PortalControllerTest {
     @MethodSource("getPortals")
     void findAllTest(Portal portal){
         webTestClient.get()
-                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServer().name()))
+                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServerId()))
                 .exchange()
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -115,7 +118,7 @@ class PortalControllerTest {
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", Server.MERIANA.name()))
+                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
@@ -127,7 +130,7 @@ class PortalControllerTest {
     @MethodSource("getExternalPortals")
     void mergeTest(ExternalPortalDto portal){
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", Server.ATCHAM.name())
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", Dimension.ENUTROSOR.name()))
                 .bodyValue(portal)
                 .exchange()
@@ -148,7 +151,7 @@ class PortalControllerTest {
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", "NO_DIMENSION"))
                 .bodyValue(portal)
                 .exchange()
@@ -156,7 +159,7 @@ class PortalControllerTest {
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", Server.MERIANA.name())
+                .uri(API + MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", Dimension.SRAMBAD.name()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .bodyValue(portal)
@@ -186,7 +189,7 @@ class PortalControllerTest {
         return Stream.of(
                 Portal.builder()
                         .portalId(PortalId.builder()
-                            .server(Server.ATCHAM)
+                            .serverId(DEFAULT_SERVER.getId())
                             .dimension(Dimension.ENUTROSOR)
                             .build())
                         .isAvailable(true)
@@ -197,8 +200,8 @@ class PortalControllerTest {
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder()
-                            .server(Server.AGRIDE)
-                            .dimension(Dimension.ENUTROSOR)
+                            .serverId(DEFAULT_SERVER.getId())
+                            .dimension(Dimension.SRAMBAD)
                             .build())
                         .isAvailable(true)
                         .position(Position.builder().x(0).y(0).build())
@@ -208,7 +211,7 @@ class PortalControllerTest {
                         .build(),
                 Portal.builder()
                         .portalId(PortalId.builder()
-                            .server(Server.AGRIDE)
+                            .serverId(DEFAULT_SERVER.getId())
                             .dimension(Dimension.ECAFLIPUS)
                             .build())
                         .isAvailable(false)

@@ -2,12 +2,12 @@ package com.github.kaellybot.portals.mapper;
 
 import com.github.kaellybot.portals.model.constants.Dimension;
 import com.github.kaellybot.portals.model.constants.Language;
-import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.entity.Author;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
+import com.github.kaellybot.portals.model.entity.Server;
 import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -51,7 +51,7 @@ public class PortalMapper {
 
     public Portal map(Server server, Dimension dimension, ExternalPortalDto externalPortalDto){
         return Portal.builder()
-                .portalId(PortalId.builder().server(server).dimension(dimension).build())
+                .portalId(PortalId.builder().serverId(server.getId()).dimension(dimension).build())
                 .position(positionMapper.map(externalPortalDto.getPosition()))
                 .utilisation(externalPortalDto.getUtilisation())
                 .creationDate(Instant.now())

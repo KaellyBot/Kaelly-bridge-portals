@@ -1,9 +1,9 @@
 package com.github.kaellybot.portals.service;
 
 import com.github.kaellybot.portals.model.constants.Dimension;
-import com.github.kaellybot.portals.model.constants.Server;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
+import com.github.kaellybot.portals.model.entity.Server;
 import com.github.kaellybot.portals.repository.PortalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,13 @@ public class PortalService {
 
     public Mono<Portal> findById(Server server, Dimension dimension){
         return portalRepository.findById(PortalId.builder()
-                .server(server)
+                .serverId(server.getId())
                 .dimension(dimension)
                 .build());
     }
 
     public Flux<Portal> findAllByPortalIdServer(Server server) {
-        return portalRepository.findAllByPortalIdServer(server);
+        return portalRepository.findAllByPortalIdServerId(server.getId());
     }
 
     public Mono<Portal> save(Portal portal) {

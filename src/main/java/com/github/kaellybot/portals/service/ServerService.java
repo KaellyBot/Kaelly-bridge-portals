@@ -1,23 +1,19 @@
 package com.github.kaellybot.portals.service;
 
-import com.github.kaellybot.portals.model.constants.Server;
-import org.apache.commons.lang3.StringUtils;
+import com.github.kaellybot.portals.model.entity.Server;
+import com.github.kaellybot.portals.repository.ServerRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
+@AllArgsConstructor
 public class ServerService {
 
-    public Optional<Server> findByName(String name) {
-        final String NORMALIZED_NAME = normalizeServerName(name);
-        return Stream.of(Server.values())
-                .filter(server -> normalizeServerName(server.name()).equals(NORMALIZED_NAME))
-                .findFirst();
-    }
+    private ServerRepository serverRepository;
 
-    private String normalizeServerName(String input){
-        return StringUtils.stripAccents(input.toUpperCase().replaceAll("\\s|-", "_").trim());
+    public Mono<Server> findById(String id) {
+        return serverRepository.findById(id);
     }
 }
