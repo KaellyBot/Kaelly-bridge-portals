@@ -16,5 +16,5 @@ public enum TransportType implements MultilingualEnum {
     SCAEROPLANE ("transport_type.scaeroplane"            ),
     CHAR_A_VOILE("transport_type.char_a_voile"           );
 
-    private String key;
+    private final String key;
 }

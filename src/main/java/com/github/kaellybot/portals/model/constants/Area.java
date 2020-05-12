@@ -28,5 +28,5 @@ public enum Area implements MultilingualEnum {
     PANDALA_AIR       ("area.pandala_air"     ),
     MONTAGNE_KOALAKS  ("area.montagne_koalaks");
 
-    private String key;
+    private final String key;
 }

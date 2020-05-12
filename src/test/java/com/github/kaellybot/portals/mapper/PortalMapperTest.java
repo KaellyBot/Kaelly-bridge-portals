@@ -1,10 +1,7 @@
 package com.github.kaellybot.portals.mapper;
 
 import com.github.kaellybot.portals.model.constants.Transport;
-import com.github.kaellybot.portals.model.entity.Author;
-import com.github.kaellybot.portals.model.entity.Portal;
-import com.github.kaellybot.portals.model.entity.PortalId;
-import com.github.kaellybot.portals.model.entity.Position;
+import com.github.kaellybot.portals.model.entity.*;
 import com.github.kaellybot.portals.util.Translator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,7 +13,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LANGUAGE;
-import static com.github.kaellybot.portals.model.constants.Dimension.*;
 import static com.github.kaellybot.portals.model.entity.Portal.PORTAL_LIFETIME_IN_DAYS;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,8 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class PortalMapperTest {
 
-    private static final String DEFAULT_SERVER = "DEFAULT_SERVER";
-
+    private static final Server DEFAULT_SERVER = Server.builder().id("DEFAULT_SERVER").build();
+    private static final Dimension DEFAULT_DIMENSION = Dimension.builder().id("DEFAULT_DIMENSION").build();
+    
     private static final Instant FRESH = Instant.now();
     private static final Instant OLD = FRESH.minus(PORTAL_LIFETIME_IN_DAYS + 1, ChronoUnit.DAYS);
     // Platform
@@ -51,49 +48,49 @@ class PortalMapperTest {
     @MethodSource("getPortals")
     void mapPortalDtoTest(Portal portal)
     {
-        assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE)).isNotNull();
-        assertThat(translator.getLabel(DEFAULT_LANGUAGE, portal.getPortalId().getDimension())).isNotNull()
-                .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getDimension());
+        assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)).isNotNull();
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, portal.getPortalId().getDimensionId())).isNotNull()
+                .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getDimension());
         assertThat(portal.isAvailable()).isNotNull()
-                .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getIsAvailable());
+                .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getIsAvailable());
 
         if (portal.isValid()){
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition()).isNotNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition()).isNotNull();
             assertThat(positionMapper.map(portal.getPosition())).isNotNull()
-                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition());
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition());
             assertThat(portal.getUtilisation())
-                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getUtilisation());
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getUtilisation());
             assertThat(portal.getCreationDate()).isNotNull()
-                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getCreationDate());
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getCreationDate());
             assertThat(transportMapper.map(portal.getNearestZaap(), DEFAULT_LANGUAGE)).isNotNull()
-                    .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestZaap());
+                    .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestZaap());
 
             if (portal.isUpdated()){
                 assertThat(portal.getLastUpdateDate()).isNotNull()
-                        .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate());
+                        .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastUpdateDate());
                 assertThat(authorMapper.map(portal.getLastAuthorUpdate())).isNotNull()
-                        .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate());
+                        .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastAuthorUpdate());
             }
             else {
-                assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
-                assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
+                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
+                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
             }
 
             if (portal.isTransportLimitedNearest())
                 assertThat(transportMapper.map(portal.getNearestTransportLimited(), DEFAULT_LANGUAGE)).isNotNull()
-                        .isEqualTo(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited());
+                        .isEqualTo(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestTransportLimited());
             else
-                assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited()).isNull();
+                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestTransportLimited()).isNull();
         }
         else {
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getPosition()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getUtilisation()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getCreationDate()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestZaap()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_LANGUAGE).getNearestTransportLimited()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getUtilisation()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getCreationDate()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestZaap()).isNull();
+            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestTransportLimited()).isNull();
         }
     }
 
@@ -101,15 +98,15 @@ class PortalMapperTest {
         return Stream.of(
                 // No available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(SRAMBAD).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION.getId()).serverId(DEFAULT_SERVER.getId()).build())
                         .isAvailable(true)
                         .creationDate(OLD)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION.getId()).serverId(DEFAULT_SERVER.getId()).build())
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(XELORIUM).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION.getId()).serverId(DEFAULT_SERVER.getId()).build())
                         .isAvailable(true)
                         .creationDate(OLD).creationAuthor(Author.builder().name(OSGL).platform(DISCORD).build())
                         .nearestZaap(Transport.ZAAP_PORT_MADRESTAM)
@@ -118,14 +115,14 @@ class PortalMapperTest {
 
                 // Available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION.getId()).serverId(DEFAULT_SERVER.getId()).build())
                         .isAvailable(true)
                         .position(Position.builder().x(2).y(0).build())
                         .creationDate(FRESH).creationAuthor(Author.builder().name(BLANCIX).platform(DISCORD).build())
                         .nearestZaap(Transport.ZAAP_BERCEAU)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION.getId()).serverId(DEFAULT_SERVER.getId()).build())
                         .isAvailable(true)
                         .position(Position.builder().x(5).y(7).build())
                         .creationDate(FRESH).creationAuthor(Author.builder().name(GRABUGE).platform(DISCORD).build())
@@ -134,7 +131,7 @@ class PortalMapperTest {
                         .nearestTransportLimited(Transport.BRIGANDIN_RIVIERE_KAWAII)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ECAFLIPUS).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION.getId()).serverId(DEFAULT_SERVER.getId()).build())
                         .isAvailable(true)
                         .position(Position.builder().x(-666).y(-666).build())
                         .creationDate(FRESH).creationAuthor(Author.builder().name(SONGFU).platform(DISCORD).build())
@@ -143,7 +140,7 @@ class PortalMapperTest {
                         .nearestZaap(Transport.ZAAP_CITE_ASTRUB)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION.getId()).serverId(DEFAULT_SERVER.getId()).build())
                         .isAvailable(true)
                         .position(Position.builder().x(-1).y(1).build())
                         .creationDate(FRESH).creationAuthor(Author.builder().name(KIZARD).platform(DISCORD).build())

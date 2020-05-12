@@ -1,9 +1,10 @@
 package com.github.kaellybot.portals.service;
 
-import com.github.kaellybot.portals.model.constants.Dimension;
+import com.github.kaellybot.portals.model.entity.Dimension;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
 import com.github.kaellybot.portals.model.entity.Server;
+import com.github.kaellybot.portals.repository.DimensionRepository;
 import com.github.kaellybot.portals.repository.PortalRepository;
 import com.github.kaellybot.portals.repository.ServerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,10 @@ class PortalServiceTest {
 
     private static final Server NO_SAVED_SERVER = Server.builder().id("NO_SAVED_SERVER").build();
 
+    private static final Dimension DEFAULT_DIMENSION = Dimension.builder().id("DEFAULT_DIMENSION").build();
+
+    private static final Dimension NO_SAVED_DIMENSION = Dimension.builder().id("NO_SAVED_DIMENSION").build();
+
     @Autowired
     private PortalService portalService;
 
@@ -30,11 +35,17 @@ class PortalServiceTest {
     @Autowired
     private ServerRepository serverRepository;
 
+    @Autowired
+    private DimensionRepository dimensionRepository;
+
     @BeforeEach
     void provideData(){
         serverRepository.save(DEFAULT_SERVER)
-                .flatMap(server -> portalRepository.save(Portal.builder()
-                    .portalId(PortalId.builder().serverId(DEFAULT_SERVER.getId()).dimension(Dimension.ECAFLIPUS).build())
+                .then(dimensionRepository.save(DEFAULT_DIMENSION))
+                .then(portalRepository.save(Portal.builder()
+                    .portalId(PortalId.builder()
+                            .serverId(DEFAULT_SERVER.getId())
+                            .dimensionId(DEFAULT_DIMENSION.getId()).build())
                     .build()))
                 .block();
     }
@@ -58,11 +69,11 @@ class PortalServiceTest {
 
     @Test
     void findByIdTest() {
-        StepVerifier.create(portalService.findById(DEFAULT_SERVER, Dimension.ECAFLIPUS))
+        StepVerifier.create(portalService.findById(DEFAULT_SERVER, DEFAULT_DIMENSION))
                 .assertNext(portal -> {
                     assertThat(portal.getPortalId()).isNotNull();
                     assertThat(portal.getPortalId().getServerId()).isNotNull().isEqualTo(DEFAULT_SERVER.getId());
-                    assertThat(portal.getPortalId().getDimension()).isNotNull().isEqualTo(Dimension.ECAFLIPUS);
+                    assertThat(portal.getPortalId().getDimensionId()).isNotNull().isEqualTo(DEFAULT_DIMENSION.getId());
                 })
                 .expectComplete()
                 .verify();
@@ -70,7 +81,7 @@ class PortalServiceTest {
 
     @Test
     void findByIdNoPassingCaseTest() {
-        StepVerifier.create(portalService.findById(DEFAULT_SERVER, Dimension.ENUTROSOR))
+        StepVerifier.create(portalService.findById(NO_SAVED_SERVER, NO_SAVED_DIMENSION))
                 .expectComplete()
                 .verify();
     }
@@ -78,7 +89,7 @@ class PortalServiceTest {
     @Test
     void saveTest() {
         final Portal PORTAL = Portal.builder()
-                .portalId(PortalId.builder().serverId(DEFAULT_SERVER.getId()).dimension(Dimension.SRAMBAD).build())
+                .portalId(PortalId.builder().serverId(DEFAULT_SERVER.getId()).dimensionId(NO_SAVED_DIMENSION.getId()).build())
                 .build();
         StepVerifier.create(portalService.save(PORTAL))
                 .assertNext(portal -> assertThat(portal).isNotNull().isEqualTo(PORTAL))

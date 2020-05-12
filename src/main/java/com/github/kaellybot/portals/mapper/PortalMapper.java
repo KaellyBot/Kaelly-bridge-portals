@@ -1,34 +1,29 @@
 package com.github.kaellybot.portals.mapper;
 
-import com.github.kaellybot.portals.model.constants.Dimension;
 import com.github.kaellybot.portals.model.constants.Language;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
-import com.github.kaellybot.portals.model.entity.Author;
-import com.github.kaellybot.portals.model.entity.Portal;
-import com.github.kaellybot.portals.model.entity.PortalId;
-import com.github.kaellybot.portals.model.entity.Server;
-import com.github.kaellybot.portals.util.Translator;
+import com.github.kaellybot.portals.model.entity.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
 public class PortalMapper {
 
-    private Translator translator;
+    private final PositionMapper positionMapper;
 
-    private PositionMapper positionMapper;
+    private final AuthorMapper authorMapper;
 
-    private AuthorMapper authorMapper;
+    private final TransportMapper transportMapper;
 
-    private TransportMapper transportMapper;
-
-    public PortalDto map(Portal portal, Language language) {
+    public PortalDto map(Portal portal, Server server, Dimension dimension, Language language) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
-                .dimension(translator.getLabel(language, portal.getPortalId().getDimension()))
+                .server(Optional.ofNullable(server.getTranslation()).map(map -> map.get(language)).orElse(server.getId()))
+                .dimension(Optional.ofNullable(dimension.getTranslation()).map(map -> map.get(language)).orElse(dimension.getId()))
                 .isAvailable(portal.isAvailable());
 
         if (portal.isValid()) {
@@ -51,7 +46,7 @@ public class PortalMapper {
 
     public Portal map(Server server, Dimension dimension, ExternalPortalDto externalPortalDto){
         return Portal.builder()
-                .portalId(PortalId.builder().serverId(server.getId()).dimension(dimension).build())
+                .portalId(PortalId.builder().serverId(server.getId()).dimensionId(dimension.getId()).build())
                 .position(positionMapper.map(externalPortalDto.getPosition()))
                 .utilisation(externalPortalDto.getUtilisation())
                 .creationDate(Instant.now())

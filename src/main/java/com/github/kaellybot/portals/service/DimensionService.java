@@ -1,20 +1,23 @@
 package com.github.kaellybot.portals.service;
 
-import com.github.kaellybot.portals.model.constants.Dimension;
-import org.apache.commons.lang3.StringUtils;
+import com.github.kaellybot.portals.model.entity.Dimension;
+import com.github.kaellybot.portals.repository.DimensionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.stream.Stream;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
+@AllArgsConstructor
 public class DimensionService {
 
-    public Optional<Dimension> findByName(String name){
-        final String NORMALIZED_NAME = StringUtils.stripAccents(name.toUpperCase().trim());
-        return Stream.of(Dimension.values())
-                .filter(dim -> StringUtils.stripAccents(dim.name().toUpperCase().trim())
-                        .equals(NORMALIZED_NAME))
-                .findFirst();
+    private final DimensionRepository dimensionRepository;
+
+    public Mono<Dimension> findById(String id){
+        return dimensionRepository.findById(id);
+    }
+
+    public Flux<Dimension> findAll(){
+        return dimensionRepository.findAll();
     }
 }

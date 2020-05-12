@@ -102,8 +102,8 @@ public enum Transport {
     CHAR_TERRITOIRE_CACTERRE      (CHAR_A_VOILE, TERRITOIRE_CACTERRE        , Position.of(12, -63) , false),
     CHAR_GORGE_VENTS_HURLANTS     (CHAR_A_VOILE, GORGE_VENTS_HURLANTS       , Position.of(11, -70) , false);
 
-    private TransportType type;
-    private SubArea subArea;
-    private Position position;
-    private boolean isAvailableUnderConditions;
+    private final TransportType type;
+    private final SubArea subArea;
+    private final Position position;
+    private final boolean isAvailableUnderConditions;
 }

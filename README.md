@@ -5,7 +5,7 @@ KaellyBOT is a Discord bot dedicated to the DOFUS game, available in FR, EN and 
 ## Add KaellyBOT to your server: [![Official Kaelly Invite](https://img.shields.io/badge/Add-KaellyBOT-0199FE.svg?style=flat)](https://discordapp.com/oauth2/authorize?&client_id=202916641414184960&scope=bot)
 
 ## Portal  
-This microservice aims to provide dimension portals by game server that can be accessed and updated by KaellyBot applications and other external applications.
+This microservice aims to provide dimension portals by gaming server that can be accessed and updated by KaellyBot applications and other external applications.
 
 ## License  
 

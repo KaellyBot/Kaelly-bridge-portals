@@ -1,6 +1,6 @@
 package com.github.kaellybot.portals.service;
 
-import com.github.kaellybot.portals.model.constants.Dimension;
+import com.github.kaellybot.portals.model.entity.Dimension;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
 import com.github.kaellybot.portals.model.entity.Server;
@@ -14,12 +14,12 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class PortalService {
 
-    private PortalRepository portalRepository;
+    private final PortalRepository portalRepository;
 
     public Mono<Portal> findById(Server server, Dimension dimension){
         return portalRepository.findById(PortalId.builder()
                 .serverId(server.getId())
-                .dimension(dimension)
+                .dimensionId(dimension.getId())
                 .build());
     }
 

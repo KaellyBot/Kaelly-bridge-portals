@@ -8,14 +8,13 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Stream;
 
-import static com.github.kaellybot.portals.model.constants.Dimension.*;
-import static com.github.kaellybot.portals.model.constants.Dimension.ENUTROSOR;
 import static com.github.kaellybot.portals.model.entity.Portal.PORTAL_LIFETIME_IN_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PortalTest {
     private static final String DEFAULT_SERVER = "DEFAULT_SERVER";
+    private static final String DEFAULT_DIMENSION = "DEFAULT_DIMENSION";
 
     private static final Instant FRESH = Instant.now();
     private static final Instant STILl_FRESH = FRESH.minus(PORTAL_LIFETIME_IN_DAYS - 1, ChronoUnit.DAYS);
@@ -130,15 +129,15 @@ class PortalTest {
         return Stream.of(
                 // No available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(SRAMBAD).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION + "_1").serverId(DEFAULT_SERVER).build())
                         .isAvailable(true)
                         .creationDate(OLD)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION + "_2").serverId(DEFAULT_SERVER).build())
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(XELORIUM).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION + "_3").serverId(DEFAULT_SERVER).build())
                         .isAvailable(true)
                         .creationDate(OLD).creationAuthor(Author.builder().name(OSGL).platform(DISCORD).build())
                         .nearestZaap(Transport.ZAAP_PORT_MADRESTAM)
@@ -147,14 +146,14 @@ class PortalTest {
 
                 // Available portals
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION + "_4").serverId(DEFAULT_SERVER).build())
                         .isAvailable(true)
                         .position(Transport.ZAAP_BERCEAU.getPosition())
                         .creationDate(STILl_FRESH).creationAuthor(Author.builder().name(BLANCIX).platform(DISCORD).build())
                         .nearestZaap(Transport.ZAAP_BERCEAU)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION + "_5").serverId(DEFAULT_SERVER).build())
                         .isAvailable(true)
                         .position(Transport.CHAR_TERRITOIRE_CACTERRE.getPosition())
                         .creationDate(STILl_FRESH).creationAuthor(Author.builder().name(GRABUGE).platform(DISCORD).build())
@@ -163,7 +162,7 @@ class PortalTest {
                         .nearestTransportLimited(Transport.CHAR_TERRITOIRE_CACTERRE)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ECAFLIPUS).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION + "_6").serverId(DEFAULT_SERVER).build())
                         .isAvailable(true)
                         .position(Transport.ZAAP_CITE_ASTRUB.getPosition())
                         .creationDate(STILl_FRESH).creationAuthor(Author.builder().name(SONGFU).platform(DISCORD).build())
@@ -172,7 +171,7 @@ class PortalTest {
                         .nearestZaap(Transport.ZAAP_CITE_ASTRUB)
                         .build(),
                 Portal.builder()
-                        .portalId(PortalId.builder().dimension(ENUTROSOR).serverId(DEFAULT_SERVER).build())
+                        .portalId(PortalId.builder().dimensionId(DEFAULT_DIMENSION + "_7").serverId(DEFAULT_SERVER).build())
                         .isAvailable(true)
                         .position(Transport.BRIGANDIN_ILE_MINOTOROR.getPosition())
                         .creationDate(STILl_FRESH).creationAuthor(Author.builder().name(KIZARD).platform(DISCORD).build())

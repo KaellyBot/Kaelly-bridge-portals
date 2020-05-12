@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Translator {
 
     private static final Logger LOG = LoggerFactory.getLogger(Translator.class);
-    private Map<Language, Properties> labels;
+    private final Map<Language, Properties> labels;
 
     public Translator(){
         labels = new ConcurrentHashMap<>();

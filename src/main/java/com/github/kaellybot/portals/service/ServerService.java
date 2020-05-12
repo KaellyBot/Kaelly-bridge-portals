@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class ServerService {
 
-    private ServerRepository serverRepository;
+    private final ServerRepository serverRepository;
 
     public Mono<Server> findById(String id) {
         return serverRepository.findById(id);

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class TransportMapper {
 
-    private Translator translator;
+    private final Translator translator;
 
-    private PositionMapper positionMapper;
+    private final PositionMapper positionMapper;
 
     public TransportDto map(Transport transport, Language language){
         return TransportDto.builder()

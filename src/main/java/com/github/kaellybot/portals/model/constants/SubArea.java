@@ -87,6 +87,6 @@ public enum SubArea implements MultilingualEnum {
     TERRITOIRE_CACTERRE        (SAHARACH           , "sous_zone.territoire_cacterre"       ),
     GORGE_VENTS_HURLANTS       (SAHARACH           , "sous_zone.gorge_vents_hurlants"      );
 
-    private Area area;
-    private String key;
+    private final Area area;
+    private final String key;
 }

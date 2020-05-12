@@ -1,38 +1,43 @@
 package com.github.kaellybot.portals.service;
 
-import com.github.kaellybot.portals.model.constants.Dimension;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+import com.github.kaellybot.portals.model.entity.Dimension;
+import com.github.kaellybot.portals.repository.DimensionRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.test.StepVerifier;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class DimensionServiceTest {
 
+    private static final Dimension DEFAULT_DIMENSION = Dimension.builder().id("DEFAULT_DIMENSION").build();
+
     @Autowired
     private DimensionService dimensionService;
 
-    @ParameterizedTest
-    @EnumSource(Dimension.class)
-    void findPassingCaseTest(Dimension dimension){
-        assertAll(
-                () -> assertThat(dimensionService.findByName(dimension.name())).isPresent(),
-                () -> assertThat(dimensionService.findByName(dimension.name().toLowerCase())).isPresent(),
-                () -> assertThat(dimensionService.findByName(dimension.name().toUpperCase())).isPresent(),
-                () -> assertThat(dimensionService.findByName(StringUtils.stripAccents(dimension.name()))).isPresent()
-        );
+    @Autowired
+    private DimensionRepository dimensionRepository;
 
-        dimensionService.findByName(dimension.name())
-                .ifPresent(dim -> assertThat(dimension).isNotNull().isEqualTo(dim));
+    @BeforeEach
+    void provideData(){
+        dimensionRepository.save(DEFAULT_DIMENSION).block();
     }
 
-    @ParameterizedTest
-    @EnumSource(Dimension.class)
-    void findNoPassingCaseTest(Dimension dimension){
-        assertThat(dimensionService.findByName(dimension.name() + "_BAD_NAME")).isEmpty();
+    @Test
+    void findPassingCaseTest(){
+        StepVerifier.create(dimensionService.findById(DEFAULT_DIMENSION.getId()))
+                .assertNext(server -> assertThat(server).isNotNull().isEqualTo(DEFAULT_DIMENSION))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void findNoPassingCaseTest(){
+        StepVerifier.create(dimensionService.findById(DEFAULT_DIMENSION.getId() + "_BAD_NAME"))
+                .expectComplete()
+                .verify();
     }
 }
