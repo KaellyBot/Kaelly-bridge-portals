@@ -3,19 +3,22 @@ package com.github.kaellybot.portals.model.entity;
 import com.github.kaellybot.portals.model.constants.Game;
 import com.github.kaellybot.portals.model.constants.Language;
 import lombok.Builder;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
-@Data
-@Builder
+@Getter
+@EqualsAndHashCode(callSuper = true)
 @Document(collection = "servers")
-public class Server {
+public class Server extends MultilingualEntity {
 
-    @Id
-    private String id;
-    private Map<Language, String> translation;
-    private Game game;
+    private final Game game;
+
+    @Builder
+    public Server(String id, Game game, Map<Language, String> labels){
+        super(id, labels);
+        this.game = game;
+    }
 }

@@ -2,6 +2,7 @@ package com.github.kaellybot.portals.util;
 
 import com.github.kaellybot.portals.model.constants.Language;
 import com.github.kaellybot.portals.model.constants.MultilingualEnum;
+import com.github.kaellybot.portals.model.entity.MultilingualEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,20 +39,29 @@ public class Translator {
     public String getLabel(Language lang, String property){
         String value = labels.get(lang).getProperty(property);
         if (value == null || value.trim().isEmpty()) {
-            LOG.error("Missing label in {} : {}", lang, property);
+            LOG.warn("Missing label in {} for property '{}'", lang, property);
             return property;
         }
 
         return value;
     }
 
-    public String getLabel(Language lang, MultilingualEnum enumeration){
-        String value = labels.get(lang).getProperty(enumeration.getKey());
+    public String getLabel(Language lang, MultilingualEnum anEnum){
+        String value = labels.get(lang).getProperty(anEnum.getKey());
         if (value == null || value.trim().isEmpty()) {
-            LOG.error("Missing label in {} : {}", lang, enumeration.getKey());
-            return enumeration.getKey();
+            LOG.warn("Missing label in {} for enum {}[{}]", lang, anEnum.getClass().getSimpleName(), anEnum);
+            return anEnum.getKey();
         }
 
         return value;
+    }
+
+    public String getLabel(Language lang, MultilingualEntity entity){
+        if (! Optional.ofNullable(entity.getLabels()).map(map -> map.containsKey(lang)).orElse(false)) {
+            LOG.warn("Missing label in {} for entity {}[{}]", lang, entity.getClass().getSimpleName(), entity.getId());
+            return entity.getId();
+        }
+
+        return entity.getLabels().get(lang);
     }
 }

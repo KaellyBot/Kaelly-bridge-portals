@@ -4,11 +4,11 @@ import com.github.kaellybot.portals.model.constants.Language;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.entity.*;
+import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -20,10 +20,12 @@ public class PortalMapper {
 
     private final TransportMapper transportMapper;
 
+    private final Translator translator;
+
     public PortalDto map(Portal portal, Server server, Dimension dimension, Language language) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
-                .server(Optional.ofNullable(server.getTranslation()).map(map -> map.get(language)).orElse(server.getId()))
-                .dimension(Optional.ofNullable(dimension.getTranslation()).map(map -> map.get(language)).orElse(dimension.getId()))
+                .server(translator.getLabel(language, server))
+                .dimension(translator.getLabel(language, dimension))
                 .isAvailable(portal.isAvailable());
 
         if (portal.isValid()) {

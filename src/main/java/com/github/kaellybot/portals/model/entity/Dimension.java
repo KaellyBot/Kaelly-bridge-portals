@@ -2,18 +2,15 @@ package com.github.kaellybot.portals.model.entity;
 
 import com.github.kaellybot.portals.model.constants.Language;
 import lombok.Builder;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
-@Data
-@Builder
 @Document(collection = "dimensions")
-public class Dimension {
+public class Dimension extends MultilingualEntity {
 
-    @Id
-    private String id;
-    private Map<Language, String> translation;
+    @Builder
+    public Dimension(String id, Map<Language, String> labels){
+        super(id, labels);
+    }
 }
