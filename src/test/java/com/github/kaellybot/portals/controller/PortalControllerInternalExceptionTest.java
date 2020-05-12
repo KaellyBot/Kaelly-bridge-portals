@@ -44,6 +44,7 @@ class PortalControllerInternalExceptionTest {
     @BeforeEach
     void provideData(){
         serverRepository.save(DEFAULT_SERVER).then(dimensionRepository.save(DEFAULT_DIMENSION)).block();
+        Mockito.reset(portalService);
     }
 
     @Test
