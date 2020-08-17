@@ -1,7 +1,7 @@
 package com.github.kaellybot.portals.service;
 
+import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.portals.controller.PortalConstants;
-import com.github.kaellybot.portals.model.constants.Language;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 

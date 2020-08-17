@@ -1,9 +1,9 @@
 package com.github.kaellybot.portals.mapper;
 
-import com.github.kaellybot.portals.model.constants.Language;
+import com.github.kaellybot.commons.model.constants.Language;
+import com.github.kaellybot.commons.util.Translator;
 import com.github.kaellybot.portals.model.constants.Transport;
 import com.github.kaellybot.portals.model.dto.TransportDto;
-import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +17,9 @@ public class TransportMapper {
 
     public TransportDto map(Transport transport, Language language){
         return TransportDto.builder()
-                .type(translator.getLabel(language, transport.getType()))
-                .area(translator.getLabel(language, transport.getSubArea().getArea()))
-                .subArea(translator.getLabel(language, transport.getSubArea()))
+                .type(translator.getLabel(language, transport.getType().getKey()))
+                .area(translator.getLabel(language, transport.getSubArea().getArea().getKey()))
+                .subArea(translator.getLabel(language, transport.getSubArea().getKey()))
                 .position(positionMapper.map(transport.getPosition()))
                 .isAvailableUnderConditions(transport.isAvailableUnderConditions())
                 .build();

@@ -1,12 +1,12 @@
 package com.github.kaellybot.portals.service;
 
-import com.github.kaellybot.portals.model.entity.Dimension;
+import com.github.kaellybot.commons.model.entity.Dimension;
+import com.github.kaellybot.commons.model.entity.Server;
+import com.github.kaellybot.commons.repository.DimensionRepository;
+import com.github.kaellybot.commons.repository.ServerRepository;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
-import com.github.kaellybot.portals.model.entity.Server;
-import com.github.kaellybot.portals.repository.DimensionRepository;
 import com.github.kaellybot.portals.repository.PortalRepository;
-import com.github.kaellybot.portals.repository.ServerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,7 @@
 package com.github.kaellybot.portals.mapper;
 
+import com.github.kaellybot.commons.model.entity.Dimension;
+import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.portals.model.constants.Transport;
 import com.github.kaellybot.portals.model.entity.*;
 import org.junit.jupiter.params.ParameterizedTest;

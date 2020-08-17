@@ -1,6 +1,6 @@
 package com.github.kaellybot.portals.model.entity;
 
-import com.github.kaellybot.portals.model.constants.Language;
+import com.github.kaellybot.commons.model.constants.Language;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

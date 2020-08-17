@@ -1,9 +1,9 @@
 package com.github.kaellybot.portals.service;
 
-import com.github.kaellybot.portals.model.entity.Dimension;
+import com.github.kaellybot.commons.model.entity.Dimension;
+import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.portals.model.entity.Portal;
 import com.github.kaellybot.portals.model.entity.PortalId;
-import com.github.kaellybot.portals.model.entity.Server;
 import com.github.kaellybot.portals.repository.PortalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

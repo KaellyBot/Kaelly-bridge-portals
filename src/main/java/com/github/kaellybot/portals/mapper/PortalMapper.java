@@ -1,10 +1,12 @@
 package com.github.kaellybot.portals.mapper;
 
-import com.github.kaellybot.portals.model.constants.Language;
+import com.github.kaellybot.commons.model.constants.Language;
+import com.github.kaellybot.commons.model.entity.Dimension;
+import com.github.kaellybot.commons.model.entity.Server;
+import com.github.kaellybot.commons.util.Translator;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.entity.*;
-import com.github.kaellybot.portals.util.Translator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

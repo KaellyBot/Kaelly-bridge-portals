@@ -1,11 +1,11 @@
 package com.github.kaellybot.portals.controller;
 
+import com.github.kaellybot.commons.model.entity.Dimension;
+import com.github.kaellybot.commons.model.entity.Server;
+import com.github.kaellybot.commons.repository.DimensionRepository;
+import com.github.kaellybot.commons.repository.ServerRepository;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PositionDto;
-import com.github.kaellybot.portals.model.entity.Dimension;
-import com.github.kaellybot.portals.model.entity.Server;
-import com.github.kaellybot.portals.repository.DimensionRepository;
-import com.github.kaellybot.portals.repository.ServerRepository;
 import com.github.kaellybot.portals.service.PortalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

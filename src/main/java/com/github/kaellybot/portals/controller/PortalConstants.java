@@ -1,10 +1,10 @@
 package com.github.kaellybot.portals.controller;
 
-import com.github.kaellybot.portals.model.constants.Language;
+import com.github.kaellybot.commons.model.constants.Language;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import static com.github.kaellybot.portals.model.constants.Language.FR;
+import static com.github.kaellybot.commons.model.constants.Language.FR;
 
 public final class PortalConstants {
 

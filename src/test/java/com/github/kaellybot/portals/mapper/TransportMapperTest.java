@@ -1,7 +1,7 @@
 package com.github.kaellybot.portals.mapper;
 
+import com.github.kaellybot.commons.util.Translator;
 import com.github.kaellybot.portals.model.constants.Transport;
-import com.github.kaellybot.portals.util.Translator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ class transportMapperTest {
         assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea()).isNotNull();
         assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition()).isNotNull();
 
-        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getType())).isNotNull()
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getType().getKey())).isNotNull()
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getType());
-        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getArea())).isNotNull()
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getArea().getKey())).isNotNull()
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getArea());
-        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea())).isNotNull()
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getKey())).isNotNull()
                 .isEqualTo( transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
         assertThat(positionMapper.map(transport.getPosition())).isNotNull()
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition());
