@@ -1,5 +1,6 @@
 package com.github.kaellybot.portals.model.constants;
 
+import com.github.kaellybot.commons.model.constants.MultilingualEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

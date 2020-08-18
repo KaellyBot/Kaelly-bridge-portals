@@ -27,11 +27,11 @@ class transportMapperTest {
         assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea()).isNotNull();
         assertThat(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition()).isNotNull();
 
-        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getType().getKey())).isNotNull()
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getType())).isNotNull()
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getType());
-        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getArea().getKey())).isNotNull()
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getArea())).isNotNull()
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getArea());
-        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea().getKey())).isNotNull()
+        assertThat(translator.getLabel(DEFAULT_LANGUAGE, transport.getSubArea())).isNotNull()
                 .isEqualTo( transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
         assertThat(positionMapper.map(transport.getPosition())).isNotNull()
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition());

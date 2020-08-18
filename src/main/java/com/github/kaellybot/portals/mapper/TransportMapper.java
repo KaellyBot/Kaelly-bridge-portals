@@ -17,9 +17,9 @@ public class TransportMapper {
 
     public TransportDto map(Transport transport, Language language){
         return TransportDto.builder()
-                .type(translator.getLabel(language, transport.getType().getKey()))
-                .area(translator.getLabel(language, transport.getSubArea().getArea().getKey()))
-                .subArea(translator.getLabel(language, transport.getSubArea().getKey()))
+                .type(translator.getLabel(language, transport.getType()))
+                .area(translator.getLabel(language, transport.getSubArea().getArea()))
+                .subArea(translator.getLabel(language, transport.getSubArea()))
                 .position(positionMapper.map(transport.getPosition()))
                 .isAvailableUnderConditions(transport.isAvailableUnderConditions())
                 .build();
