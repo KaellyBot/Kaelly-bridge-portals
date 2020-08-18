@@ -5,8 +5,8 @@ import lombok.*;
 @Builder
 public class Position {
 
-    private int x;
-    private int y;
+    private Integer x;
+    private Integer y;
 
     public static Position of(int x, int y){
         return Position.builder().x(x).y(y).build();

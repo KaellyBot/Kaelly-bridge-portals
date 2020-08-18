@@ -28,7 +28,7 @@ public class PortalMapper {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
                 .server(translator.getLabel(language, server))
                 .dimension(translator.getLabel(language, dimension))
-                .isAvailable(portal.isAvailable());
+                .isAvailable(portal.getIsAvailable());
 
         if (portal.isValid()) {
             result.position(positionMapper.map(portal.getPosition()))
@@ -37,11 +37,11 @@ public class PortalMapper {
                     .creationAuthor(authorMapper.map(portal.getCreationAuthor()))
                     .nearestZaap(transportMapper.map(portal.getNearestZaap(), language));
 
-            if (portal.isUpdated())
+            if (portal.getIsUpdated())
                 result.lastUpdateDate(portal.getLastUpdateDate())
                         .lastAuthorUpdate(authorMapper.map(portal.getLastAuthorUpdate()));
 
-            if (portal.isTransportLimitedNearest())
+            if (portal.getTransportLimitedNearest())
                 result.nearestTransportLimited(transportMapper.map(portal.getNearestTransportLimited(), language));
         }
 

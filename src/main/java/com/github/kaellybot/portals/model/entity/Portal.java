@@ -26,12 +26,12 @@ public class Portal {
     private Author lastAuthorUpdate;
     private Transport nearestZaap;
     private Transport nearestTransportLimited;
-    private boolean transportLimitedNearest;
-    private boolean isAvailable;
-    private boolean isUpdated;
+    private Boolean transportLimitedNearest;
+    private Boolean isAvailable;
+    private Boolean isUpdated;
 
     public boolean isValid(){
-        return isAvailable() && Math.abs(Duration.
+        return getIsAvailable() && Math.abs(Duration.
                 between(Instant.now(), getCreationDate()).toDays()) < PORTAL_LIFETIME_IN_DAYS;
     }
 
@@ -39,19 +39,19 @@ public class Portal {
         if (getPortalId().equals(portal.getPortalId()) && portal.getPosition() != null) {
             if (portal.getPosition().equals(getPosition()) &&
                     (getUtilisation() == null || getUtilisation() > portal.getUtilisation())) {
-                setUpdated(true);
+                setIsUpdated(true);
                 setUtilisation(portal.getUtilisation());
                 setLastUpdateDate(portal.getLastUpdateDate());
                 setLastAuthorUpdate(portal.getLastAuthorUpdate());
             } else {
                 if (getPosition() == null || getPosition() != null && !getPosition().equals(portal.getPosition())
                         && getCreationDate().toEpochMilli() < portal.getCreationDate().toEpochMilli()) {
-                    setAvailable(true);
+                    setIsAvailable(true);
                     setPosition(portal.getPosition());
                     setCreationDate(portal.getCreationDate());
                     setCreationAuthor(portal.getCreationAuthor());
                     setUtilisation(portal.getUtilisation());
-                    setUpdated(false);
+                    setIsUpdated(false);
                     setLastUpdateDate(null);
                     setLastAuthorUpdate(null);
                     determineTransports();
