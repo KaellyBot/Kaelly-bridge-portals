@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LANGUAGE;
@@ -62,7 +63,7 @@ class PortalMapperTest {
         assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getDimension())
                 .isNotNull().isEqualTo(DEFAULT_DIMENSION_LABEL);
         assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getIsAvailable())
-                .isNotNull().isEqualTo(portal.isAvailable());
+                .isNotNull().isEqualTo(Optional.ofNullable(portal.getIsAvailable()).orElse(false));
 
         if (portal.isValid()){
             assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition()).isNotNull();
@@ -75,7 +76,7 @@ class PortalMapperTest {
             assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestZaap()).isNotNull()
                     .isEqualTo(transportMapper.map(portal.getNearestZaap(), DEFAULT_LANGUAGE));
 
-            if (portal.isUpdated()){
+            if (Optional.ofNullable(portal.getIsUpdated()).orElse(false)){
                 assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)
                         .getLastUpdateDate()).isNotNull().isEqualTo(portal.getLastUpdateDate());
                 assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)
@@ -86,7 +87,7 @@ class PortalMapperTest {
                 assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
             }
 
-            if (portal.isTransportLimitedNearest())
+            if (Optional.ofNullable(portal.getTransportLimitedNearest()).orElse(false))
                 assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)
                         .getNearestTransportLimited()).isNotNull()
                         .isEqualTo(transportMapper.map(portal.getNearestTransportLimited(), DEFAULT_LANGUAGE));

@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -31,7 +32,7 @@ public class Portal {
     private Boolean isUpdated;
 
     public boolean isValid(){
-        return getIsAvailable() && Math.abs(Duration.
+        return Optional.ofNullable(getIsAvailable()).orElse(false) && Math.abs(Duration.
                 between(Instant.now(), getCreationDate()).toDays()) < PORTAL_LIFETIME_IN_DAYS;
     }
 

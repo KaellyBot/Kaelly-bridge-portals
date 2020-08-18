@@ -57,18 +57,18 @@ class PortalTest {
                 () -> assertThat(portal.getUtilisation()).isNotNull().isEqualTo(NEW_PORTAL.getUtilisation()),
                 () -> assertThat(portal.getCreationDate()).isNotNull().isEqualTo(NEW_PORTAL.getCreationDate()),
                 () -> assertThat(portal.getCreationAuthor()).isNotNull().isEqualTo(NEW_PORTAL.getCreationAuthor()),
-                () -> assertThat(portal.isAvailable()).isNotNull().isTrue()
+                () -> assertThat(portal.getIsAvailable()).isNotNull().isTrue()
         );
 
         assertAll(
-                () -> assertThat(portal.isUpdated()).isNotNull().isFalse(),
+                () -> assertThat(portal.getIsUpdated()).isNotNull().isFalse(),
                 () -> assertThat(portal.getLastAuthorUpdate()).isNull(),
                 () -> assertThat(portal.getLastUpdateDate()).isNull()
         );
 
         assertAll(
                 () -> assertThat(portal.getNearestZaap()).isNotNull().isEqualTo(Transport.ZAAP_VILLAGE_AMAKNA),
-                () -> assertThat(portal.isTransportLimitedNearest()).isNotNull().isFalse(),
+                () -> assertThat(portal.getTransportLimitedNearest()).isNotNull().isFalse(),
                 () -> assertThat(portal.getNearestTransportLimited()).isNull()
         );
     }
@@ -92,11 +92,11 @@ class PortalTest {
                 () -> assertThat(portal.getPosition()).isNotNull().isEqualTo(OLD_POSITION),
                 () -> assertThat(portal.getCreationAuthor()).isNotNull().isEqualTo(OLD_CREATION_AUTHOR),
                 () -> assertThat(portal.getCreationDate()).isNotNull().isEqualTo(OLD_CREATION_DATE),
-                () -> assertThat(portal.isAvailable()).isNotNull().isTrue()
+                () -> assertThat(portal.getIsAvailable()).isNotNull().isTrue()
         );
 
         assertAll(
-                () -> assertThat(portal.isUpdated()).isNotNull().isTrue(),
+                () -> assertThat(portal.getIsUpdated()).isNotNull().isTrue(),
                 () -> assertThat(portal.getLastAuthorUpdate()).isEqualTo(NEW_PORTAL.getLastAuthorUpdate()),
                 () -> assertThat(portal.getLastUpdateDate()).isEqualTo(NEW_PORTAL.getLastUpdateDate()),
                 () -> assertThat(portal.getUtilisation()).isNotNull().isEqualTo(NEW_PORTAL.getUtilisation())
@@ -107,21 +107,21 @@ class PortalTest {
     @MethodSource("getAvailablePortals")
     void determineTransportTest(Portal portal){
         final Transport EXPECTED_ZAAP = portal.getNearestZaap();
-        final boolean EXPECTED_IS_LIMITED_NEAREST = portal.isTransportLimitedNearest();
+        final boolean EXPECTED_IS_LIMITED_NEAREST = portal.getTransportLimitedNearest();
         final Transport EXPECTED_LIMITED_TRANSPORT = portal.getNearestTransportLimited();
 
         portal.determineTransports();
 
         assertAll(
                 () -> assertThat(portal.getNearestZaap()).isNotNull().isEqualTo(EXPECTED_ZAAP),
-                () -> assertThat(portal.isTransportLimitedNearest()).isNotNull().isEqualTo(EXPECTED_IS_LIMITED_NEAREST),
+                () -> assertThat(portal.getTransportLimitedNearest()).isNotNull().isEqualTo(EXPECTED_IS_LIMITED_NEAREST),
                 () -> assertThat(portal.getNearestTransportLimited()).isEqualTo(EXPECTED_LIMITED_TRANSPORT)
         );
     }
 
     private static Stream<Portal> getAvailablePortals(){
         return getPortals()
-                .filter(Portal::isAvailable)
+                .filter(Portal::getIsAvailable)
                 .filter(portal -> portal.getPosition() != null);
     }
 

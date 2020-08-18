@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class PortalMapper {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
                 .server(translator.getLabel(language, server))
                 .dimension(translator.getLabel(language, dimension))
-                .isAvailable(portal.getIsAvailable());
+                .isAvailable(Optional.ofNullable(portal.getIsAvailable()).orElse(false));
 
         if (portal.isValid()) {
             result.position(positionMapper.map(portal.getPosition()))
@@ -37,11 +38,11 @@ public class PortalMapper {
                     .creationAuthor(authorMapper.map(portal.getCreationAuthor()))
                     .nearestZaap(transportMapper.map(portal.getNearestZaap(), language));
 
-            if (portal.getIsUpdated())
+            if (Optional.ofNullable(portal.getIsUpdated()).orElse(false))
                 result.lastUpdateDate(portal.getLastUpdateDate())
                         .lastAuthorUpdate(authorMapper.map(portal.getLastAuthorUpdate()));
 
-            if (portal.getTransportLimitedNearest())
+            if (Optional.ofNullable(portal.getTransportLimitedNearest()).orElse(false))
                 result.nearestTransportLimited(transportMapper.map(portal.getNearestTransportLimited(), language));
         }
 
