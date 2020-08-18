@@ -109,9 +109,9 @@ class PortalControllerTest {
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
-                .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(String.class)
-                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(LANGUAGE_NOT_FOUND_MESSAGE));
+                .expectStatus().isEqualTo(OK)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(PortalDto.class);
     }
 
     @ParameterizedTest
@@ -140,9 +140,9 @@ class PortalControllerTest {
                 .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
-                .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(String.class)
-                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(LANGUAGE_NOT_FOUND_MESSAGE));
+                .expectStatus().isEqualTo(OK)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBodyList(PortalDto.class);
     }
 
     @ParameterizedTest
@@ -183,9 +183,9 @@ class PortalControllerTest {
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .bodyValue(portal)
                 .exchange()
-                .expectStatus().isEqualTo(NOT_FOUND)
-                .expectBody(String.class)
-                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(LANGUAGE_NOT_FOUND_MESSAGE));
+                .expectStatus().isEqualTo(OK)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(PortalDto.class);
     }
 
     private static Stream<ExternalPortalDto> getExternalPortals(){
