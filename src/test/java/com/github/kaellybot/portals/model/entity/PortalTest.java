@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.github.kaellybot.portals.model.entity.Portal.PORTAL_LIFETIME_IN_DAYS;
@@ -107,7 +108,7 @@ class PortalTest {
     @MethodSource("getAvailablePortals")
     void determineTransportTest(Portal portal){
         final Transport EXPECTED_ZAAP = portal.getNearestZaap();
-        final boolean EXPECTED_IS_LIMITED_NEAREST = portal.getTransportLimitedNearest();
+        final Boolean EXPECTED_IS_LIMITED_NEAREST = Optional.ofNullable(portal.getTransportLimitedNearest()).orElse(false);
         final Transport EXPECTED_LIMITED_TRANSPORT = portal.getNearestTransportLimited();
 
         portal.determineTransports();
@@ -121,7 +122,7 @@ class PortalTest {
 
     private static Stream<Portal> getAvailablePortals(){
         return getPortals()
-                .filter(Portal::getIsAvailable)
+                .filter(portal -> Optional.ofNullable(portal.getIsAvailable()).orElse(false))
                 .filter(portal -> portal.getPosition() != null);
     }
 
