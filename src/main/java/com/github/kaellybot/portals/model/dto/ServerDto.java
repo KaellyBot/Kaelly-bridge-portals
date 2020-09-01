@@ -10,6 +10,7 @@ import lombok.Value;
 @Builder(builderClassName = "ServerDtoBuilder", toBuilder = true)
 public class ServerDto {
 
+    String id;
     String name;
     String image;
 

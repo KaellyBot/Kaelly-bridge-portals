@@ -11,7 +11,7 @@ import static com.github.kaellybot.portals.controller.PortalConstants.DEFAULT_LA
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class transportMapperTest {
+class TransportMapperTest {
 
     @Autowired private PositionMapper positionMapper;
     @Autowired private TransportMapper transportMapper;
@@ -35,7 +35,7 @@ class transportMapperTest {
                 .isEqualTo( transportMapper.map(transport, DEFAULT_LANGUAGE).getSubArea());
         assertThat(positionMapper.map(transport.getPosition())).isNotNull()
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).getPosition());
-        assertThat(transport.isAvailableUnderConditions()).isNotNull()
+        assertThat(transport.isAvailableUnderConditions())
                 .isEqualTo(transportMapper.map(transport, DEFAULT_LANGUAGE).isAvailableUnderConditions());
     }
 }

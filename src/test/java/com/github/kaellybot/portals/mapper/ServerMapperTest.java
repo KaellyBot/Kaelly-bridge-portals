@@ -21,6 +21,7 @@ class ServerMapperTest {
     private static final String URL = "http://image.png";
     private static final String GOULTARD = "Goultard";
     private static final String DJAUL = "Djaul";
+    private static final String JIVA = "Jiva";
 
     @Autowired
     private ServerMapper serverMapper;
@@ -31,10 +32,12 @@ class ServerMapperTest {
     {
         ServerDto result = serverMapper.map(server, DEFAULT_LANGUAGE);
         assertThat(result).isNotNull();
+        assertThat(result.getId()).isNotNull().isEqualTo(server.getId());
+
         if (Optional.ofNullable(server.getLabels()).map(map -> map.containsKey(DEFAULT_LANGUAGE)).orElse(false))
             assertThat(result.getName()).isNotNull().isEqualTo(server.getLabels().get(DEFAULT_LANGUAGE));
         else
-            assertThat(result.getName()).isNull();
+            assertThat(result.getName()).isNotNull().isEqualTo(server.getId());
 
         if (server.getImgUrl() != null)
             assertThat(result.getImage()).isNotNull().isEqualTo(server.getImgUrl());
@@ -43,8 +46,8 @@ class ServerMapperTest {
     }
 
     private static Stream<Server> getServers() {
-        return Stream.of(Server.builder().imgUrl(URL).labels(Map.of(DEFAULT_LANGUAGE, GOULTARD)).build(),
-                Server.builder().labels(Map.of(DEFAULT_LANGUAGE, DJAUL)).build(),
-                Server.builder().build());
+        return Stream.of(Server.builder().id(GOULTARD).imgUrl(URL).labels(Map.of(DEFAULT_LANGUAGE, GOULTARD)).build(),
+                Server.builder().id(DJAUL).labels(Map.of(DEFAULT_LANGUAGE, DJAUL)).build(),
+                Server.builder().id(JIVA).build());
     }
 }

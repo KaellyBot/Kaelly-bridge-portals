@@ -10,6 +10,7 @@ import lombok.Value;
 @Builder(builderClassName = "DimensionDtoBuilder", toBuilder = true)
 public class DimensionDto {
 
+    String id;
     String name;
     String image;
     int color;

@@ -15,6 +15,7 @@ public class ServerMapper {
 
     public ServerDto map(Server server, Language language){
         return ServerDto.builder()
+                .id(server.getId())
                 .name(translator.getLabel(language, server))
                 .image(server.getImgUrl())
                 .build();

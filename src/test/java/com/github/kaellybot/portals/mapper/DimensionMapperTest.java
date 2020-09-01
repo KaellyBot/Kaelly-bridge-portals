@@ -31,10 +31,12 @@ class DimensionMapperTest {
     {
         DimensionDto result = dimensionMapper.map(dimension, DEFAULT_LANGUAGE);
         assertThat(result).isNotNull();
+        assertThat(result.getId()).isNotNull().isEqualTo(dimension.getId());
+
         if (Optional.ofNullable(dimension.getLabels()).map(map -> map.containsKey(DEFAULT_LANGUAGE)).orElse(false))
             assertThat(result.getName()).isNotNull().isEqualTo(dimension.getLabels().get(DEFAULT_LANGUAGE));
         else
-            assertThat(result.getName()).isNull();
+            assertThat(result.getName()).isNotNull().isEqualTo(dimension.getId());
 
         if (dimension.getUrlImg() != null)
             assertThat(result.getImage()).isNotNull().isEqualTo(dimension.getUrlImg());
@@ -45,9 +47,9 @@ class DimensionMapperTest {
     }
 
     private static Stream<Dimension> getDimensions() {
-        return Stream.of(Dimension.builder().urlImg(URL).labels(Map.of(DEFAULT_LANGUAGE, ENUTROSOR)).build(),
-                Dimension.builder().labels(Map.of(DEFAULT_LANGUAGE, ENUTROSOR)).build(),
-                Dimension.builder().color(COLOR).build(),
-                Dimension.builder().build());
+        return Stream.of(Dimension.builder().id(ENUTROSOR).urlImg(URL).labels(Map.of(DEFAULT_LANGUAGE, ENUTROSOR)).build(),
+                Dimension.builder().id(ENUTROSOR).labels(Map.of(DEFAULT_LANGUAGE, ENUTROSOR)).build(),
+                Dimension.builder().id(ENUTROSOR).color(COLOR).build(),
+                Dimension.builder().id(ENUTROSOR).build());
     }
 }

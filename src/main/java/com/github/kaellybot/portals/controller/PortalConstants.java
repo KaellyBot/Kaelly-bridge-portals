@@ -12,16 +12,20 @@ public final class PortalConstants {
 
     public static final Language DEFAULT_LANGUAGE = FR;
     static final String API = "/api";
-    static final String SERVER_VAR = "server";
+
+    private static final String SERVER_RESOURCE    = "servers";
+    private static final String DIMENSION_RESOURCE = "dimensions";
+    private static final String PORTAL_RESOURCE    = "portals";
+    static final String SERVER_VAR    = "server";
     static final String DIMENSION_VAR = "dimension";
 
-    static final String PORTAL_FIND_BY_ID    = "/servers/{" + SERVER_VAR + "}/portals/{" + DIMENSION_VAR + "}";
-    static final String PORTAL_FIND_ALL      = "/servers/{" + SERVER_VAR + "}/portals";
-    static final String PORTAL_MERGE         = "/servers/{" + SERVER_VAR + "}/portals/{" + DIMENSION_VAR + "}";
-    static final String SERVER_FIND_BY_ID    = "/servers/{" + SERVER_VAR + "}";
-    static final String SERVER_FIND_ALL      = "/servers";
-    static final String DIMENSION_FIND_BY_ID = "/dimensions/{" + DIMENSION_VAR + "}";
-    static final String DIMENSION_FIND_ALL   = "/dimensions";
+    static final String PORTAL_FIND_BY_ID    = "/" + SERVER_RESOURCE + "/{" + SERVER_VAR + "}/" + PORTAL_RESOURCE + "/{" + DIMENSION_VAR + "}";
+    static final String PORTAL_FIND_ALL      = "/" + SERVER_RESOURCE + "/{" + SERVER_VAR + "}/" + PORTAL_RESOURCE;
+    static final String PORTAL_MERGE         = "/" + SERVER_RESOURCE + "/{" + SERVER_VAR + "}/" + PORTAL_RESOURCE + "/{" + DIMENSION_VAR + "}";
+    static final String SERVER_FIND_BY_ID    = "/" + SERVER_RESOURCE + "/{" + SERVER_VAR + "}";
+    static final String SERVER_FIND_ALL      = "/" + SERVER_RESOURCE;
+    static final String DIMENSION_FIND_BY_ID = "/" + DIMENSION_RESOURCE + "/{" + DIMENSION_VAR + "}";
+    static final String DIMENSION_FIND_ALL   = "/" + DIMENSION_RESOURCE;
 
     static final String SERVER_NOT_FOUND_MESSAGE = "The specified server is not found.";
     static final String DIMENSION_NOT_FOUND_MESSAGE = "The specified dimension is not found.";

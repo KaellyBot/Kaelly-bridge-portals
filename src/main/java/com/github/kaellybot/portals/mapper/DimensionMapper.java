@@ -15,6 +15,7 @@ public class DimensionMapper {
 
     public DimensionDto map(Dimension dimension, Language language){
         return DimensionDto.builder()
+                .id(dimension.getId())
                 .name(translator.getLabel(language, dimension))
                 .color(dimension.getColor())
                 .image(dimension.getUrlImg())
