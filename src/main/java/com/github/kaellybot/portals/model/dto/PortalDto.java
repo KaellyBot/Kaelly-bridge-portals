@@ -12,8 +12,8 @@ import java.time.Instant;
 @Builder(builderClassName = "PortalDtoBuilder", toBuilder = true)
 public class PortalDto {
 
-    String server;
-    String dimension;
+    ServerDto server;
+    DimensionDto dimension;
     PositionDto position;
     Boolean isAvailable;
     Integer utilisation;

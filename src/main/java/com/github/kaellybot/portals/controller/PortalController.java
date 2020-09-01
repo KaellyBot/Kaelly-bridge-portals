@@ -37,7 +37,7 @@ public class PortalController {
     public Mono<PortalDto> findById(@PathVariable(SERVER_VAR) String serverName,
                                     @PathVariable(DIMENSION_VAR) String dimensionName,
                                     @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
-        Language language = languageService.findByName(languageName).orElse(DEFAULT_LANGUAGE);
+        Language language = languageService.findByAbbreviation(languageName).orElse(DEFAULT_LANGUAGE);
         Mono<Server> server = serverService.findById(serverName).switchIfEmpty(Mono.error(SERVER_NOT_FOUND));
         Mono<Dimension> dimension = dimensionService.findById(dimensionName).switchIfEmpty(Mono.error(DIMENSION_NOT_FOUND));
         return  Mono.zip(server, dimension)
@@ -49,7 +49,7 @@ public class PortalController {
     public Flux<PortalDto> findAll(@PathVariable(SERVER_VAR) String serverName,
                                    @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
 
-        Language language = languageService.findByName(languageName).orElse(DEFAULT_LANGUAGE);
+        Language language = languageService.findByAbbreviation(languageName).orElse(DEFAULT_LANGUAGE);
 
         return serverService.findById(serverName)
                 .switchIfEmpty(Mono.error(SERVER_NOT_FOUND))
@@ -65,7 +65,7 @@ public class PortalController {
                                     @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName,
                                     @RequestBody @Valid ExternalPortalDto coordinates){
 
-        Language language = languageService.findByName(languageName).orElse(DEFAULT_LANGUAGE);
+        Language language = languageService.findByAbbreviation(languageName).orElse(DEFAULT_LANGUAGE);
         Mono<Server> server = serverService.findById(serverName).switchIfEmpty(Mono.error(SERVER_NOT_FOUND));
         Mono<Dimension> dimension = dimensionService.findById(dimensionName).switchIfEmpty(Mono.error(DIMENSION_NOT_FOUND));
 

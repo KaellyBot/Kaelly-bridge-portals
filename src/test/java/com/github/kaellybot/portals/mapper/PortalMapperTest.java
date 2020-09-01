@@ -50,6 +50,8 @@ class PortalMapperTest {
 
     @Autowired private PortalMapper portalMapper;
     @Autowired private PositionMapper positionMapper;
+    @Autowired private ServerMapper serverMapper;
+    @Autowired private DimensionMapper dimensionMapper;
     @Autowired private TransportMapper transportMapper;
     @Autowired private AuthorMapper authorMapper;
 
@@ -59,9 +61,9 @@ class PortalMapperTest {
     {
         assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)).isNotNull();
         assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getServer())
-                .isNotNull().isEqualTo(DEFAULT_SERVER_LABEL);
+                .isNotNull().isEqualTo(serverMapper.map(DEFAULT_SERVER, DEFAULT_LANGUAGE));
         assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getDimension())
-                .isNotNull().isEqualTo(DEFAULT_DIMENSION_LABEL);
+                .isNotNull().isEqualTo(dimensionMapper.map(DEFAULT_DIMENSION, DEFAULT_LANGUAGE));
         assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getIsAvailable())
                 .isNotNull().isEqualTo(Optional.ofNullable(portal.getIsAvailable()).orElse(false));
 

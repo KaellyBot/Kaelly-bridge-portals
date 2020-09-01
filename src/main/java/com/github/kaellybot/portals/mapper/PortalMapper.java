@@ -3,7 +3,6 @@ package com.github.kaellybot.portals.mapper;
 import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.commons.model.entity.Dimension;
 import com.github.kaellybot.commons.model.entity.Server;
-import com.github.kaellybot.commons.util.Translator;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.entity.*;
@@ -17,18 +16,20 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PortalMapper {
 
+    private final ServerMapper serverMapper;
+
+    private final DimensionMapper dimensionMapper;
+
     private final PositionMapper positionMapper;
 
     private final AuthorMapper authorMapper;
 
     private final TransportMapper transportMapper;
 
-    private final Translator translator;
-
     public PortalDto map(Portal portal, Server server, Dimension dimension, Language language) {
         PortalDto.PortalDtoBuilder result = PortalDto.builder()
-                .server(translator.getLabel(language, server))
-                .dimension(translator.getLabel(language, dimension))
+                .server(serverMapper.map(server, language))
+                .dimension(dimensionMapper.map(dimension, language))
                 .isAvailable(Optional.ofNullable(portal.getIsAvailable()).orElse(false));
 
         if (portal.isValid()) {
