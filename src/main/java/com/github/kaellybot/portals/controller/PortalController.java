@@ -33,7 +33,7 @@ public class PortalController {
     private final LanguageService languageService;
     private final PortalMapper portalMapper;
 
-    @GetMapping(path = FIND_BY_ID, produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = PORTAL_FIND_BY_ID, produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<PortalDto> findById(@PathVariable(SERVER_VAR) String serverName,
                                     @PathVariable(DIMENSION_VAR) String dimensionName,
                                     @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
@@ -45,7 +45,7 @@ public class PortalController {
                         .map(portal -> portalMapper.map(portal, tuple.getT1(), tuple.getT2(), language)));
     }
 
-    @GetMapping(path = FIND_ALL, produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = PORTAL_FIND_ALL, produces=MediaType.APPLICATION_JSON_VALUE)
     public Flux<PortalDto> findAll(@PathVariable(SERVER_VAR) String serverName,
                                    @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
 
@@ -59,7 +59,7 @@ public class PortalController {
                                 tuple.getT2().get(portal.getPortalId().getDimensionId()), language)));
     }
 
-    @PatchMapping(path= MERGE, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(path= PORTAL_MERGE, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<PortalDto> merge(@PathVariable(SERVER_VAR) String serverName,
                                     @PathVariable(DIMENSION_VAR) String dimensionName,
                                     @RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName,

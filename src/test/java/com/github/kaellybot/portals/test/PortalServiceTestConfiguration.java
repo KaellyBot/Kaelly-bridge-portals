@@ -1,5 +1,7 @@
 package com.github.kaellybot.portals.test;
 
+import com.github.kaellybot.commons.service.DimensionService;
+import com.github.kaellybot.commons.service.ServerService;
 import com.github.kaellybot.portals.service.PortalService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -14,5 +16,17 @@ public class PortalServiceTestConfiguration {
     @Primary
     public PortalService portalService() {
         return Mockito.mock(PortalService.class);
+    }
+
+    @Bean
+    @Primary
+    public ServerService serverService() {
+        return Mockito.mock(ServerService.class);
+    }
+
+    @Bean
+    @Primary
+    public DimensionService dimensionService() {
+        return Mockito.mock(DimensionService.class);
     }
 }

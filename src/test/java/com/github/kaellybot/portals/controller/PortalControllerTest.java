@@ -77,7 +77,7 @@ class PortalControllerTest {
     @MethodSource("getPortals")
     void findByIdTest(Portal portal){
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServerId())
+                .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServerId())
                                 .replace("{" + DIMENSION_VAR + "}", portal.getPortalId().getDimensionId()))
                 .exchange()
                 .expectStatus().isEqualTo(OK)
@@ -91,21 +91,21 @@ class PortalControllerTest {
     @Test
     void findByIdExceptionTest(){
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", "NO_SERVER")
+                .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}", "NO_SERVER")
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId())
+                .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", "NO_DIMENSION"))
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
@@ -118,7 +118,7 @@ class PortalControllerTest {
     @MethodSource("getPortals")
     void findAllTest(Portal portal){
         webTestClient.get()
-                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServerId()))
+                .uri(API + PORTAL_FIND_ALL.replace("{" + SERVER_VAR + "}", portal.getPortalId().getServerId()))
                 .exchange()
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -131,13 +131,13 @@ class PortalControllerTest {
     @Test
     void findAllExceptionTest(){
         webTestClient.get()
-                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", "NO_SERVER"))
+                .uri(API + PORTAL_FIND_ALL.replace("{" + SERVER_VAR + "}", "NO_SERVER"))
                 .exchange()
                 .expectStatus().isEqualTo(NOT_FOUND)
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.get()
-                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
+                .uri(API + PORTAL_FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .exchange()
                 .expectStatus().isEqualTo(OK)
@@ -149,7 +149,7 @@ class PortalControllerTest {
     @MethodSource("getExternalPortals")
     void mergeTest(ExternalPortalDto portal){
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                .uri(API + PORTAL_MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .bodyValue(portal)
                 .exchange()
@@ -162,7 +162,7 @@ class PortalControllerTest {
     @MethodSource("getExternalPortals")
     void mergeExceptionTest(ExternalPortalDto portal){
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", "NO_SERVER")
+                .uri(API + PORTAL_MERGE.replace("{" + SERVER_VAR + "}", "NO_SERVER")
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .bodyValue(portal)
                 .exchange()
@@ -170,7 +170,7 @@ class PortalControllerTest {
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(SERVER_NOT_FOUND_MESSAGE));
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                .uri(API + PORTAL_MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", "NO_DIMENSION"))
                 .bodyValue(portal)
                 .exchange()
@@ -178,7 +178,7 @@ class PortalControllerTest {
                 .expectBody(String.class)
                 .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull().contains(DIMENSION_NOT_FOUND_MESSAGE));
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                .uri(API + PORTAL_MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .header(ACCEPT_LANGUAGE, "NO_LANGUAGE")
                 .bodyValue(portal)

@@ -52,7 +52,7 @@ class PortalControllerInternalExceptionTest {
         Mockito.when(portalService.findById(DEFAULT_SERVER, DEFAULT_DIMENSION))
                 .thenThrow(new RuntimeException());
         webTestClient.get()
-                .uri(API + FIND_BY_ID.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId())
+                .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .exchange()
                 .expectStatus().isEqualTo(INTERNAL_SERVER_ERROR)
@@ -66,7 +66,7 @@ class PortalControllerInternalExceptionTest {
         Mockito.when(portalService.findAllByPortalIdServer(DEFAULT_SERVER))
                 .thenThrow(new RuntimeException());
         webTestClient.get()
-                .uri(API + FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
+                .uri(API + PORTAL_FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
                 .exchange()
                 .expectStatus().isEqualTo(INTERNAL_SERVER_ERROR)
                 .expectBody(String.class)
@@ -79,7 +79,7 @@ class PortalControllerInternalExceptionTest {
         Mockito.when(portalService.findById(DEFAULT_SERVER, DEFAULT_DIMENSION))
                 .thenThrow(new RuntimeException());
         webTestClient.patch()
-                .uri(API + MERGE.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId())
+                .uri(API + PORTAL_MERGE.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId())
                         .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
                 .bodyValue(ExternalPortalDto.builder()
                         .position(PositionDto.builder().x(0).y(0).build())
