@@ -24,9 +24,11 @@ public final class PortalConstants {
     static final String PORTAL_MERGE         = "/" + SERVER_RESOURCE + "/{" + SERVER_VAR + "}/" + PORTAL_RESOURCE + "/{" + DIMENSION_VAR + "}";
     static final String SERVER_FIND_BY_ID    = "/" + SERVER_RESOURCE + "/{" + SERVER_VAR + "}";
     static final String SERVER_FIND_ALL      = "/" + SERVER_RESOURCE;
+    static final String SERVER_SAVE          = "/" + SERVER_RESOURCE;
     static final String DIMENSION_FIND_BY_ID = "/" + DIMENSION_RESOURCE + "/{" + DIMENSION_VAR + "}";
     static final String DIMENSION_FIND_ALL   = "/" + DIMENSION_RESOURCE;
 
+    public static final String ID_NOT_FOUND_MESSAGE = "The ID is mandatory.";
     static final String SERVER_NOT_FOUND_MESSAGE = "The specified server is not found.";
     static final String DIMENSION_NOT_FOUND_MESSAGE = "The specified dimension is not found.";
 
