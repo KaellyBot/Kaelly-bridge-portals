@@ -4,11 +4,14 @@ import com.github.kaellybot.commons.service.DimensionService;
 import com.github.kaellybot.commons.service.LanguageService;
 import com.github.kaellybot.portals.mapper.DimensionMapper;
 import com.github.kaellybot.portals.model.dto.DimensionDto;
+import com.github.kaellybot.portals.model.dto.ExternalDimensionDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import javax.validation.Valid;
 
 import static com.github.kaellybot.portals.controller.PortalConstants.*;
 import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
@@ -33,6 +36,14 @@ public class DimensionController {
     @GetMapping(path = DIMENSION_FIND_ALL, produces=MediaType.APPLICATION_JSON_VALUE)
     public Flux<DimensionDto> findAll(@RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName){
         return dimensionService.findAll()
+                .map(dimension -> dimensionMapper.map(dimension, languageService
+                        .findByAbbreviation(languageName).orElse(DEFAULT_LANGUAGE)));
+    }
+
+    @PostMapping(path = DIMENSION_SAVE, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    public Mono<DimensionDto> save(@RequestHeader(name = ACCEPT_LANGUAGE, required = false) String languageName,
+                                @RequestBody @Valid ExternalDimensionDto dimensionDto){
+        return dimensionService.save(dimensionMapper.map(dimensionDto))
                 .map(dimension -> dimensionMapper.map(dimension, languageService
                         .findByAbbreviation(languageName).orElse(DEFAULT_LANGUAGE)));
     }

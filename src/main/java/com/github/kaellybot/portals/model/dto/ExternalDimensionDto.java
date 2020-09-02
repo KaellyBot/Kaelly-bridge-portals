@@ -12,14 +12,15 @@ import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 @Value
-@JsonDeserialize(builder = ExternalServerDto.ExternalServerDtoBuilder.class)
-@Builder(builderClassName = "ExternalServerDtoBuilder", toBuilder = true)
-public class ExternalServerDto {
+@JsonDeserialize(builder = ExternalDimensionDto.ExternalDimensionDtoBuilder.class)
+@Builder(builderClassName = "ExternalDimensionDtoBuilder", toBuilder = true)
+public class ExternalDimensionDto {
 
     @NotBlank(message = PortalConstants.ID_NOT_FOUND_MESSAGE) String id;
     @NotBlank(message = PortalConstants.IMAGE_NOT_FOUND_MESSAGE) String image;
     @Multilingual Map<Language, String> labels;
+    int color;
 
     @JsonPOJOBuilder(withPrefix = "")
-    public static class ExternalServerDtoBuilder {}
+    public static class ExternalDimensionDtoBuilder {}
 }
