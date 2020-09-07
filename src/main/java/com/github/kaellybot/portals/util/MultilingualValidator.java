@@ -20,7 +20,7 @@ public class MultilingualValidator implements ConstraintValidator<Multilingual, 
                 .orElse(false);
     }
 
-    private boolean validateLabel(String label){
+    protected boolean validateLabel(String label){
         return label != null && ! label.trim().isEmpty();
     }
 }
