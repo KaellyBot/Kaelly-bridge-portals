@@ -3,6 +3,9 @@ package com.github.kaellybot.portals.mapper;
 import com.github.kaellybot.commons.model.entity.Dimension;
 import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.portals.model.constants.Transport;
+import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
+import com.github.kaellybot.portals.model.dto.PortalDto;
+import com.github.kaellybot.portals.model.dto.PositionDto;
 import com.github.kaellybot.portals.model.entity.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -59,54 +62,79 @@ class PortalMapperTest {
     @MethodSource("getPortals")
     void mapPortalDtoTest(Portal portal)
     {
-        assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)).isNotNull();
-        assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getServer())
+        PortalDto result = portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE);
+        assertThat(result).isNotNull();
+        assertThat(result.getServer())
                 .isNotNull().isEqualTo(serverMapper.map(DEFAULT_SERVER, DEFAULT_LANGUAGE));
-        assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getDimension())
+        assertThat(result.getDimension())
                 .isNotNull().isEqualTo(dimensionMapper.map(DEFAULT_DIMENSION, DEFAULT_LANGUAGE));
-        assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getIsAvailable())
+        assertThat(result.getIsAvailable())
                 .isNotNull().isEqualTo(Optional.ofNullable(portal.getIsAvailable()).orElse(false));
 
         if (portal.isValid()){
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition()).isNotNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition())
+            assertThat(result.getPosition()).isNotNull();
+            assertThat(result.getPosition())
                     .isNotNull().isEqualTo(positionMapper.map(portal.getPosition()));
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getUtilisation())
+            assertThat(result.getUtilisation())
                     .isEqualTo(portal.getUtilisation());
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getCreationDate())
+            assertThat(result.getCreationDate())
                     .isNotNull().isEqualTo(portal.getCreationDate());
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestZaap()).isNotNull()
+            assertThat(result.getNearestZaap()).isNotNull()
                     .isEqualTo(transportMapper.map(portal.getNearestZaap(), DEFAULT_LANGUAGE));
 
             if (Optional.ofNullable(portal.getIsUpdated()).orElse(false)){
-                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)
+                assertThat(result
                         .getLastUpdateDate()).isNotNull().isEqualTo(portal.getLastUpdateDate());
-                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)
+                assertThat(result
                         .getLastAuthorUpdate()).isNotNull().isEqualTo(authorMapper.map(portal.getLastAuthorUpdate()));
             }
             else {
-                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
-                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
+                assertThat(result.getLastUpdateDate()).isNull();
+                assertThat(result.getLastAuthorUpdate()).isNull();
             }
 
             if (Optional.ofNullable(portal.getTransportLimitedNearest()).orElse(false))
-                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)
+                assertThat(result
                         .getNearestTransportLimited()).isNotNull()
                         .isEqualTo(transportMapper.map(portal.getNearestTransportLimited(), DEFAULT_LANGUAGE));
             else
-                assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE)
+                assertThat(result
                         .getNearestTransportLimited()).isNull();
         }
         else {
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getPosition()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getUtilisation()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getCreationDate()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastUpdateDate()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getLastAuthorUpdate()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestZaap()).isNull();
-            assertThat(portalMapper.map(portal, DEFAULT_SERVER, DEFAULT_DIMENSION, DEFAULT_LANGUAGE).getNearestTransportLimited()).isNull();
+            assertThat(result.getPosition()).isNull();
+            assertThat(result.getPosition()).isNull();
+            assertThat(result.getUtilisation()).isNull();
+            assertThat(result.getCreationDate()).isNull();
+            assertThat(result.getLastUpdateDate()).isNull();
+            assertThat(result.getLastAuthorUpdate()).isNull();
+            assertThat(result.getNearestZaap()).isNull();
+            assertThat(result.getNearestTransportLimited()).isNull();
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("getExternalPortalsDto")
+    void mapExternalPortalDtoTest(ExternalPortalDto portal)
+    {
+        Instant before = Instant.now();
+        Portal result = portalMapper.map(DEFAULT_SERVER, DEFAULT_DIMENSION, portal);
+        Instant after = Instant.now();
+
+        assertThat(result).isNotNull();
+        assertThat(result.getPortalId()).isNotNull();
+        assertThat(result.getPortalId().getServerId()).isNotNull().isEqualTo(DEFAULT_SERVER.getId());
+        assertThat(result.getPortalId().getDimensionId()).isNotNull().isEqualTo(DEFAULT_DIMENSION.getId());
+        assertThat(result.getPosition()).isNotNull();
+        assertThat(result.getPosition().getX()).isNotNull().isEqualTo(portal.getPosition().getX());
+        assertThat(result.getPosition().getY()).isNotNull().isEqualTo(portal.getPosition().getY());
+        assertThat(result.getUtilisation()).isEqualTo(portal.getUtilisation());
+        assertThat(result.getCreationDate()).isBetween(before, after);
+        assertThat(result.getLastUpdateDate()).isBetween(before, after);
+        assertThat(result.getCreationAuthor()).isNotNull();
+        assertThat(result.getCreationAuthor().getName()).isEqualTo(portal.getAuthor());
+        assertThat(result.getLastAuthorUpdate()).isNotNull();
+        assertThat(result.getLastAuthorUpdate().getName()).isEqualTo(portal.getAuthor());
     }
 
     private static Stream<Portal> getPortals() {
@@ -163,6 +191,22 @@ class PortalMapperTest {
                         .lastAuthorUpdate(Author.builder().name(CHIRON).platform(DIMTOPIA).build())
                         .nearestZaap(Transport.ZAAP_ILE_CAWOTTE).transportLimitedNearest(true)
                         .nearestTransportLimited(Transport.BRIGANDIN_ILE_MINOTOROR)
+                        .build()
+        );
+    }
+
+    private static Stream<ExternalPortalDto> getExternalPortalsDto(){
+        return Stream.of(ExternalPortalDto.builder()
+                .author(OSGL)
+                .position(PositionDto.builder().x(1).y(1).build())
+                .utilisation(1)
+                .build(),
+                ExternalPortalDto.builder()
+                        .position(PositionDto.builder().x(1).y(1).build())
+                        .utilisation(1)
+                        .build(),
+                ExternalPortalDto.builder()
+                        .position(PositionDto.builder().x(1).y(1).build())
                         .build()
         );
     }
