@@ -11,7 +11,7 @@ public final class PortalConstants {
     private PortalConstants(){}
 
     public static final Language DEFAULT_LANGUAGE = FR;
-    static final String API = "/api";
+    public static final String API = "/api";
 
     private static final String SERVER_RESOURCE    = "servers";
     private static final String DIMENSION_RESOURCE = "dimensions";
