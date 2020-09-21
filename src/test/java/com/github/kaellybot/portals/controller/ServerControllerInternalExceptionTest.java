@@ -3,12 +3,14 @@ package com.github.kaellybot.portals.controller;
 import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.commons.repository.ServerRepository;
 import com.github.kaellybot.commons.service.ServerService;
+import com.github.kaellybot.portals.test.Privilege;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -39,6 +41,7 @@ class ServerControllerInternalExceptionTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_SERVER})
     void findByIdInternalExceptionTest(){
         Mockito.when(serverService.findById(DEFAULT_SERVER.getId())).thenThrow(new RuntimeException());
         webTestClient.get()
@@ -51,6 +54,7 @@ class ServerControllerInternalExceptionTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_SERVER})
     void findAllInternalExceptionTest(){
         Mockito.when(serverService.findAll()).thenThrow(new RuntimeException());
         webTestClient.get()

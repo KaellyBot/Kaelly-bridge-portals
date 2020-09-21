@@ -3,12 +3,14 @@ package com.github.kaellybot.portals.controller;
 import com.github.kaellybot.commons.model.entity.Dimension;
 import com.github.kaellybot.commons.repository.DimensionRepository;
 import com.github.kaellybot.commons.service.DimensionService;
+import com.github.kaellybot.portals.test.Privilege;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -39,6 +41,7 @@ class DimensionControllerInternalExceptionTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_DIMENSION})
     void findByIdInternalExceptionTest(){
         Mockito.when(dimensionService.findById(DEFAULT_DIMENSION.getId())).thenThrow(new RuntimeException());
         webTestClient.get()
@@ -51,6 +54,7 @@ class DimensionControllerInternalExceptionTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_DIMENSION})
     void findAllInternalExceptionTest(){
         Mockito.when(dimensionService.findAll()).thenThrow(new RuntimeException());
         webTestClient.get()

@@ -7,12 +7,14 @@ import com.github.kaellybot.commons.repository.ServerRepository;
 import com.github.kaellybot.portals.model.dto.ExternalPortalDto;
 import com.github.kaellybot.portals.model.dto.PositionDto;
 import com.github.kaellybot.portals.service.PortalService;
+import com.github.kaellybot.portals.test.Privilege;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -48,6 +50,7 @@ class PortalControllerInternalExceptionTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_PORTAL})
     void findByIdInternalExceptionTest(){
         Mockito.when(portalService.findById(DEFAULT_SERVER, DEFAULT_DIMENSION))
                 .thenThrow(new RuntimeException());
@@ -62,6 +65,7 @@ class PortalControllerInternalExceptionTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_PORTAL})
     void findAllInternalExceptionTest(){
         Mockito.when(portalService.findAllByPortalIdServer(DEFAULT_SERVER))
                 .thenThrow(new RuntimeException());
@@ -75,6 +79,7 @@ class PortalControllerInternalExceptionTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.MERGE_PORTAL})
     void mergeInternalExceptionTest(){
         Mockito.when(portalService.findById(DEFAULT_SERVER, DEFAULT_DIMENSION))
                 .thenThrow(new RuntimeException());

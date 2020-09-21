@@ -4,6 +4,7 @@ import com.github.kaellybot.commons.model.entity.Dimension;
 import com.github.kaellybot.commons.repository.DimensionRepository;
 import com.github.kaellybot.portals.mapper.DimensionMapper;
 import com.github.kaellybot.portals.model.dto.DimensionDto;
+import com.github.kaellybot.portals.test.Privilege;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Map;
@@ -53,6 +55,7 @@ class DimensionControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.READ_DIMENSION})
     @MethodSource("getDimensions")
     void findByIdTest(Dimension dimension){
         webTestClient.get()
@@ -65,6 +68,7 @@ class DimensionControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_DIMENSION})
     void findByIdExceptionTest(){
         webTestClient.get()
                 .uri(API + DIMENSION_FIND_BY_ID.replace("{" + DIMENSION_VAR + "}", "NO_DIMENSION"))
@@ -83,6 +87,7 @@ class DimensionControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.READ_DIMENSION})
     @MethodSource("getDimensions")
     void findAllTest(Dimension dimension){
         webTestClient.get()
@@ -96,6 +101,7 @@ class DimensionControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_DIMENSION})
     void findAllExceptionTest(){
         webTestClient.get()
                 .uri(API + DIMENSION_FIND_ALL)

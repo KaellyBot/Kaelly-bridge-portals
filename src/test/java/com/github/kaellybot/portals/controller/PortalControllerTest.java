@@ -11,6 +11,7 @@ import com.github.kaellybot.portals.model.dto.PortalDto;
 import com.github.kaellybot.portals.model.dto.PositionDto;
 import com.github.kaellybot.portals.model.entity.*;
 import com.github.kaellybot.portals.repository.PortalRepository;
+import com.github.kaellybot.portals.test.Privilege;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.Instant;
@@ -74,6 +76,7 @@ class PortalControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.READ_PORTAL})
     @MethodSource("getPortals")
     void findByIdTest(Portal portal){
         webTestClient.get()
@@ -89,6 +92,7 @@ class PortalControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_PORTAL})
     void findByIdExceptionTest(){
         webTestClient.get()
                 .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}", "NO_SERVER")
@@ -115,6 +119,7 @@ class PortalControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.READ_PORTAL})
     @MethodSource("getPortals")
     void findAllTest(Portal portal){
         webTestClient.get()
@@ -129,6 +134,7 @@ class PortalControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_PORTAL})
     void findAllExceptionTest(){
         webTestClient.get()
                 .uri(API + PORTAL_FIND_ALL.replace("{" + SERVER_VAR + "}", "NO_SERVER"))
@@ -146,6 +152,7 @@ class PortalControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.MERGE_PORTAL})
     @MethodSource("getExternalPortals")
     void mergeTest(ExternalPortalDto portal){
         webTestClient.patch()
@@ -159,6 +166,7 @@ class PortalControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.MERGE_PORTAL})
     @MethodSource("getExternalPortals")
     void mergeExceptionTest(ExternalPortalDto portal){
         webTestClient.patch()

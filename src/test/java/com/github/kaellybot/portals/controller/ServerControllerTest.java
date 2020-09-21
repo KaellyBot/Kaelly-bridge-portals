@@ -4,6 +4,7 @@ import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.commons.repository.ServerRepository;
 import com.github.kaellybot.portals.mapper.ServerMapper;
 import com.github.kaellybot.portals.model.dto.ServerDto;
+import com.github.kaellybot.portals.test.Privilege;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Map;
@@ -51,6 +53,7 @@ class ServerControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.READ_SERVER})
     @MethodSource("getServers")
     void findByIdTest(Server server){
         webTestClient.get()
@@ -63,6 +66,7 @@ class ServerControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_SERVER})
     void findByIdExceptionTest(){
         webTestClient.get()
                 .uri(API + SERVER_FIND_BY_ID.replace("{" + SERVER_VAR + "}", "NO_SERVER"))
@@ -81,6 +85,7 @@ class ServerControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.READ_SERVER})
     @MethodSource("getServers")
     void findAllTest(Server server){
         webTestClient.get()
@@ -94,6 +99,7 @@ class ServerControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {Privilege.READ_SERVER})
     void findAllExceptionTest(){
         webTestClient.get()
                 .uri(API + SERVER_FIND_ALL)
