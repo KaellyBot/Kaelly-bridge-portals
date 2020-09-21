@@ -1,8 +1,10 @@
 package com.github.kaellybot.portals.controller;
 
+import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.commons.repository.ServerRepository;
 import com.github.kaellybot.portals.mapper.ServerMapper;
+import com.github.kaellybot.portals.model.dto.ExternalServerDto;
 import com.github.kaellybot.portals.model.dto.ServerDto;
 import com.github.kaellybot.portals.test.Privilege;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,8 +26,7 @@ import static com.github.kaellybot.portals.controller.PortalConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest
@@ -84,6 +86,23 @@ class ServerControllerTest {
                 .expectBody(ServerDto.class);
     }
 
+    @Test
+    void findByIdAuthenticationTest(){
+        webTestClient.get()
+                .uri(API + SERVER_FIND_BY_ID.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser
+    void findByIdAuthorizationTest(){
+        webTestClient.get()
+                .uri(API + SERVER_FIND_BY_ID.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(FORBIDDEN);
+    }
+
     @ParameterizedTest
     @WithMockUser(authorities = {Privilege.READ_SERVER})
     @MethodSource("getServers")
@@ -110,9 +129,150 @@ class ServerControllerTest {
                 .expectBodyList(ServerDto.class);
     }
 
+    @Test
+    void findAllAuthenticationTest(){
+        webTestClient.get()
+                .uri(API + SERVER_FIND_ALL)
+                .exchange()
+                .expectStatus().isEqualTo(UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser
+    void findAllAuthorizationTest(){
+        webTestClient.get()
+                .uri(API + SERVER_FIND_ALL)
+                .exchange()
+                .expectStatus().isEqualTo(FORBIDDEN);
+    }
+
+    @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.SAVE_SERVER})
+    @MethodSource("getExternalServers")
+    void saveTest(ExternalServerDto server){
+        webTestClient.post()
+                .uri(API + SERVER_SAVE)
+                .bodyValue(server)
+                .exchange()
+                .expectStatus().isEqualTo(OK)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(ServerDto.class)
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull()
+                        .satisfies(serverDto -> {
+                            assertThat(serverDto.getId()).isEqualTo(server.getId());
+                            assertThat(serverDto.getImage()).isEqualTo(server.getImage());
+                            assertThat(serverDto.getName()).isEqualTo(server.getLabels().get(DEFAULT_LANGUAGE));
+                        }));
+    }
+
+    @Test
+    @WithMockUser(authorities = {Privilege.SAVE_SERVER})
+    void saveMissingIdTest(){
+        final ExternalServerDto SERVER = ExternalServerDto.builder()
+                .image(URL)
+                .labels(Map.of(Language.FR, GOULTARD, Language.EN, GOULTARD, Language.ES, GOULTARD))
+                .build();
+
+        webTestClient.post()
+                .uri(API + SERVER_SAVE)
+                .bodyValue(SERVER)
+                .exchange()
+                .expectStatus().isEqualTo(BAD_REQUEST)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(String.class)
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull()
+                        .contains(ID_NOT_FOUND_MESSAGE));
+    }
+
+    @Test
+    @WithMockUser(authorities = {Privilege.SAVE_SERVER})
+    void saveMissingImageTest(){
+        final ExternalServerDto SERVER = ExternalServerDto.builder()
+                .id(GOULTARD)
+                .labels(Map.of(Language.FR, GOULTARD, Language.EN, GOULTARD, Language.ES, GOULTARD))
+                .build();
+
+        webTestClient.post()
+                .uri(API + SERVER_SAVE)
+                .bodyValue(SERVER)
+                .exchange()
+                .expectStatus().isEqualTo(BAD_REQUEST)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(String.class)
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull()
+                        .contains(IMAGE_NOT_FOUND_MESSAGE));
+    }
+
+    @ParameterizedTest
+    @WithMockUser(authorities = {Privilege.SAVE_SERVER})
+    @MethodSource("getExternalServersWithMissingLabel")
+    void saveMissingLabelTest(ExternalServerDto server ){
+        webTestClient.post()
+                .uri(API + SERVER_SAVE)
+                .bodyValue(server)
+                .exchange()
+                .expectStatus().isEqualTo(BAD_REQUEST)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(String.class)
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull()
+                        .contains(LABEL_NOT_FOUND_MESSAGE));
+    }
+
+    @Test
+    void saveAuthenticationTest(){
+        webTestClient.post()
+                .uri(API + SERVER_SAVE)
+                .exchange()
+                .expectStatus().isEqualTo(UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser
+    void saveAuthorizationTest(){
+        webTestClient.post()
+                .uri(API + SERVER_SAVE)
+                .exchange()
+                .expectStatus().isEqualTo(FORBIDDEN);
+    }
+
     private static Stream<Server> getServers() {
         return Stream.of(Server.builder().id(GOULTARD).imgUrl(URL).labels(Map.of(DEFAULT_LANGUAGE, GOULTARD)).build(),
                 Server.builder().id(DJAUL).labels(Map.of(DEFAULT_LANGUAGE, DJAUL)).build(),
                 Server.builder().id(JIVA).build());
+    }
+
+    private static Stream<ExternalServerDto> getExternalServers() {
+        return Stream.of(ExternalServerDto.builder()
+                .id(GOULTARD)
+                .image(URL)
+                .labels(Map.of(Language.FR, GOULTARD, Language.EN, GOULTARD, Language.ES, GOULTARD))
+                .build());
+    }
+
+    private static Stream<ExternalServerDto> getExternalServersWithMissingLabel() {
+        return Stream.of(ExternalServerDto.builder()
+                .id(GOULTARD)
+                .image(URL)
+                .labels(Map.of(Language.FR, GOULTARD, Language.EN, GOULTARD))
+                .build(),
+                ExternalServerDto.builder()
+                        .id(GOULTARD)
+                        .image(URL)
+                        .labels(Map.of(Language.FR, GOULTARD))
+                        .build(),
+                ExternalServerDto.builder()
+                        .id(GOULTARD)
+                        .image(URL)
+                        .labels(Map.of(Language.FR, GOULTARD))
+                        .build(),
+                ExternalServerDto.builder()
+                        .id(GOULTARD)
+                        .image(URL)
+                        .labels(Collections.emptyMap())
+                        .build(),
+                ExternalServerDto.builder()
+                        .id(GOULTARD)
+                        .image(URL)
+                        .build());
     }
 }

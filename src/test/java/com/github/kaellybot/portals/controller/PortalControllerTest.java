@@ -32,8 +32,7 @@ import static com.github.kaellybot.portals.controller.PortalConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest
@@ -118,6 +117,25 @@ class PortalControllerTest {
                 .expectBody(PortalDto.class);
     }
 
+    @Test
+    void findByIdAuthenticationTest(){
+        webTestClient.get()
+                .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                        .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser
+    void findByIdAuthorizationTest(){
+        webTestClient.get()
+                .uri(API + PORTAL_FIND_BY_ID.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                        .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(FORBIDDEN);
+    }
+
     @ParameterizedTest
     @WithMockUser(authorities = {Privilege.READ_PORTAL})
     @MethodSource("getPortals")
@@ -149,6 +167,23 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBodyList(PortalDto.class);
+    }
+
+    @Test
+    void findAllAuthenticationTest(){
+        webTestClient.get()
+                .uri(API + PORTAL_FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser
+    void findAllAuthorizationTest(){
+        webTestClient.get()
+                .uri(API + PORTAL_FIND_ALL.replace("{" + SERVER_VAR + "}", DEFAULT_SERVER.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(FORBIDDEN);
     }
 
     @ParameterizedTest
@@ -194,6 +229,25 @@ class PortalControllerTest {
                 .expectStatus().isEqualTo(OK)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(PortalDto.class);
+    }
+
+    @Test
+    void mergeAuthenticationTest(){
+        webTestClient.patch()
+                .uri(API + PORTAL_MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                        .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser
+    void mergeAuthorizationTest(){
+        webTestClient.patch()
+                .uri(API + PORTAL_MERGE.replace("{" + SERVER_VAR + "}",  DEFAULT_SERVER.getId())
+                        .replace("{" + DIMENSION_VAR + "}", DEFAULT_DIMENSION.getId()))
+                .exchange()
+                .expectStatus().isEqualTo(FORBIDDEN);
     }
 
     private static Stream<ExternalPortalDto> getExternalPortals(){

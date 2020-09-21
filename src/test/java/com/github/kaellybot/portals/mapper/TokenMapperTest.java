@@ -9,11 +9,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.github.kaellybot.portals.mapper.TokenMapper.ALGORITHM_ENCODER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -36,6 +38,19 @@ class TokenMapperTest {
         assertThat(result.getUsername()).isNotNull().isEqualTo(token.getUsername());
         assertThat(result.getUserType()).isNotNull().isEqualTo(token.getUserType());
         assertThat(result.getPrivileges()).isNotNull().containsAll(token.getPrivileges());
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTokens")
+    void mapUserDetailsTest(Token token)
+    {
+        UserDetails result = tokenMapper.mapUserDetails(token);
+        assertThat(result).isNotNull();
+        assertThat(result.getUsername()).isNotNull().isEqualTo(token.getUsername());
+        assertThat(result.getPassword()).isNotNull().isEqualTo(ALGORITHM_ENCODER + token.getPassword());
+        assertThat(result.getAuthorities()).isNotNull().hasSameSizeAs(token.getPrivileges())
+                .allSatisfy(authority -> assertThat(token.getPrivileges())
+                        .contains(Privilege.valueOf(authority.getAuthority())));
     }
 
     @ParameterizedTest

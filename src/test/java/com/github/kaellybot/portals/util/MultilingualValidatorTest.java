@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MultilingualValidatorTest {
+class MultilingualValidatorTest {
 
     private final MultilingualValidator multilingualValidator = new MultilingualValidator();
 
