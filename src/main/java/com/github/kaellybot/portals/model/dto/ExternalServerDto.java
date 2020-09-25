@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Value
@@ -19,7 +20,7 @@ public class ExternalServerDto {
 
     @NotBlank(message = PortalConstants.ID_NOT_FOUND_MESSAGE) String id;
     @NotBlank(message = PortalConstants.IMAGE_NOT_FOUND_MESSAGE) String image;
-    @NotBlank(message = PortalConstants.GAME_NOT_FOUND_MESSAGE) Game game;
+    @NotNull(message = PortalConstants.GAME_NOT_FOUND_MESSAGE) Game game;
     @Multilingual Map<Language, String> labels;
 
     @JsonPOJOBuilder(withPrefix = "")
