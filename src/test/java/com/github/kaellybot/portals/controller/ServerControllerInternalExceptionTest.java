@@ -1,5 +1,6 @@
 package com.github.kaellybot.portals.controller;
 
+import com.github.kaellybot.commons.model.constants.Game;
 import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.commons.repository.ServerRepository;
@@ -31,6 +32,7 @@ class ServerControllerInternalExceptionTest {
     private static final ExternalServerDto DEFAULT_EXTERNAL_SERVER = ExternalServerDto.builder()
             .id("DEFAULT_EXTERNAL_SERVER")
             .image("DEFAULT_EXTERNAL_SERVER")
+            .game(Game.DOFUS)
             .labels(Map.of(Language.FR, "DEFAULT_EXTERNAL_SERVER",
                     Language.EN, "DEFAULT_EXTERNAL_SERVER",
                     Language.ES, "DEFAULT_EXTERNAL_SERVER"))
