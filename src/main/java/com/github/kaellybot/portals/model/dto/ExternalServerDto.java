@@ -2,6 +2,7 @@ package com.github.kaellybot.portals.model.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.github.kaellybot.commons.model.constants.Game;
 import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.portals.controller.PortalConstants;
 import com.github.kaellybot.portals.util.Multilingual;
@@ -18,6 +19,7 @@ public class ExternalServerDto {
 
     @NotBlank(message = PortalConstants.ID_NOT_FOUND_MESSAGE) String id;
     @NotBlank(message = PortalConstants.IMAGE_NOT_FOUND_MESSAGE) String image;
+    @NotBlank(message = PortalConstants.GAME_NOT_FOUND_MESSAGE) Game game;
     @Multilingual Map<Language, String> labels;
 
     @JsonPOJOBuilder(withPrefix = "")

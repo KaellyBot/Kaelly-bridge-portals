@@ -1,5 +1,6 @@
 package com.github.kaellybot.portals.mapper;
 
+import com.github.kaellybot.commons.model.constants.Game;
 import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.portals.model.dto.ExternalServerDto;
@@ -33,6 +34,7 @@ class ServerMapperTest {
         assertThat(result.getId()).isNotNull().isEqualTo(server.getId());
         assertThat(result.getName()).isNotNull().isEqualTo(server.getLabels().get(DEFAULT_LANGUAGE));
         assertThat(result.getImage()).isNotNull().isEqualTo(server.getImgUrl());
+        assertThat(result.getGame()).isNotNull().isEqualTo(server.getGame());
     }
 
     @ParameterizedTest
@@ -44,13 +46,24 @@ class ServerMapperTest {
         assertThat(result.getId()).isNotNull().isEqualTo(server.getId());
         assertThat(result.getLabels()).isNotNull().isEqualTo(server.getLabels());
         assertThat(result.getImgUrl()).isNotNull().isEqualTo(server.getImage());
+        assertThat(result.getGame()).isNotNull().isEqualTo(server.getGame());
     }
 
     private static Stream<Server> getServers() {
-        return Stream.of(Server.builder().id(GOULTARD).imgUrl(URL).labels(Map.of(DEFAULT_LANGUAGE, GOULTARD)).build());
+        return Stream.of(Server.builder()
+                .id(GOULTARD)
+                .imgUrl(URL)
+                .game(Game.DOFUS)
+                .labels(Map.of(DEFAULT_LANGUAGE, GOULTARD))
+                .build());
     }
 
     private static Stream<ExternalServerDto> getExternalServers() {
-        return Stream.of(ExternalServerDto.builder().id(GOULTARD).image(URL).labels(Map.of(DEFAULT_LANGUAGE, GOULTARD)).build());
+        return Stream.of(ExternalServerDto.builder()
+                .id(GOULTARD)
+                .image(URL)
+                .game(Game.DOFUS)
+                .labels(Map.of(DEFAULT_LANGUAGE, GOULTARD))
+                .build());
     }
 }

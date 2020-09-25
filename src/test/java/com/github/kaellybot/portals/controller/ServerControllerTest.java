@@ -1,5 +1,6 @@
 package com.github.kaellybot.portals.controller;
 
+import com.github.kaellybot.commons.model.constants.Game;
 import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.commons.model.entity.Server;
 import com.github.kaellybot.commons.repository.ServerRepository;
@@ -203,6 +204,26 @@ class ServerControllerTest {
                         .contains(IMAGE_NOT_FOUND_MESSAGE));
     }
 
+    @Test
+    @WithMockUser(authorities = {Privilege.SAVE_SERVER})
+    void saveMissingGameTest(){
+        final ExternalServerDto SERVER = ExternalServerDto.builder()
+                .id(GOULTARD)
+                .image(URL)
+                .labels(Map.of(Language.FR, GOULTARD, Language.EN, GOULTARD, Language.ES, GOULTARD))
+                .build();
+
+        webTestClient.post()
+                .uri(API + SERVER_SAVE)
+                .bodyValue(SERVER)
+                .exchange()
+                .expectStatus().isEqualTo(BAD_REQUEST)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(String.class)
+                .consumeWith(t -> assertThat(t.getResponseBody()).isNotNull()
+                        .contains(GAME_NOT_FOUND_MESSAGE));
+    }
+
     @ParameterizedTest
     @WithMockUser(authorities = {Privilege.SAVE_SERVER})
     @MethodSource("getExternalServersWithMissingLabel")
@@ -245,6 +266,7 @@ class ServerControllerTest {
         return Stream.of(ExternalServerDto.builder()
                 .id(GOULTARD)
                 .image(URL)
+                .game(Game.DOFUS)
                 .labels(Map.of(Language.FR, GOULTARD, Language.EN, GOULTARD, Language.ES, GOULTARD))
                 .build());
     }
@@ -253,26 +275,31 @@ class ServerControllerTest {
         return Stream.of(ExternalServerDto.builder()
                 .id(GOULTARD)
                 .image(URL)
+                .game(Game.DOFUS)
                 .labels(Map.of(Language.FR, GOULTARD, Language.EN, GOULTARD))
                 .build(),
                 ExternalServerDto.builder()
                         .id(GOULTARD)
                         .image(URL)
+                        .game(Game.DOFUS)
                         .labels(Map.of(Language.FR, GOULTARD))
                         .build(),
                 ExternalServerDto.builder()
                         .id(GOULTARD)
                         .image(URL)
+                        .game(Game.DOFUS)
                         .labels(Map.of(Language.FR, GOULTARD))
                         .build(),
                 ExternalServerDto.builder()
                         .id(GOULTARD)
                         .image(URL)
+                        .game(Game.DOFUS)
                         .labels(Collections.emptyMap())
                         .build(),
                 ExternalServerDto.builder()
                         .id(GOULTARD)
                         .image(URL)
+                        .game(Game.DOFUS)
                         .build());
     }
 }

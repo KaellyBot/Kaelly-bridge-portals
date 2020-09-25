@@ -19,6 +19,7 @@ public class ServerMapper {
                 .id(server.getId())
                 .name(translator.getLabel(language, server))
                 .image(server.getImgUrl())
+                .game(server.getGame())
                 .build();
     }
 
@@ -27,6 +28,7 @@ public class ServerMapper {
                 .id(server.getId())
                 .imgUrl(server.getImage())
                 .labels(server.getLabels())
+                .game(server.getGame())
                 .build();
     }
 }

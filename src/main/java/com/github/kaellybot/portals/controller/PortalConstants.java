@@ -40,6 +40,7 @@ public final class PortalConstants {
     public static final String USER_TYPE_NOT_FOUND_MESSAGE = "At least one privilege is mandatory";
     public static final String ID_NOT_FOUND_MESSAGE = "The ID is mandatory.";
     public static final String IMAGE_NOT_FOUND_MESSAGE = "The image is mandatory.";
+    public static final String GAME_NOT_FOUND_MESSAGE = "The game is mandatory.";
     public static final String LABEL_NOT_FOUND_MESSAGE = "A label is mandatory for these languages: FR, EN, ES";
     static final String SERVER_NOT_FOUND_MESSAGE = "The specified server is not found.";
     static final String DIMENSION_NOT_FOUND_MESSAGE = "The specified dimension is not found.";
