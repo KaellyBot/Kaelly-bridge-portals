@@ -22,11 +22,7 @@ public enum Area implements MultilingualEnum {
     ILE_MINOTOROR     ("area.ile_minotoror"   ),
     ILOT_MER_DASSE    ("area.ilot_mer_dasse"  ),
     SAHARACH          ("area.saharach"        ),
-    PANDALA_TERRE     ("area.pandala_terre"   ),
-    PANDALA_NEUTRE    ("area.pandala_neutre"  ),
-    PANDALA_FEU       ("area.pandala_feu"     ),
-    PANDALA_EAU       ("area.pandala_eau"     ),
-    PANDALA_AIR       ("area.pandala_air"     ),
+    ILE_PANDALA       ("area.ile_pandala"     ),
     MONTAGNE_KOALAKS  ("area.montagne_koalaks");
 
     private final String key;
